@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+
+# Roman: exclude executables without file extension
+# https://codicious.wordpress.com/2018/06/06/how-would-you-exclude-all-extension-less-executable-from-your-repo/
+*
+!*.*
+!*/
+
+# input.txt - file with inputs for coding problems. 
+# Not required in source control, because stores info temporarily for 
+# the case I currently work on. Overwritten when I move to another case
+*/input.txt
+
+# .o files
+*.o
+
