@@ -1,7 +1,6 @@
 // A. I Wanna Be the Guy
 
 #include <iostream>
-#include <sstream>
 
 int main(){
 	
