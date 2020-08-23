@@ -3,34 +3,41 @@
 #include <iostream>
 #include <algorithm>
 
-using namespace std;
-
 
 int main(){
 	
 	int t;
-	cin >> t;
+	scanf("%d\n", &t);
 	
 	while(t--){
 		
 		int n;
-		cin >> n;
+		scanf("%d\n", &n);
 		
 		int a[n], b[n];
-		for (int i=0; i<n; ++i) cin >> a[i];
-		for (int i=0; i<n; ++i) cin >> b[i];
-		
-		if (n==1){
-			if(a[0]>b[0]) cout << a[0]-b[0];
-			else cout << b[0]-a[0];
-			continue;
+		int tmp;
+		for (int i=0; i<n; ++i){
+			scanf("%d", &tmp);
+			a[i] = tmp;
 		}
 		
-		sort(a, a+n);
-		sort(b, b+n);
+		for (int i=0; i<n; ++i){
+			scanf("%d", &tmp);
+			b[i] = tmp;
+		}
+			
+		int minA = *std::min_element(a, a+n);
+		int minB = *std::min_element(b, b+n);
 		
-		auto lastA = unique(begin(a), end(a));
-		auto lastB = unique(begin(b), end(b));
+		// with long I get correct answer in g++ 7.5.0 (my current g++)
+		// but on codeforces's g++ (7.3.0) it overflows
+		// so, changed to unsigned long long
+		unsigned long long moves = 0;
+		for (int i=0; i<n; ++i){
+			moves += std::max (a[i]-minA, b[i]-minB);
+		}
+		
+		printf("%lld\n", moves);
 		
 	}
 	
