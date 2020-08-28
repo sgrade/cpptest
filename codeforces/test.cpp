@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <algorithm>	// std::swap
+
 using namespace std;
 
 /*
@@ -19,17 +21,19 @@ int main() {
 }
 */
 
-void tst(int a){
-	cout << a << endl;
-	if (a<0){
-		cout << "Returning!" << endl;
-		return;
-	}
-	return tst(a-1);
+// ========================
+// greatest common factor
+int gcf(int a, int b){
+	
+	// cout << "a: " << a << " b: " << b << endl;
+	if (a < b) swap(a, b);
+	if (a%b == 0) return b;
+	return gcf(a%b, b);
+	
 }
 
 int main(){
 	
-	tst(5);
+	printf("%d", gcf(18, 30));
 	
 }
