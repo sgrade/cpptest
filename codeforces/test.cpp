@@ -21,6 +21,7 @@ int main() {
 }
 */
 
+/*
 // ========================
 // greatest common factor
 int gcf(int a, int b){
@@ -31,9 +32,12 @@ int gcf(int a, int b){
 	return gcf(a%b, b);
 	
 }
+*/
 
 int main(){
 	
-	printf("%d", gcf(18, 30));
+	// printf("%d", gcf(18, 30));
+
+	printf("%d\n", 4|3);
 	
 }
