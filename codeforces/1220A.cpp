@@ -18,8 +18,8 @@ int main(){
     int numOfZero = count(s.begin(), s.end(), 'z');
     int numOfOne = (n - numOfZero*4) / 3;
     
-    int i = 0;
-    for (; i < numOfOne-1; ++i) printf()
+	for (int i = 0; i < numOfOne; ++i) printf("1 ");
+	for (int j = 0; j < numOfZero; ++j) printf("0 ");
 
     return 0;
 }
