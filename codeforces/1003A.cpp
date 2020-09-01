@@ -15,7 +15,7 @@ int main(){
         scanf("%d", &(a[i]));
     }
     
-    int minPockets;
+    int minPockets = 0;
     if (n==1){
         minPockets = 1;
     }
