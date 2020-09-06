@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include <algorithm>
 
-
+/*
+// !!!!!!!!!!!!!!!!!!!!!!
+// Time limit exceeded on test 9
+// !!!!!!!!!!!!!!!!!!!!!!
 int main(){
 
     int t;
@@ -77,3 +80,4 @@ int main(){
 
     return 0;
 }
+*/
