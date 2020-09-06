@@ -26,13 +26,8 @@ int main(){
         if(s[i]=='B')
         {
             ++curSize;
-            if (i==n-1) 
-            {
-                sizes.push_back(curSize);
-                ++k;
-            }
         }
-        else
+        if (s[i]!='B' || i==n-1)
         {
             if (curSize > 0)
             {
