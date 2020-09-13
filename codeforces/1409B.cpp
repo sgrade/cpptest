@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <algorithm>
+#include <limits>
 
 
 int main(){
@@ -12,33 +13,23 @@ int main(){
     while(t--){
 
         long long a, b, x, y, n;
-        scanf("%lld %lld %lld %lld %lld\n", &a, &b, &x, &y, &n);
+        scanf("%lld %lld %lld %lld %lld\n", &a, &b, &x, &y, &n);        
 
-        if (a<b) {
-            std::swap (a, b);
-            std::swap (x, y);
-        }
-        if (a==b){
-            if (a-x < b-y){
-                std::swap (a, b);
-                std::swap (x, y);
-            }
-        }
+        // Editorial - https://codeforces.com/blog/entry/82284
+        long long int product = std::numeric_limits<long long int>::max();
 
-        long long product=0;
+        int i=2;
+        while (i--){
 
-        if ( (a-n)>=x && (b-n)>=y ){
-            product = std::min({(a-n)*b, (b-n)*a, (a-n/2)*(b-n/2)});
-        }
-        else {
-            while (n--){
-                if ((a-1)*b < (b-1)*a){
-                    --a;
-                }
-                else {
-                    --b;
-                }
-            }
+            long long aDiff = std::min(n, a-x);        
+            long long bDiff = std::min(n-aDiff, b-y);
+            long long product1 = (a-aDiff) * (b-bDiff);
+
+            product = std::min(product, product1);
+
+            std::swap(a, b);
+            std::swap(x, y);
+
         }
             
         printf("%lld\n", product);
