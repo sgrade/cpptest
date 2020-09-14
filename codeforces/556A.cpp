@@ -10,34 +10,48 @@ int main(){
     int n;
     cin >> n;
 
+    // Editorial - https://codeforces.com/blog/entry/18919
     string s;
     getline(cin >> ws, s);
 
+    int numOfZeroes = 0;
+    int numOfOnes = 0;
+    for (int i=0; i<n; ++i){
+        if (s[i] == '0') ++numOfZeroes;
+        else ++numOfOnes;
+    }
+
+    cout << abs(numOfZeroes - numOfOnes) << endl;
+
+    /*
+    // Time limit exceeded on test 12
     int output = 0;
+
+    
     if (s.size()==1){
         output = 1;
     }
     else {
                 
-        /*
-        char prev = s[0];
-        char cur;
-        for (int i=1; i<n; ++i){
-            cur = s[i];
-            if (cur == prev){
-                ++output;
-            }
-            else {
-                if (i!=n-1){
-                    ++i;
+        bool continueSearch = true;
+        while(continueSearch){
+            string::size_type index;
+            index = s.find("10");
+                if (index == string::npos){
+                    index = s.find("01");
                 }
+            if (index == string::npos){
+                continueSearch = false;
             }
-            prev = s[i];
+            else{
+                s.erase(index, 2);
+            }
         }
-        */
+        
     }
+    cout << s.size() << endl;
+    */
 
-    cout << output << endl;
 
     return 0;
 }
