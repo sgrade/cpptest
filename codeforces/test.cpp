@@ -1,43 +1,30 @@
-
-#include <iostream>
-#include <algorithm>	// std::swap
-
+#include <bits/stdc++.h>
+ 
 using namespace std;
-
-/*
-int gcd(int a, int b) { 
-	cout << "a: " << a << " b: " << b << endl;
-	if (b == 0) {
-		cout << "returning: " << a << endl;
-		return a;
-	} 
-	return gcd(b, a % b);  
-} 
-int main() { 
-   int a = 5, b = 6; 
-   int g = gcd(a, b);
-   cout<<"GCD of "<< a <<" and "<< b <<" is "<< g << endl; 
-   return 0; 
+ 
+#define ll long long
+const int INF = 2e9 + 1;
+ 
+ll getS(ll x) {
+    return x * (x + 1) / 2; 
 }
-*/
-
-/*
-// ========================
-// greatest common factor
-int gcf(int a, int b){
-	
-	// cout << "a: " << a << " b: " << b << endl;
-	if (a < b) swap(a, b);
-	if (a%b == 0) return b;
-	return gcf(a%b, b);
-	
-}
-*/
-
-int main(){
-	
-	// printf("%d", gcf(18, 30));
-
-	printf("%d\n", 4|3);
-	
+ 
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int T;
+    cin >> T;
+    while (T --> 0) {
+        ll x;
+        cin >> x;
+        int ans = 0;
+        for (int i = 1; getS((1LL << i) - 1) <= x; i++) {
+            ans++;
+            x -= getS((1LL << i) - 1);
+			cout << getS((1LL << i) - 1) << endl;
+        }
+        cout << ans << '\n';
+    }
+    return 0;
 }

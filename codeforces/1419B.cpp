@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <limits>
+#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
@@ -13,28 +15,43 @@ int main(){
     int t;
     cin >> t;
 
-    vector<long long> v;
-    v.push_back(1);
-
-    long long cells;
-    map<int, long long> mp;
-    mp[1] = 1;
-
-    int count = 1;
-    for (int i=1; i<60+1; ++i){
-        v.push_back(v[i-1] + i+1);
-
-        if (i%2 != 0) continue;
-
-        else{
-            ++count;
-            cells = mp[count-1] + v[i];
-            mp.emplace(count, cells);
-            cout << count << ": " << mp[count] << endl;
-        }
+    vector<long long> tests;
+    while (t--){
+        long long x;
+        cin >> x;
+        tests.push_back(x);
     }
 
+    long long cells = 0;
+    map<int, long long> mp;
 
+    int niceStaircases = 0;
+    long long n = 1;      // number of stairs; number of disjoint squares
+    int p = 1;      // increment to n
+    while (cells <= *max_element(tests.begin(), tests.end())){
+
+        cells += n*(n+1) / 2;
+        ++niceStaircases;
+        p *= 2;
+        n += p;
+
+        // cout << niceStaircases << ": " << cells << endl;
+        mp.emplace(niceStaircases, cells);
+    }
+
+    for(int i=0; i<tests.size(); ++i){
+
+        for (auto it: mp){
+            if (it.second == tests[i]){
+                cout << it.first << endl;
+                break;
+            }
+            else if (it.second > tests[i]){
+                cout << it.first -1 << endl;
+                break;
+            }
+        }
+    }
 
     return 0;
 }

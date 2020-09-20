@@ -1,91 +1,69 @@
 // A. Digit Game
-
+ 
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <vector>
-
+ 
 using namespace std;
-
-
+ 
+ 
 int main(){
-
+ 
     int t;
     cin >> t;
-
+ 
     while (t--){
-
+ 
+        // Parsing the input
         int n;
         cin >> n;
-
-        vector<int> v;
-
+ 
         string s;
         getline(cin >> ws, s);
-
+        
+        // Raze can choose digits in odd positions; Breach - even
+        vector<int> oddPos;
+        vector<int> evenPos;
+        
         int tmp;
         for (int i=0; i<n; ++i){
             tmp = (int)s[i] - 48;
-            v.push_back(tmp);
+            // indexing in the task start from 1;
+            if (i%2 == 0) oddPos.push_back(tmp);
+            else evenPos.push_back(tmp);
         }
 
+        // First factor in game result
+        bool nIsOdd = n%2==0 ? false : true;
+        
+        // Second factor in game result
+        bool oddInOdd = false;
+        for (auto it: oddPos){
+            if (it%2!=0) {
+                oddInOdd = true;
+                break;
+            }
+        }
+        
+        bool evenInEven = false;
+        for (auto it: evenPos){
+            if (it%2 == 0) {
+                evenInEven = true;
+                break;
+            }
+        }
+
+        // Checking game result
         int output;
-        int r=0;
-        int b=0;
-        for (int i=0; i<n-1; ++i){
-            bool moveUsed = false;
-            // Raze chooses
-            if (i%2 == 0){
-                for (; r<n; ++r){
-                    if (v[r] == -1) continue;
-                    else if (r%2==0 && v[r]%2==0){
-                        v[r] = -1;
-                        moveUsed = true;
-                        break;
-                    }
-                }
-                if (!moveUsed && r==n){
-                    for (int j=0; j<n; ++j){
-                        if (j%2 == 0){
-                            v[j] = -1;
-                            break;
-                        }
-                    }
-                }
-            }
-            // B chooses
-            else {
-                for (; b<n; ++b){
-                    if (v[b] == -1) continue;
-                    else if (b%2!=0 && v[b]%2!=0){
-                        v[b] = -1;
-                        moveUsed = true;
-                        break;
-                    }
-                }
-                if (!moveUsed && b==n){
-                    for (int j=0; j<n; ++j){
-                        if (j%2 != 0){
-                            v[j] = -1;
-                            break;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        for (int i=0; i<n; ++i){
-            if (v[i]!=-1){
-                if (v[i]%2==0) output = 2;
-                else output = 1;
-            }
-            
-        }
- 
+        if (nIsOdd && oddInOdd) output = 1;
+        else if (nIsOdd && !oddInOdd) output = 2;
+        else if (!nIsOdd && evenInEven) output = 2;
+        else if (!nIsOdd && !evenInEven) output = 1;
+    
         cout << output << endl;
-
+ 
     }
-
+ 
     return 0;
 }
