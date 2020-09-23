@@ -14,23 +14,19 @@ int main(){
     int n, m;
     scanf("%d %d\n", &n, &m);
  
-    vector<int> a;
+    vector<int> a(n);
     int tmp;
     for (int i=0; i<n; ++i){
-        scanf("%d\n", &tmp);
-        a.push_back(tmp);
+        scanf("%d", &tmp);
+        a[i]=tmp;
     }
+    scanf("\n");
  
     set<int> distinct;
-    deque<int> distinctCount;
-    int uniq = 0;
-    for (int i=m-1; i>=0; i--){
-        auto it = find(distinct.begin(), distinct.end(), a[i]);
-        if ( it == distinct.end()){
-            ++uniq;
-        }
-        distinctCount.push_front(uniq);
+    vector<int> distinctCount(n);
+    for (int i=n-1; i>=0; i--){
         distinct.insert(a[i]);
+        distinctCount[i] = distinct.size();
     }
  
     for (int i=0; i<m; ++i){
