@@ -6,11 +6,6 @@
 using namespace std;
 
 
-// https://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
-int signOf (int x){
-    return (x > 0) - (x < 0);
-}
-
 int main(){
 
     int t;
