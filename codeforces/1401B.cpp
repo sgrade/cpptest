@@ -30,24 +30,7 @@ int main(){
             twos1 = 0;
         }
         
-        // minimize "-"
-        if (zeros1 >= twos2){
-            zeros1 -= twos2;
-            twos2 = 0;
-            if (zeros1 >= ones2){
-                zeros1 -= ones2;
-                ones2 = 0;
-            }
-            else {
-                ones2 -= zeros1;
-                zeros1 = 0;
-            }
-        }
-        else {
-            twos2 -= zeros1;
-            zeros1 = 0;
-        }
-
+        // minimize chance for "-" to occur
         if (ones1 >= zeros2){
             ones1 -= zeros2;
             zeros2 = 0;
@@ -57,7 +40,35 @@ int main(){
             ones1 = 0;
         }
 
+        if (ones1 >= ones2){
+            ones1 -= ones2;
+            ones2 = 0;
+        }
+        else {
+            ones2 -= ones1;
+            ones1 = 0;
+        }
 
+
+        if (zeros1 >= twos2){
+            zeros1 -= twos2;
+            twos2 = 0;
+        }
+        else {
+            twos2 -= zeros1;
+            zeros1 = 0;
+        }
+
+        if (twos1 >= twos2){
+            twos1 -= twos2;
+            twos2 = 0;
+        }
+        else {
+            twos2 -= twos1;
+            twos1 = 0;
+        }
+
+        ans -+ ones1 * twos2;
         
         printf("%d\n", ans);
 
