@@ -68,7 +68,7 @@ int main(){
             twos1 = 0;
         }
 
-        ans -+ ones1 * twos2;
+        ans -= (std::min(ones1, twos2)) * 2;
         
         printf("%d\n", ans);
 

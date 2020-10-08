@@ -13,9 +13,8 @@ using namespace std;
 int smallestDivisor (int a){  
     
     // We skip a=1, because it is not allowed in the task
-    if (a%2 == 0) return 2;
-    for (int i=3; i*i<=a; i+=2){
-        if (a % i != 0) {
+    for (int i=2; i*i<=a; ++i){
+        if (a % i == 0) {
             return  i;
         }
     }
