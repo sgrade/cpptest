@@ -7,6 +7,10 @@
 using namespace std;
 
 
+bool divisorOfX(const int &aZero, const int &i) {
+    return aZero % i;
+}
+
 int main(){
 
     int n;
@@ -19,28 +23,12 @@ int main(){
     }
     sort(all.begin(), all.end(), greater<int>());
 
-    int x = 0;
-    int y = all[0];
+    remove_if(all.begin() + 1, all.end(), divisorOfX(all.front(), );
 
-    for (int i=1; i<n; ++i){
-        if (y % all[i] != 0){
-            x = all[i];
-            break;
-        }
-    }
-    if (x == 0){
-        if (all[0] == all[1]){
-            x = all[1];
-        }
-        else if (all[n-1] == 1 && all[n-2] == 1){
-            x = all[0];
-        }
-        else {
-            x = 1;
-        }
-    }
-    
-    cout << y << ' ' << x << endl;
+    int x = all[0];
+    int y = all[1];
+
+    cout << x << ' ' << y << endl;
 
     return 0;
 }
