@@ -46,3 +46,4 @@
 # .o files
 *.o
 
+test.cpp
