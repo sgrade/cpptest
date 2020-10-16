@@ -5,6 +5,7 @@
 using namespace std;
 
 /*
+// greatest common divisor
 int gcd(int a, int b) { 
 	cout << "a: " << a << " b: " << b << endl;
 	if (b == 0) {
@@ -34,10 +35,24 @@ int gcf(int a, int b){
 }
 */
 
+/*
+// =========================
+// factorial
+long long fact(int n){
+    unsigned long long factorial = 1;
+    for (int i=1; i<=n; ++i){
+        factorial *= i;
+    }
+    return factorial;
+}
+*/
+
 int main(){
 	
 	// printf("%d", gcf(18, 30));
 
-	printf("%d\n", 4|3);
+	// printf("%d\n", 4|3);
+	
+	cout << fact(40) << endl;
 	
 }
