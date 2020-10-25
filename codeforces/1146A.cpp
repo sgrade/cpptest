@@ -21,7 +21,7 @@ int main(){
         ans = s.size();
     }
     else{
-        ans = numOfA*2 -1;
+        ans = numOfA*2 - 1;
     }
 
     cout << ans << endl;
