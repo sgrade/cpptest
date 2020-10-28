@@ -19,17 +19,9 @@ int main(){
 
         bool ans = false;
 
-        // ceil: (a + b - 1) / b
-        int start = (r + 2 - 1) / 2;
-        
-        float tmp = ((float)start) / 2;
-        int tmp1 = l%start;
-        for(int i = start; i < )
-        if (((float)start) / 2 >= l%start){
-            ans = true;
-        }
-
-        cout << (ans ? "YES\n" : "NO\n");
+        // Editorial - https://codeforces.com/blog/entry/84149
+        // Note: editorial is a bit difficult to understand, thus finding easier explanation would help
+        cout << ( 2*l > r ? "YES\n" : "NO\n");
 
     }
 
