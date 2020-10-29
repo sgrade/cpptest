@@ -1,5 +1,4 @@
 // A. Marketing Scheme
-// NOT FINISHED
 
 #include <iostream>
 

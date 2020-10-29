@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <limits>
 
 using namespace std;
 
@@ -16,18 +17,107 @@ int main(){
 
     while(t--){
 
+        int ans = 0;
+
         int n;
         cin >> n;
 
-        map<int, int> mp;
+        if (n>1){
+        
+            map<int, int> mp;
 
-        int tmp;
-        for (int i=0; i<n; ++i){
-            cin >> tmp;
-            ++mp[tmp];
+            int tmp;
+            for (int i=0; i<n; ++i){
+                cin >> tmp;
+                --tmp;
+                ++mp[tmp];
+            }
+
+            int maxDuplicates = 1;
+            for (auto el: mp){
+                if (el.second > maxDuplicates) maxDuplicates = el.second;
+            }
+            
+            vector<int> a(n+maxDuplicates, -1);
+            
+            for (auto el: mp){
+                a[el.first] = el.first;
+                --mp[el.first];
+            }
+            
+            int range = 1;
+            while(true ){
+
+                int counter = 0;
+                auto it = mp.begin();
+
+                // erase empty
+                while (it != mp.end()){
+                    if (it -> second == 0){
+                        ++counter;
+                    }
+                    else{
+
+                        // place non-empty
+                        int index = it -> first;
+                        if ((index-range)>-1 && a[index-range] == -1) {
+                            a[index-range] = index;
+                            --mp[index];
+                        }
+                        else if (a[index+range] == -1){
+                            a[index+range] = index;
+                            --mp[index];
+                        }
+                        else if (a[index+range] != -1){
+                            a.insert(a.begin()+index+range, 1, index);
+                            --mp[index];
+                        }
+                        else ++range;
+                    }
+                    it++;
+                }
+
+                if (counter >= mp.size()) break;
+            }
+
+
+            /*
+            for (int i=1; i<a.size(); ++i){
+                if (a[i]!= -1 && a[i] < a[i-1]){
+                    auto found = lower_bound(a.begin(), a.end(), a[i]);
+                    if (found != a.end()){
+                        a.insert(found, 1, a[i]);
+                        a[i+1] = -1;
+                    }
+                }
+            }
+            */
+
+            for (int i=0; i<a.size(); ++i){
+                if (a[i] != -1) ans += abs(a[i]-i);
+            }
+
         }
+        
 
-        int ans = 0;
+        /*
+        int ans = numeric_limits<int>::max();
+
+        int maxDuplicates = 1;
+        for (auto el: mp){
+            if (el.second > maxDuplicates) maxDuplicates = el.second;
+        }
+        
+        for (int x=0; x<(maxDuplicates + 2 - 1)/2; ++x){
+            int curAns = 0;
+            for (int i=0; i<n; ++i){
+                curAns += abs(v[i] - (i+x));
+            }
+            if (curAns < ans) ans = curAns;
+        }
+        */
+
+        /*
         // Supplementary array with inputs for the answer
         // Indexing starts from 1, so 200 + 1
         vector<int> a(201, -1);
@@ -62,10 +152,7 @@ int main(){
             ++range;
             
         }
-        
-        for (int i=0; i<a.size(); ++i){
-            if (a[i] != -1) ans += a[i];
-        }
+        */
 
         cout << ans << endl;
         
