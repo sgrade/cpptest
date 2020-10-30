@@ -79,19 +79,35 @@ int main(){
 
                 if (counter >= mp.size()) break;
             }
-
-
-            /*
+            
             for (int i=1; i<a.size(); ++i){
                 if (a[i]!= -1 && a[i] < a[i-1]){
-                    auto found = lower_bound(a.begin(), a.end(), a[i]);
+                    auto found = find(a.begin(), a.begin()+i-2, a[i]);
                     if (found != a.end()){
                         a.insert(found, 1, a[i]);
-                        a[i+1] = -1;
+                        a.erase(a.begin()+i+1);
+                    }
+                    else {
+                        swap(a[i-1], a[i]);
                     }
                 }
             }
-            */
+
+            for (int i=0; i<a.size(); ++i){
+                if (a[i] == -1){
+                    auto found = find_if(a.begin()+i, a.end(), [](const int x){
+                        return x != -1;
+                    });
+                    if (found != a.end()){
+                        int curTime = abs(*found - distance(a.begin(), found));
+                        int candidateTime = abs(*found - i);
+                        if (candidateTime < curTime){
+                            swap(a[i], *found);
+                        }
+                    }
+                }
+            }
+            
 
             for (int i=0; i<a.size(); ++i){
                 if (a[i] != -1) ans += abs(a[i]-i);
