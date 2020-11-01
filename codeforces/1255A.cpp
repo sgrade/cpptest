@@ -20,8 +20,8 @@ int main(){
             swap(a, b);
         }
 
-        int ans = (a-5) / 5;
-        a = a % 5;
+        int ans = (a-b) / 5;
+        a = (a-b) % 5;
 
         ans += a / 2;
         a = a % 2;
