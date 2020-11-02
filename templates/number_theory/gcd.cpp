@@ -2,6 +2,12 @@
 // same as 
 // Greatest Common Divisor - GCD
 
+// https://en.cppreference.com/w/cpp/numeric/gcd
+// In C++ STL since C++17
+// By default with g++ it will not work, because it uses c++14:
+// man g++ | grep "This is the default for C++ code"
+// GNU dialect of -std=c++14.  This is the default for C++ code.
+
 
 #include <iostream>
 
@@ -18,8 +24,8 @@ unsigned long long gcd(unsigned long long a, unsigned long long b) {
 
 int main() { 
    
-   unsigned long long a = 18;
-   unsigned long long b = 30;
+   unsigned long long a = 49;
+   unsigned long long b = 10;
 
    cout << gcd(a, b) << endl;
 
