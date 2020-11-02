@@ -31,24 +31,18 @@ int main(){
             long long candidate;
             bool found = false;
 
-            if (p % q != 0){
+            if (q < p) {
+                ans = q;
+            }
+            else if (p % q != 0){
                 ans = p;
                 found = true;
             }
+            else{
 
-            while (!found){
-                for (long long i = 2; i < p+1; ++i){
-
-                    if (i < q && q % i != 0){
-                        if (p % i == 0){
-                            ans = max(p / i, i);
-                            found = true;
-                            break;
-                        }
-                    }
-
-                }
             }
+
+            
         }
 
         cout << ans << endl;
