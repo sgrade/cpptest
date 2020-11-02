@@ -2,8 +2,35 @@
 // TLE
 
 #include <iostream>
+#include <math.h>
+#include <vector>
+#include <map>
 
 using namespace std;
+using ull = unsigned long long;
+
+
+vector<unsigned long long> allPrimeFactors (unsigned long long n){
+    vector<unsigned long long> v;
+    if (n == 0 || n == 1) return v;
+
+    while(n % 2 == 0){
+        v.push_back(2);
+        n /= 2;
+    }
+
+    for (unsigned long long i=3; i <= sqrtl(n); i += 2){
+        while (n % i == 0){
+            v.push_back(i);
+            n = n/i;
+        }
+    }
+    
+    if (n > 2) v.push_back(n);
+
+    return v;
+
+}
 
 
 int main(){
@@ -13,39 +40,35 @@ int main(){
 
     while(t--){
 
-        long long p, q;
+        ull p, q;
         cin >> p >> q;
 
-        int ans = 0;
+        ull x = 0;
 
         if (p < q){
-            ans = p;
+            x = p;
         }
-        /*
-        else if (p == q){
-            ans = p - 1;
+
+        // x = p
+        else if (p % q !=0){
+            x = p;
         }
-        */
-        // p > q
+
+        // x < p
         else {
-            long long candidate;
-            bool found = false;
-
-            if (q < p) {
-                ans = q;
+            
+            vector<ull> primesQ = allPrimeFactors(q);
+            
+            // Idea from solution by ksun48 from https://codeforces.com/contest/1444/standings#
+            for (ull el: primesQ){
+                ull candidate = p;
+                while(candidate % q == 0) candidate /= el;
+                x = max(x, candidate);
             }
-            else if (p % q != 0){
-                ans = p;
-                found = true;
-            }
-            else{
-
-            }
-
             
         }
 
-        cout << ans << endl;
+        cout << x << endl;
 
     }
 
