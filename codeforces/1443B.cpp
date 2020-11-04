@@ -23,23 +23,21 @@ int main(){
 
         int ans = 0;
 
-        vector<char> v(s.begin(), s.end());
-        int ones = count(v.begin(), v.end(), '1');     
+        s.erase(0, s.find('1'));
+        s.erase(s.find_last_of('1')+1);
 
-        if (ones != 0){
-            auto fpos = find(v.begin(), v.end(), '1');
-            if (fpos != v.end()){
-                v.erase(v.begin(), fpos);
-            }
-            reverse(v.begin(), v.end());
-            auto fpos1 = find(v.begin(), v.end(), '1');
-            if (fpos1 != v.end()){
-                v.erase(v.begin(), fpos);
-            }
+        int sSize = s.size();
+        if (sSize > 0){    
+            ans += a;
             
-            int zeros = count(v.begin(), v.end(), '0');
-
-            ans = min(ones * a, zeros * (a+b));
+            // https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+            size_t pos = 0;
+            string token;
+            while((pos = s.find('1')) != string::npos){
+                token = s.substr(0, pos);
+                ans += min(a, b * (int)token.size());
+                s.erase(0, pos + 1);
+            }
         }
 
         cout << ans << endl;
