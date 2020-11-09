@@ -1,5 +1,4 @@
 // A. Subtractions
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
@@ -17,14 +16,23 @@ int main(){
         scanf("%d %d\n", &x, &y);
 
         int ans = 0;
-        while (y / x + y % x > x)
-        {
-            ans += y / x;
-            y = y / x;
-            y += y % x;
+        int remainder;
+        while (true){
+            if (y < x) swap(y, x);
+            {
+                ans += y / x;
+                remainder = y % x;
+                if (remainder > 0){
+                    y = x;
+                    x = remainder;
+                }
+                else
+                {
+                    break;
+                }
+                
+            }
         }
-        ans += y % x;
-
 
         printf("%d\n", ans);
     }
