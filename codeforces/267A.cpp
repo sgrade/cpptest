@@ -19,19 +19,14 @@ int main(){
         int remainder;
         while (true){
             if (y < x) swap(y, x);
-            {
-                ans += y / x;
-                remainder = y % x;
-                if (remainder > 0){
-                    y = x;
-                    x = remainder;
-                }
-                else
-                {
-                    break;
-                }
-                
+
+            ans += y / x;
+            remainder = y % x;
+            if (remainder > 0){
+                y = x;
+                x = remainder;
             }
+            else break;
         }
 
         printf("%d\n", ans);
