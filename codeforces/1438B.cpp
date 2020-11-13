@@ -42,7 +42,7 @@ int main(){
         if (!ans){
             ull sumLeft, sumRight;
             int l1=0, r1=0, l2=1, r2=1;
-            for (l1 = 0; !ans & l1 < n - 1; ++l1){
+            for (l1 = 0; !ans && l1 < n - 1; ++l1){
                 for (r1 = l1; !ans && r1 < n - 1; ++r1){
                     sumLeft = accumulate(a.begin()+l1, a.begin()+r1+1, 0);
                     for (l2 = r1 + 1; !ans && l2 < n; ++l2){
