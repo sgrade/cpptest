@@ -1,4 +1,4 @@
-// 
+// A. Special Permutation
 
 #include <iostream>
 #include <algorithm>

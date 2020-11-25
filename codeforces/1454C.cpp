@@ -1,4 +1,4 @@
-// 
+// C. Sequence Transformation
 
 #include <iostream>
 #include <algorithm>

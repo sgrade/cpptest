@@ -1,9 +1,9 @@
-// 
+// B. Unique Bid Auction
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <set>
+#include <map>
 
 using namespace std;
 
@@ -19,20 +19,18 @@ int main(){
         cin >> n;
 
         vector<int> v(n);
-        for (auto &el: v) {
-            cin >> el;
+        map<int, int> mp;
+        for (int i=0; i<n; ++i) {
+            scanf("%d ", &(v[i]));
+            ++mp[v[i]];
         }
 
-        set<int> a(v.begin(), v.end());
         int ans = -1;
-        if (!a.empty()){
-            for (auto el: a){
-                int cnt = count(v.begin(), v.end(), el);
-                if (cnt == 1){
-                    auto found = find(v.begin(), v.end(), el);
-                    ans = distance(v.begin(), found) + 1;
-                    break;
-                }
+
+        for (auto el: mp){
+            if (el.second == 1) {
+                ans = distance(v.begin(), find(v.begin(), v.end(), el.first)) + 1;
+                break;
             }
         }
 

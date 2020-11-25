@@ -1,4 +1,4 @@
-// 
+// D. Number into Sequence
 
 #include <iostream>
 #include <algorithm>
