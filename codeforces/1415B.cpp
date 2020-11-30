@@ -1,4 +1,5 @@
 // B. Repainting Street
+// WRONG ANSWER
 
 #include <iostream>
 #include <algorithm>
@@ -30,7 +31,7 @@ int main(){
         int ans = numeric_limits<int>::max();
 
         if (mp.size() == a.size()){
-            ans = n - 1;
+            ans = ((n - 1) + k - 1) / k;
         }
         else {
             int mxCount = 0;
@@ -49,14 +50,18 @@ int main(){
                 int nextMx = allMx[j];
                 int curAns = 0;
                 int i = 0;
-                while (true){
-                    if (i > n-1) break;
-                    auto found = find_if_not(a.begin()+i, a.end(), [nextMx](int x){return x==nextMx;});
-                    if (found != a.end()){
-                        ++curAns;
-                        i += distance(a.begin()+i, found);
+                while (i < n){
+                    bool fnd = false;
+                    for (int m=0; m < k && i < n; ++m){
+                        auto found = find_if_not(a.begin()+i, a.end(), [nextMx](int x){return x==nextMx;});
+                        if (found != a.end()){
+                            fnd = true;
+                            i += distance(a.begin()+i, found) + 1;
+                        }
+                        else break;
                     }
-                    i += k;
+                    if (fnd) ++curAns;
+                    else break;
                 }
                 if (curAns < ans) ans = curAns;
             }
