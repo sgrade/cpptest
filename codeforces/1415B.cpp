@@ -1,10 +1,9 @@
 // B. Repainting Street
-// WRONG ANSWER
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <map>
+#include <set>
 #include <limits>
 
 using namespace std;
@@ -21,47 +20,30 @@ int main(){
         cin >> n >> k;
 
         vector<int> a(n);
-        map<int, int> mp;
+        set<int> st;
 
         for (auto &el: a) {
             cin >> el;
-            ++mp[el];
+            st.insert(el);
         }
 
         int ans = numeric_limits<int>::max();
 
-        if (mp.size() == a.size()){
+        if (st.size() == a.size()){
             ans = ((n - 1) + k - 1) / k;
         }
         else {
-            int mxCount = 0;
-            for (auto el: mp) {
-                if (el.second > mxCount) mxCount = el.second;
-            }
-            
-            vector<int> allMx;
-            for (auto el: mp){
-                if (el.second == mxCount) {
-                    allMx.push_back(el.first);
-                }
-            }
-
-            for (int j=0; j<allMx.size(); ++j){
-                int nextMx = allMx[j];
+            for (auto num: st){
                 int curAns = 0;
                 int i = 0;
-                while (i < n){
-                    bool fnd = false;
-                    for (int m=0; m < k && i < n; ++m){
-                        auto found = find_if_not(a.begin()+i, a.end(), [nextMx](int x){return x==nextMx;});
-                        if (found != a.end()){
-                            fnd = true;
-                            i += distance(a.begin()+i, found) + 1;
-                        }
-                        else break;
+                while (true){
+                    if (i > n-1) break;
+                    auto found = find_if_not(a.begin()+i, a.end(), [num](int x){return x==num;});
+                    if (found != a.end()){
+                        ++curAns;
+                        i += distance(a.begin()+i, found);
                     }
-                    if (fnd) ++curAns;
-                    else break;
+                    i += k;
                 }
                 if (curAns < ans) ans = curAns;
             }
