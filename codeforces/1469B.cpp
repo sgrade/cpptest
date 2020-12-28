@@ -1,4 +1,4 @@
-// 
+// B. Red and Blue
 
 #include <iostream>
 #include <algorithm>
