@@ -1,4 +1,4 @@
-// 
+// A. Strange Partition
 
 #include <iostream>
 #include <algorithm>
