@@ -1,12 +1,11 @@
 // C. Long Jumps
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 
 using namespace std;
-using ull = unsigned long long;
+using ll = long long;
 
 
 int main(){
@@ -19,18 +18,19 @@ int main(){
         int n;
         cin >> n;
 
-        vector<ull> v(n+1);
-        v[0] = 0;
-        for (int i = 1; i < n+1; ++i) cin >> v[i];
+        vector<ll> v(n);
+        for (int i = 0; i < n; ++i) cin >> v[i];
 
-        ull maxScore = 0;
+        ll maxScore = 0;
 
-        for (ull j = 1; j < n+1; ++j){
-            ull i = j;
-            while (i <= n){
-                i += v[i];
+        // Editorial - https://codeforces.com/blog/entry/86406
+        vector<ll> dp(n);
+        for (ll j = n-1; j >= 0; --j) {
+            dp[j] = v[j];
+            if (j + v[j] < n){
+                dp[j] += dp[j + v[j]];
             }
-            if (i - j > maxScore) maxScore = i - j;
+            maxScore = max(maxScore, dp[j]);
         }
 
         cout << maxScore << endl;
