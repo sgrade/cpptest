@@ -21,7 +21,7 @@ int main(){
         vector<ll> v(n);
         for (int i = 0; i < n; ++i) cin >> v[i];
 
-        ll maxScore = 0;
+        ll max_score = 0;
 
         // Editorial - https://codeforces.com/blog/entry/86406
         vector<ll> dp(n);
@@ -30,10 +30,10 @@ int main(){
             if (j + v[j] < n){
                 dp[j] += dp[j + v[j]];
             }
-            maxScore = max(maxScore, dp[j]);
+            max_score = max(max_score, dp[j]);
         }
 
-        cout << maxScore << endl;
+        cout << max_score << endl;
 
     }
 
