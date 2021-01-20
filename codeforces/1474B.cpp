@@ -1,4 +1,4 @@
-// 
+// B. Different Divisors
 
 #include <iostream>
 #include <algorithm>

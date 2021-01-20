@@ -1,4 +1,4 @@
-// 
+// A. Puzzle From the Future
 
 #include <iostream>
 #include <algorithm>
