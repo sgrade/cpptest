@@ -1,11 +1,30 @@
 // C. Array Destruction
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <set>
 
 using namespace std;
+
+
+vector<int> check (int n, vector<int> v, int x){
+    multiset<int> s(v.begin(), v.end());
+    vector<int> output;
+    for (int i = 0; i < n; ++i){
+        auto last_element = s.end();
+        --last_element;
+        int y = x - *last_element;
+        s.erase(last_element);
+        auto y_it = s.find(y);
+        if (y_it == s.end()) return {};
+        output.push_back(x - y);
+        output.push_back(y);
+        x = max(x - y, y);
+        s.erase(y_it);
+    }
+    return output;
+}
 
 
 int main(){
@@ -22,45 +41,23 @@ int main(){
         for (auto &el: v) cin >> el;
         sort(v.begin(), v.end(), greater<int>());
 
-        bool ans = true;
-
-        vector<bool> removed(2 * n);
-
-        if (n > 1){
-
-            bool flag = false;
-
-            int x = v[0];
-
-            while (v.size() > 2) {
-
-                auto found1 = find(v.begin(), v.end(), v[0] - v[1]);
-                if (found1 != v.end()){
-                    flag = true;
-                    removed[1] = true;
-                    auto found1_index = distance(v.begin(), found1);
-                    removed[found1_index] = true;
-                    x = v[found1_index];
-                }
-
-                if (flag){
-                    
-                }
-
-            }
+        bool flag = false;
         
-            for (int i = 0; i < 2 * n; ++i){
-                for (int j = i + 1; j < 2 * n; ++j){
-                    if ()
-                    auto found = find(v.begin() + j + 1, v.end(), v[i] - v[j]);
-
+        // Editorial - https://codeforces.com/blog/entry/86933
+        for (int i = 2 * n - 1; i > 0; --i){
+            int x = v[0] + v[i];
+            vector<int> ans = check(n, v, x);
+            if (!ans.empty()){
+                flag = true;
+                cout << "YES\n" << x << endl;
+                for (int j = 0; j < n; ++j){
+                    cout << ans[2 * j] << " " << ans[2 * j + 1] << endl;
                 }
-
+                break;
             }
-
         }
-        
-        
+
+        if (!flag) cout << "NO" << endl;
 
     }
 
