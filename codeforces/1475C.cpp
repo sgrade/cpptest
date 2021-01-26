@@ -1,8 +1,6 @@
 // C. Ball in Berland
-// TLE
 
 #include <iostream>
-#include <algorithm>
 #include <algorithm>
 
 using namespace std;
@@ -18,25 +16,27 @@ int main(){
         int a, b, k;
         cin >> a >> b >> k;
 
-        vector<int> boys(k), girls(k);
-        for (auto &el: boys) cin >> el;
-        for (auto &el: girls) cin >> el;
+        vector<int> boys(a), girls(b);
+        vector<pair<int, int>> pairs(k);
 
-        int ans = 0;
+        // Editorial - https://codeforces.com/blog/entry/87188
 
-        int boy, girl;
-        // vector<int> chosen(k, -1);
-        for (int i = 0; i < k-1; ++i){
-            boy = boys[i];
-            girl = girls[i];
-            for (int j = i+1; j < k; ++j){
-                if (boys[j] != boy && girls[j] != girl){
-                    ++ans;
-                }
-            }
+        for (auto &[boy, girl]: pairs) cin >> boy;
+        for (auto &[boy, girl]: pairs) cin >> girl;
+        for (auto &[boy, girl]: pairs) {
+            --boy;
+            --girl;
+            ++boys[boy];
+            ++girls[girl];
         }
 
-        cout << ans << endl;
+        unsigned long long ans = 0;
+
+        for (auto &[boy, girl]: pairs) {
+            ans += k - (boys[boy] + girls[girl] - 1);
+        }
+
+        cout << ans / 2 << endl;
 
     }
 
