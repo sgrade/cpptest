@@ -1,4 +1,4 @@
-// 
+// A. Avoid Trygub
 
 #include <iostream>
 #include <algorithm>
