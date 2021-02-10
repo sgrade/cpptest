@@ -30,21 +30,17 @@ int main(){
         vector<int> output;
        
         int max_gcd = 0, cur_gcd;
-        int max_index;
         
+        // Idea from - https://codeforces.com/contest/1407/submission/92313307
         while (!a.empty()) {
 
-            // Idea from - https://codeforces.com/contest/1407/submission/92313307
-            
             vector<pair<int, int>> v;
-            
             for (int i = 0; i < a.size(); ++i) {
                 cur_gcd = gcd(max_gcd, a[i]);
                 v.emplace_back(make_pair(cur_gcd, i));
             }
 
             pair<int, int> m = *(max_element(v.begin(), v.end()));
-
             max_gcd = m.first;
             output.push_back(a[m.second]);
             a.erase(a.begin() + m.second);
