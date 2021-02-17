@@ -21,8 +21,6 @@ int main(){
     sort(b.begin(), b.end());
 
     int pairs = 0;
-
-    vector<bool> a_paired(n, false);
     vector<bool> b_paired(m, false);
     
     for (int i = 0; i < n; ++i) {
