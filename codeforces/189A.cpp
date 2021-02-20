@@ -82,7 +82,6 @@ int main() {
         ans = max(ans, num_x + num_y + num_z);
     }
 
-
     cout << ans << endl;
 
     return 0;
