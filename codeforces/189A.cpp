@@ -1,5 +1,4 @@
 // A. Cut Ribbon
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
@@ -18,13 +17,13 @@ int main() {
     lengths.insert(c);
 
     int ans = 0;
-    bool stop = false;
-    int num_x = 0, num_y = 0, num_z = 0, rem_x, rem_y, rem_z;
-
+    
     for (auto x: lengths) {
-        if (stop) break;
+        int num_x = 0, num_y = 0, num_z = 0, rem_x, rem_y, rem_z;
+        bool stop = false;
+
         num_x = n / x;
-        for(; num_x >=0; --num_x) {
+        while(num_x >=0) {
             rem_x = n - num_x * x;
             if (rem_x == 0)
             {
@@ -39,11 +38,11 @@ int main() {
                 if (y == x || y > rem_x)
                     continue;
                 num_y = rem_x / y;
-                for(; num_y >=0; --num_y) {
+                while (num_y >=0) {
                     rem_y = rem_x - num_y * y;
                     if (rem_y == 0)
                     {
-                        stop == true;
+                        stop = true;
                         break;
                     }
                     
@@ -51,24 +50,38 @@ int main() {
                     {
                         if (stop)
                             break;
-                        if (z == x || z == y || rem_y > z)
+                        if (z == x || z == y || z > rem_y)
                             continue;
                         num_z = rem_y / z;
-                        for(; num_z >=0; --num_z) {
+                        while(num_z >=0) {
                             rem_z = rem_y  - num_z * z;
                             if (rem_z == 0)
                             {
-                                stop == true;
+                                stop = true;
                                 break;
                             }
+                            if (stop) 
+                                break;
+                            else 
+                                --num_z;
                         }
                     }
+                    if (stop)
+                        break;
+                    else
+                        --num_y;
                 }
             }
+
+            if (stop) 
+                break;
+            else
+                --num_x;
         }
+
+        ans = max(ans, num_x + num_y + num_z);
     }
 
-    ans = num_x + num_y + num_z;
 
     cout << ans << endl;
 
