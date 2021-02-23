@@ -29,10 +29,10 @@ int main() {
     // Not all teams are full  
     else 
     {
-        // Editorials
+        // Formula from the editorial - https://codeforces.com/blog/entry/14307
         int full_teams = n % m;
         mn *= full_teams;
-
+        // number of smaller teams
         int smaller_teams = m - full_teams;
         int people_in_small_team = n / m;
         long long pairs_in_smaller_team = 
