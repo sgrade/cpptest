@@ -1,5 +1,4 @@
 // B. Subsequence Hate
-// NOT FINISHED
 
 #include <iostream>
 #include <string>
@@ -18,41 +17,41 @@ int main(){
         string s;
         getline(cin >> ws, s);
 
-        int ans = 0;
+        int ans;
         
-        if (s.size() > 2)
+        if (s.size() < 3)
+        {
+            ans = 0;
+        }
+
+        else
         {
             int zeroes = count(s.begin(), s.end(), '0');
             int ones = s.size() - zeroes;
 
-            if (zeroes != 0 || ones != 0)
-            {
-                int current_ans = 0;
-                // 1...0...
-                int current_ones = ones;
-                int current_zeroes = zeroes;
+            ans = min(zeroes, ones);
 
-                auto prev_one = s.find_first_of('1');
-                if (prev_one != 0) 
-                    current_ans += prev_one;
-                    current_zeroes -= prev_one;
-                --current_ones;
-                
-                int next_one, z;
-                while(current_ones--)
+            if (ans != 0)
+            {
+                // Editorial - https://codeforces.com/blog/entry/78202
+                int pref0 = 0, suf0 = zeroes, pref1 = 0, suf1 = ones;
+
+                for (auto &ch: s)
                 {
-                    next_one = s.find_first_of('1', prev_one + 1);
-                    z += next_one - (prev_one + 1);
-                    if (current_ones < z)
+                    if (ch == '0')
                     {
-                        current_ans += current_ones;
-                        break;
+                        ++pref0;
+                        --suf0;
                     }
-                    else {
-                        
+                    else{
+                        ++pref1;
+                        --suf1;
                     }
-                    prev_one = next_one;
-                    
+
+                    // Make string 000111
+                    ans = min(ans, pref1 + suf0);
+                    // Make string 111000
+                    ans = min(ans, pref0 + suf1);
                 }
             }
         }
