@@ -1,9 +1,8 @@
 // C. Rotation Matching
-// NOT finished
 
 #include <iostream>
-#include <deque>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -13,29 +12,36 @@ int main(){
     int n;
     cin >> n;
 
-    deque<int> a(n), b(n);
-    for (auto &el: a)
-        cin >> el;
-    for (auto &el: b)
-        cin >> el;
+    map<int, int> a, b;
+    int tmp;
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> tmp;
+        a[tmp] = i;
+    }
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> tmp;
+        b[tmp] = i;
+    }
     
     int ans = 0;
 
-    int current_ans;
-    for (int i = 0; i < n; ++i)
+    int shifts;
+    map<int, int> mp;
+    // Editorial - https://codeforces.com/blog/entry/78504
+    for (auto el: a)
     {
-        b.push_front(b.back());
-        b.pop_back();
+        shifts = el.second - b[el.first];
+        if (shifts < 0)
+            shifts += n;
         
-        current_ans = 0;
-        for (int j = 0; j < n; ++j)
-        {
-            if (a[j] == b[j]) 
-                ++current_ans;
-        }
-        ans = max(ans, current_ans);
+        ++mp[shifts];
     }
 
+    for (auto el: mp)
+        ans = max(ans, el.second);
+    
     cout << ans << endl;
 
     return 0;
