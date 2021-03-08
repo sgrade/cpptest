@@ -23,35 +23,5 @@ int main(){
 
     cout << abs(numOfZeroes - numOfOnes) << endl;
 
-    /*
-    // Time limit exceeded on test 12
-    int output = 0;
-
-    
-    if (s.size()==1){
-        output = 1;
-    }
-    else {
-                
-        bool continueSearch = true;
-        while(continueSearch){
-            string::size_type index;
-            index = s.find("10");
-                if (index == string::npos){
-                    index = s.find("01");
-                }
-            if (index == string::npos){
-                continueSearch = false;
-            }
-            else{
-                s.erase(index, 2);
-            }
-        }
-        
-    }
-    cout << s.size() << endl;
-    */
-
-
     return 0;
 }
