@@ -1,4 +1,5 @@
 // C. Kefa and Park
+// Test: #9, time: 0 ms., memory: 8 KB, exit code: 0, checker exit code: 1, verdict: WRONG_ANSWER
 
 #include <iostream>
 #include <set>
@@ -6,7 +7,8 @@
 
 using namespace std;
 
-vector<int> a = {0};
+int m;
+vector<int> a = {0}, consequitive_cats = {0};
 int ans = 0, current_ans;
 
 
@@ -16,7 +18,7 @@ class Graph
     // Number of vertices
     int V;
     // A recursive function used by DFS
-    void DFSUtil(int v, bool visited[]);
+    void DFSUtil(int v, bool visited[], int parent);
 
     public:
         Graph(int V);
@@ -38,19 +40,32 @@ void Graph::addEdge(int x, int y)
     adjList[x].push_back(y);
 }
 
-void Graph::DFSUtil(int v, bool visited[])
+void Graph::DFSUtil(int v, bool visited[], int parent)
 {
     // Mark the current node as visited
     visited[v] = true;
     
-    // Print it
-    cout << a[0] << " ";
- 
-    // Recur for all the vertices adjacent to this vertex
-    vector<int>::iterator it;
-    for (it = adjList[v].begin(); it != adjList[v].end(); ++it)
-        if (!visited[*it])
-            DFSUtil(*it, visited);
+    if (a[v])
+        consequitive_cats[v] = consequitive_cats[parent] + 1;
+    
+    if (consequitive_cats[v] <= m)
+    {
+        if (adjList[v].empty())
+        {
+                ++ans;
+        }
+        else
+        {
+            for (auto el: adjList[v])
+            {
+                cout << el << endl;
+                int vertex = adjList[v][el];
+                if (!visited[vertex]){
+                    DFSUtil(vertex, visited, v);
+                }
+            }
+        }
+    }
 }
  
 // DFS traversal of the vertices reachable from v.
@@ -61,23 +76,18 @@ void Graph::DFS(int v)
     bool* visited = new bool[V];
     for (int i = 0; i < V; i++)
         visited[i] = false;
- 
-    // 580C-specific
-    current_ans = 0;
-    
-    // Call the recursive helper function
-    // to print DFS traversal
-    DFSUtil(v, visited);
+   
+    // Call the recursive helper function to print DFS traversal
+    DFSUtil(v, visited, 0);
 }
-
-
-// Driver code
 
 
 int main()
 {
-	int n, m;
+	int n;
     cin >> n >> m;
+
+    consequitive_cats.resize(n + 1, 0);
 
     int tmp;
     for (int i = 1; i < n + 1; ++i) 
@@ -90,7 +100,7 @@ int main()
 	// +1 is for 1-based indexes
     Graph g(n + 1);
     int x, y;
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < n - 1; ++i)
     {
         cin >> x >> y;
         g.addEdge(x, y);
@@ -98,7 +108,7 @@ int main()
 
 	// DFS starting from vertex X
 	g.DFS(1);
-    cout << endl;
+    cout << ans << endl;
 
 	return 0;
 }
