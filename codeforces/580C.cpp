@@ -1,5 +1,4 @@
 // C. Kefa and Park
-// Test: #9, time: 0 ms., memory: 8 KB, exit code: 0, checker exit code: 1, verdict: WRONG_ANSWER
 
 #include <iostream>
 #include <set>
@@ -38,6 +37,7 @@ Graph::Graph(int N)
 void Graph::addEdge(int x, int y)
 {
     adjList[x].push_back(y);
+    adjList[y].push_back(x);
 }
 
 void Graph::DFSUtil(int v, bool visited[], int parent)
@@ -50,7 +50,7 @@ void Graph::DFSUtil(int v, bool visited[], int parent)
     
     if (consequitive_cats[v] <= m)
     {
-        if (adjList[v].empty())
+        if (adjList[v].size() == 1 && visited[adjList[v][0]])
         {
                 ++ans;
         }
@@ -58,10 +58,8 @@ void Graph::DFSUtil(int v, bool visited[], int parent)
         {
             for (auto el: adjList[v])
             {
-                cout << el << endl;
-                int vertex = adjList[v][el];
-                if (!visited[vertex]){
-                    DFSUtil(vertex, visited, v);
+                if (!visited[el]){
+                    DFSUtil(el, visited, v);
                 }
             }
         }
