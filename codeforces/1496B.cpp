@@ -1,10 +1,8 @@
 // B. Max and Mex
-// Memory limit exceeded on pretest 2
 
 #include <iostream>
 #include <algorithm>
 #include <set>
-
 
 using namespace std;
 
@@ -28,35 +26,30 @@ int main(){
             st.insert(tmp);
         }
 
-        int ans = 1;
+        int ans = st.size();
         
-        if (st.size() > 1)
+        if (k > 0)
         {
-            set<int>::iterator it = st.begin();
-            int a = 0, b;
+            int a = 0, b = *st.rbegin();
+            while(st.find(a) != st.end())
+                ++a;
+            
+            b = *st.rbegin();
+            
+            tmp = (a + b + 1) / 2;
 
-            for (int i = 0; i < k; ++i)
+            // Idea from - https://codeforces.com/contest/1496/submission/109640110
+            // Explanation in - https://www.youtube.com/watch?v=g8bYHwPjhLM
+            // a (MEX) is always the same, so b will be the same as well - no need to do anything
+            if (tmp != a)
             {
-                while (a == *it)
-                {
-                    ++a;
-                    ++it;
-                }
-                if (a > *it)
-                {
-                    if (it != st.end())
-                    {
-                        ++it;
-                    }
-                }
-
-                b = *st.end();
-                tmp = (a + b + 2 - 1) / 2;
-
                 st.insert(tmp);
+                k = 0;
             }
+            
+            ans = st.size() + k;
         }
 
-        cout << st.size() << endl;
+        cout << ans << endl;
     }
 }

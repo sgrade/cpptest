@@ -1,8 +1,6 @@
 // A - Split it!
-// Wrong answer on pretest 2
 
 #include <iostream>
-#include <vector>
 #include <algorithm>
 #include <string>
 
@@ -28,12 +26,13 @@ int main(){
             ans = true;
         else
         {
-            if (n % 2 != 0)
+            // Editorial - https://codeforces.com/blog/entry/88533
+            if (2 * k != n)
             {
                 string s_reversed = s;
                 reverse(s_reversed.begin(), s_reversed.end());
                 
-                if (s.substr(n / 2) == s_reversed.substr(n / 2))
+                if (s.substr(0, k) == s_reversed.substr(0, k))
                 {
                     ans = true;
                 }
