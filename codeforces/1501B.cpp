@@ -1,8 +1,6 @@
 // B. Napoleon Cake
-// Time limit exceeded on pretest 3
 
 #include <iostream>
-#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -22,30 +20,16 @@ int main(){
         for (auto &el: a)
             cin >> el;
         
-        vector<bool> drenched(n);
-        vector<bool>::reverse_iterator rit;
-        int ridx;
+        vector<int> drenched(n);
 
         // i = layers
-        for (int i = 0; i < n; ++i)
+        int layers_drenched = 0;
+        for (int i = n - 1; i > -1; --i)
         {           
-            if (a[i] > 0)
-            {
-                int j = max(0, i - a[i] + 1);
-
-                rit = find(drenched.rbegin() + n - i - 1, drenched.rend(), false);
-
-                if (rit == drenched.rend())
-                {
-                    drenched[i] = true;
-                }
-                else
-                {   
-                    ridx = distance(drenched.begin(), rit.base());
-                    for (; j < ridx; ++j)
-                        drenched[j] = true;
-                }
-            }
+            // Idea - https://codeforces.com/contest/1501/submission/109925625
+            layers_drenched = max(layers_drenched - 1, a[i]);
+            if (layers_drenched > 0)
+                drenched[i] = 1;
         }
 
         for (int i = 0; i < n; ++i)
