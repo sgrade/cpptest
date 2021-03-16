@@ -29,8 +29,8 @@ void check_combination(vector<int> v)
 // https://stackoverflow.com/questions/12991758/creating-all-possible-k-combinations-of-n-items-in-c/28698654
 void go(int offset, int k) {
     if (k == 0) {
-    check_combination(combination);
-    return;
+        check_combination(combination);
+        return;
     }
     for (int i = offset; i <= people.size() - k; ++i) {
         combination.push_back(people[i]);
