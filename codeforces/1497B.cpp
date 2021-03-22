@@ -1,5 +1,4 @@
 // B. M-arrays
-// Time limit exceeded on pretest 2
 
 #include <iostream>
 #include <algorithm>
@@ -34,51 +33,37 @@ int main(){
         }
         else
         {
-            multimap<int, int> cnt;
-            for (auto el: mp)
-            {
-                cnt.emplace(el.second, el.first);
+            // Editorial - https://codeforces.com/blog/entry/88677
+            map<int, int> mods;
+            for (auto &el: mp) {
+                mods[el.first % m] += el.second;
+            }
+
+            if (mods.find(0) != mods.end()) {
+                ++ans;
+                mods.erase(0);
             }
             
-            multimap<int, int>::reverse_iterator it1 = cnt.rbegin(), it2 = cnt.rbegin();
-            int mn, mx;
-            while (it1 != cnt.rend())
-            {
-                it2 = it1;
-                ++it2;
+            if (m % 2 == 0 && mods.find(m / 2) != mods.end()) {
+                ++ans;
+                mods.erase(m / 2);
+            }
 
-                bool flag = false;
+            int x, y, mn, mx;
+            for (auto el: mods) {
+                x = el.first;
+                y = m-x;
+                
+                if (2 * x < m || mods.find(y) == mods.end()) {
+                    ans += 1;
 
-                // cout << it1->first << ' ' << it1->second << endl;
-                for (; it2 != cnt.rend(); ++it2)
-                {
-                    // cout << it2->first << ' ' << it2->second << endl;
-                    if ((it1->second + it2->second) % m == 0)
-                    {
-                        if (it1->first - it2->first > 1)
-                        {
-                            cnt.emplace(it1->first - it2->first - 1, it1->second);
-                        }
-                        cnt.erase( next(it2).base() );
-                        cnt.erase( next(it1).base() );
-
-                        ++ans;
-                        flag = true;
-                        break;
+                    mn = min(mods[x], mods[y]);
+                    mx = max(mods[x], mods[y]);
+                    if (mx - mn > 1) {
+                        ans += mx - mn - 1;
                     }
                 }
-
-                if (it2 == cnt.rend() && !flag)
-                {
-                    ++it1;
-                }
-                else 
-                {
-                    it1 = cnt.rbegin();
-                }
             }
-            if (!cnt.empty())
-                ans += cnt.size();
         }
 
         cout << ans << endl;
