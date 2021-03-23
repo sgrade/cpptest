@@ -1,11 +1,8 @@
 // C. Minimum Grid Path
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
-#include <vector>
-#include <map>
-#include <set>
+#include <limits>
 
 using namespace std;
 
@@ -22,19 +19,31 @@ int main(){
         int n;
         cin >> n;
 
-        vector<ull> c(n);
-        for (auto &el: c) cin >> el;
-        
-        vector<ull> v(c.begin(), c.end());
-        sort(v.begin(), v.end());
-
+        int tmp;
+        // Perfect solution, not much to change - https://codeforces.com/contest/1499/submission/110341491
         int nx = n;
         int ny = n;
-        map<ull, int> used;
-        
-        ull cost = 0;      
+        int min_x = numeric_limits<int>::max();
+        int min_y = numeric_limits<int>::max();
+        ull cost = 0ULL, ans = numeric_limits<ull>::max();
 
-        cout << cost << endl;
+        for (int i = 1; i < n + 1; ++i) {
+            cin >> tmp;
+            if (i & 1) {
+                min_x = min(min_x, tmp);
+                --nx;
+            }
+            else {
+                min_y = min(min_y, tmp);
+                --ny;
+            }
+            cost += tmp;
+            if (i > 1) {
+                ans = min(ans, cost + 1ULL * nx * min_x + 1ULL * ny * min_y);
+            }
+        }
+
+        cout << ans << endl;
     }
 
     return 0;
