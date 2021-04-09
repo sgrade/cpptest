@@ -8,11 +8,6 @@ using namespace std;
 
 
 int main() {
-
-    map<int, int> dp;
-    for (int i = 0; i < 101; ++i) {
-        dp[i] = i % 3;
-    }
     
     int t;
     cin >> t;
