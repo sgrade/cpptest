@@ -54,3 +54,5 @@ D*.cpp
 E*.cpp
 F*.cpp
 G*.cpp
+
+.vscode
