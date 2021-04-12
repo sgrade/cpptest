@@ -1,4 +1,4 @@
-// https://codeforces.com/contest/1511/problem/C
+// C. Yet Another Card Deck
 
 #include <iostream>
 #include <algorithm>
