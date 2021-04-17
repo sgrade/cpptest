@@ -56,3 +56,5 @@ F*.cpp
 G*.cpp
 
 .vscode
+
+a.out
