@@ -1,10 +1,7 @@
 // A. Dreamoon and Ranking Collection
-// Wrong answer on test 1 
 
 #include <iostream>
-#include <vector>
-#include <numeric>
-#include <algorithm>
+#include <set>
 
 
 int main() {
@@ -15,37 +12,35 @@ int main() {
     while (t--) {
         int n, x;
         std::cin >> n >> x;
-        std::vector<int> a(std::max(n, x) + 1, 0);
+        std::set<int> a;
         int tmp;
         for (int i = 0; i < n; ++i) {
             std::cin >> tmp;
-            a[tmp-1] = 1;
+            a.insert(tmp);
         }
 
         int ans = 0;
         
-        int i = 0;
-        for (; x > 0; ++i) {
-            if (i >= n) {
-                i += x;
-                break;
-            }
-            else if (a[i] == 0) {
-                a[i] = 1;
+        std::set<int>::iterator it;
+        while (x > 0) {
+            ++ans;
+            it = a.find(ans);
+            if (it == a.end()){
                 --x;
             }
         }
+        tmp = ans + 1;
+        while (true) {
+            it = a.find(tmp);
+            if (it == a.end()){
+                break;
+            }
+            ++tmp;
+            ++ans;
+        }
 
-        if (i < n) {
-            auto it = std::find(a.begin()+i+1, a.end(), 0);
-            ans = std::distance(a.begin(), it);
-        }
-        else {
-            ans = i + 1;
-        }
-        
         std::cout << ans << std::endl;
-    }
+    }   
 
     return 0;
 }
