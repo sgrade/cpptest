@@ -1,7 +1,8 @@
 // B. Morning Jogging
-// Wrong answer on pretest 2
 
 #include <iostream>
+#include <set>
+#include <map>
 #include <vector>
 #include <algorithm>
 
@@ -18,36 +19,58 @@ int main() {
         int n, m;
         cin >> n >> m;
 
-        vector<vector<int>> v(n);
+        // Input
+        vector<map<int, int>> inp(n);
+        // Sorted input data
+        multiset<vector<int>> mins;
+
+        int tmp;
         for (int i = 0; i < n; ++i) {
-            vector<int> v_tmp(m);
-            for (auto &el: v_tmp) {
-                cin >> el;
+            map<int, int> mp_i;
+            vector<int> v(2);
+            for (int j = 0; j < m; ++j) {
+                cin >> tmp;
+                ++mp_i[tmp];
+                v = {tmp, i};
+                mins.insert(v);
             }
-            sort(v_tmp.begin(), v_tmp.end());
-            v[i] = v_tmp;
+            inp[i] = mp_i;
         }
 
-        vector<vector<int>> ans(n);
-
-        int shift = 0;
-        for (int i = 0; i < n; ++i) {
-            vector<int> v_tmp;
-            for (int j = shift; j < m; ++j) {
-                ans[i].push_back(v[i][j]);
-            }
-            for (int j = 0; j < shift; ++j) {
-                ans[i].push_back(v[i][j]);
-            }
-            ++shift;
-        }
+        // Placeholder for the answer
+        vector<vector<int>> ans(n, vector<int>(m));
         
-        for (auto &el_v: ans) {
-            for (auto &el: el_v) {
-                cout << el << ' ';
+        multiset<vector<int>>::iterator mins_it = mins.begin();
+        int mn, i;
+        for (int j = 0; j < m; ++j) {
+            mn = (*mins_it)[0];
+            i = (*mins_it)[1];
+            ans[i][j] = mn;
+            ++mins_it;
+            --inp[i][mn];
+        }
+
+        map<int, int>::iterator it;
+        for (int i = 0; i < n; ++i) {
+            it = inp[i].begin();
+            for (int j = 0; j < m; ++j) {
+                if (ans[i][j] == 0) {
+                    while (it->second == 0) {
+                        ++it;
+                    }
+                    ans[i][j] = it->first;
+                    --it->second;
+                }
+            }
+        }
+
+        for (auto &i: ans) {
+            for (auto &j: i) {
+                cout << j << ' ';
             }
             cout << endl;
         }
+        
     }
 
     return 0;
