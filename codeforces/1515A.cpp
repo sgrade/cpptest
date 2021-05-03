@@ -1,4 +1,4 @@
-// 
+// A. Phoenix and Gold
 
 #include <iostream>
 #include <algorithm>
