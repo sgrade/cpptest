@@ -1,11 +1,11 @@
 // C. Phoenix and Towers
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <map>
 #include <numeric>
+#include <set>
 
 using namespace std;
 
@@ -29,41 +29,46 @@ int main() {
         for (int i = 0; i < n; ++i) {
             cin >> tmp;
             ++mp[tmp];
-            original_indexes.insert(tmp, i);
+            original_indexes.insert(pair<int, int>(tmp, i));
         }
 
         bool ans = true;
         vector<int> output(n);
 
         if (m > 1) {
-            // index of related vectors
-            int mn_sum = 0, next_mn_sum = 1, mn_idx, next_mn_idx = 1;
+            // pair<int, int>: first is sum, second is index in heights
+            multiset<pair<int, int>> sums;
+            for (int i = 0; i < m; ++i) {
+                sums.insert(pair<int, int> (0, i));
+            }
+            multiset<pair<int, int>>::iterator sums_it;
 
-            // [0] = sum, v[1...] = heights>
-            vector<int> sums;
             vector<vector<int>> heights(m);
-            map<int, int>::iterator it = mp.begin();
+
+            map<int, int, greater<int>>::iterator it = mp.begin();
+            // index of related vectors
+            int mn_sum = 0, mn_idx = 0;
+
             for (int i = 0; i < n; ++i) {
                 if (it->second == 0) {
                     ++it;
                 }
+                
+                mn_sum = sums.begin()->first;
+                mn_idx = sums.begin()->second;
 
-                sums[mn_idx] += it->first;
+                mn_sum += it->first;
+                sums.erase(sums.begin());
+                sums.insert(pair<int, int>(mn_sum, mn_idx));
+
                 heights[mn_idx].push_back(it->first);
                 --it->second;
-
-                tmp = mn_sum + it->second;
-                if (tmp > next_mn_sum) {
-                    mn_sum = next_mn_sum;
-                    mn_idx = next_mn_idx;
-                    auto mn_it = min_element(sums.begin(), sums.end());
-                    mn_sum = *mn_it;
-                    mn_idx = distance(sums.begin(), mn_it);
-                }
             }
 
-            auto min_max = minmax_element(sums.begin(), sums.end());
-            if (min_max.second - min_max.first > x) {
+            mn_sum = sums.begin()->first;
+            multiset<pair<int, int>>::reverse_iterator sums_rit = sums.rbegin();
+            int mx_sum = sums_rit->first;
+            if (mx_sum - mn_sum > x) {
                 ans = false;
             }
             else {
@@ -71,18 +76,28 @@ int main() {
                 map<int, int>::iterator original_idx_it;
                 for (int i = 0; i < m; ++i) {
                     for (auto &height: heights[i]) {
-                        original_idx_it = find(original_indexes.begin(), original_indexes.end(), height);
-                        
+                        original_idx_it = original_indexes.find(height);
+                        original_idx = original_idx_it->second;
+                        output[original_idx] = i + 1;
+                        original_indexes.erase(original_idx_it);
                     }
                 }
             }
         }
 
         else {
-            for (auto &el: h) {
-                output[el.second] = el.first;
+            for (int i = 0; i < n; ++i) {
+                output[i] = 1;
             }
-        } 
+        }
+
+        cout << (ans ? "YES" : "NO") << endl;
+        if (ans) {
+            for (auto &el: output) {
+                cout << el << ' ';
+            } 
+            cout << endl;
+        }
     }
 
     return 0;
