@@ -1,12 +1,9 @@
 // C. Berland Regional
-// Time limit exceeded on test 4
  
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <map>
-#include <set>
-#include <numeric>
  
 using namespace std;
 using ull = unsigned long long;
@@ -26,38 +23,36 @@ int main() {
             cin >> el;
         }
  
-        map<int, multiset<int>> mp;
+        map<int, vector<int>> universities;
         int tmp;
         for (int i = 0; i < n; ++i) {
             cin >> tmp;
-            mp[u[i]].insert(tmp);
+            universities[u[i]].push_back(tmp);
         }
  
-        size_t mx = 0;
-        map<int, ull> u_s;
-        for (auto &el: mp) {
-            mx = max(mx, el.second.size());
-            u_s[el.first] = accumulate(el.second.begin(), el.second.end(), 0ULL);
-        }
- 
-        unsigned long long s;
-        multiset<int>::iterator it;
-        for (int k = 1; k < mx + 1; ++k) {
-            s = 0ULL;
-            for (auto &el: mp) {
-                s += u_s[el.first];
-                it = el.second.begin();
-                int rem = el.second.size() % k;
-                while (rem--) {
-                    s -= *it;
-                    ++it;
-                }
+        vector<ull> ans(n);
+        
+        for (auto &university: universities) {
+            sort(university.second.begin(), university.second.end());
+
+            int max_k = university.second.size();
+
+            vector<ull> sums(max_k+1);
+            sums[0] = 0ULL;
+            for (int k = 1; k < max_k+1; ++k) {
+                sums[k] = sums[k-1] + university.second[k-1];
             }
-            cout << s << ' ';
+
+            int rem;
+            for (int k = 0; k < max_k; ++k) {
+                // +1 is correction for 0-based indexing (k cannot be 0)
+                rem = max_k % (k + 1);
+                ans[k] += sums[max_k] - sums[rem];
+            }
         }
  
-        for (int k = mx + 1; k < n + 1; ++k) {
-            cout << 0 << ' ';
+        for (auto &el: ans) {
+            cout << el << ' ';
         }
         cout << endl;
  
