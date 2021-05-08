@@ -1,5 +1,4 @@
 // B. Nastia and a Good Array
-// Wrong answer on test 2
 
 #include <iostream>
 #include <algorithm>
@@ -36,7 +35,7 @@ int main() {
         vector<vector<int>> ans;
 
         if (n > 1) {
-            int x = 11;
+            int x = 1000000007;
             vector<int> tmp_v;
             int i = 1;
             vector<int> v(n);
@@ -57,11 +56,11 @@ int main() {
                 a[i-1] = tmp_v[2];
                 a[i] = tmp_v[3];
 
-                if (x == 13) {
-                    x = 11;
+                if (x == 1000000009) {
+                    x = 1000000007;
                 }
                 else {
-                    x = 13;
+                    x = 1000000009;
                 }
             }
 
@@ -73,11 +72,11 @@ int main() {
                 tmp_v.push_back(i+1);
 
                 tmp_v.push_back(x);
-                if (x == 11) {
-                    tmp_v.push_back(113);
+                if (x == 1000000007) {
+                    tmp_v.push_back(1000000033);
                 }
                 else {
-                    tmp_v.push_back(111);
+                    tmp_v.push_back(1000000021);
                 }
 
                 ans.push_back(tmp_v);
