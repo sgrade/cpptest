@@ -1,5 +1,5 @@
 // B. Nastia and a Good Array
-// WRONG ANSWER
+// Wrong answer on test 2
 
 #include <iostream>
 #include <algorithm>
@@ -54,8 +54,8 @@ int main() {
 
                 ans.push_back(tmp_v);
 
-                v[i-1] = tmp_v[2];
-                v[i] = tmp_v[3];
+                a[i-1] = tmp_v[2];
+                a[i] = tmp_v[3];
 
                 if (x == 13) {
                     x = 11;
@@ -66,27 +66,21 @@ int main() {
             }
 
             if (tmp_v[2] == tmp_v[3]) {
-                int y;
-                if (tmp_v[2]  == 11) {
-                    y = 111;
-                }
-                else {
-                    y = 113;
-                }
-
-                ++k;
+                x = tmp_v[2];
+                
                 tmp_v.clear();
-
                 tmp_v.push_back(i);
                 tmp_v.push_back(i+1);
 
                 tmp_v.push_back(x);
-                tmp_v.push_back(y);
+                if (x == 11) {
+                    tmp_v.push_back(113);
+                }
+                else {
+                    tmp_v.push_back(111);
+                }
 
                 ans.push_back(tmp_v);
-
-                v[i-2] = tmp_v[2];
-                v[i-1] = tmp_v[3];
             }
         }
 
