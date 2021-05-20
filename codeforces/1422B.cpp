@@ -1,10 +1,23 @@
-// 
+// B. Nice Matrix
 
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
+using ull = unsigned long long;
+
+ull equalize(vector<int> &v) {
+    ull output = 0ULL;
+
+    sort(v.begin(), v.end());
+    int mid = v.size() / 2;
+    for (int i = 0; i < v.size(); ++i) {
+        output += abs(v[i] - v[mid]);
+    }
+
+    return output;
+}
 
 
 int main(){
@@ -17,27 +30,43 @@ int main(){
         int n, m;
         cin >> n >> m;
 
-        vector<vector<int>> v(n);
+        vector<vector<int>> a(n, vector<int>(m));
 
-        int tmp;
         for (int i=0; i<n; ++i){
             for (int j=0; j<m; ++j){
-                cin >> tmp;
-                v[i].push_back(tmp);
+                cin >> a[i][j];
             }
         }
 
-        // Corners
-        long long target = (0ull + v[0][0] + v[0][m-1] + v[n-1][0] + v[n-1][m-1]) / 4;
-        long long minDistance=0ull;
-        long long curDistance = abs(v[0][0] - target) + (abs(v[0][m-1] - target)) + (abs(v[n-1][m-1] - target) + abs(v[n-1][m-1] - target));
-        long long prevDistance = curDistance;
-        while (curDistance <= prevDistance){
-            --target;
-            curDistance = abs(v[0][0] - target) + (abs(v[0][m-1] - target)) + (abs(v[n-1][m-1] - target) + abs(v[n-1][m-1] - target));
+        ull ans = 0ULL;
+
+        // Editorial - https://codeforces.com/blog/entry/83452
+        int top = 0, bottom = n-1;
+        while (top <= bottom) {
+            int left = 0, right = m-1;
+            while (left <= right) {
+                vector<int> cur = {a[top][left]};
+                if (top != bottom) {
+                    cur.push_back(a[bottom][left]);
+                }
+                if (left != right) {
+                    cur.push_back(a[top][right]);
+                }
+                if (top != bottom && left != right) {
+                    cur.push_back(a[bottom][right]);
+                }
+
+                ans += equalize(cur);
+
+                ++left;
+                --right;
+            }
+
+            ++top;
+            --bottom;
         }
         
-        cout << target << endl;
+        cout << ans << endl;
         
     }
 
