@@ -1,10 +1,9 @@
 // B. Sifid and Strange Subsequences
-// Wrong answer on pretest 2
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <algorithm>
-#include <map>
 
 using namespace std;
 
@@ -19,36 +18,32 @@ int main() {
         int n;
         cin >> n;
 
+        int ans = 0;
+
         int tmp;
-        vector<int> a(n);
-        map<int, int, greater<int>> mp;
+        vector<int> a;
+        set<int> positives;
         for (int i = 0; i < n; ++i) {
             cin >> tmp;
-            a[i] = tmp;
-            ++mp[tmp];
+            if (tmp <= 0) {
+                a.push_back(tmp);
+                ++ans;
+            }
+            else {
+                positives.insert(tmp);
+            }
         }
 
-        int ans = mp.size();
-        if (mp[0] > 0) {
-            ans += mp[0] - 1;
-        }
-        
-        auto it = begin(mp);
-        for (int x = 0; x < mp.size(); ++x) {
-            int MAX = it->first;
-            for (int j = n-1; j > 0; --j) {
-                for (int i = j-1; i > -1; --i) {
-                    if (i == j || (a[i] == a[j] && a[i] != 0)) {
-                        continue;
-                    }
-                    if (abs(a[i] - a[j]) < MAX) {
-                        ans -= it->second;
-                        goto OUTER;
-                    }
+        if (!positives.empty()) {
+            int mn = *positives.begin();
+            ++ans;
+            sort(begin(a), end(a));
+            for (int i = 1; i < a.size(); ++i) {
+                if (abs(a[i-1] - a[i]) < mn) {
+                    --ans;
+                    break;
                 }
             }
-            OUTER:
-                ++it;
         }
 
         cout << ans << endl;
