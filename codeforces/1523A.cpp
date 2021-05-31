@@ -1,5 +1,4 @@
 // A. Game of Life
-// Time limit exceeded on pretest 2
 
 #include <iostream>
 #include <string>
