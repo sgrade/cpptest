@@ -18,6 +18,7 @@ int main() {
 
         int n, m;
         cin >> n >> m;
+        m = min(n, m);
 
         string s;
         getline(cin >> ws, s);

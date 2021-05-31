@@ -28,7 +28,7 @@ int main() {
             a[i+1] = s[i] == '1' ? 1 : 0;
         }
 
-        for (int j = 0; j < m; ++j) {
+        for (int j = 0; j < min(n, m); ++j) {
             vector<bool> b(a);
             for (int i = 1; i < n+1; ++i) {
                 a[i] = b[i] || (b[i-1] ^ b[i+1]);
