@@ -30,7 +30,7 @@ int main() {
         ans = std::max(ans - 2, 0);
 
         if (ans > 0) {
-            ans += (b - a - 1) + (c - 1 - b);
+            ans += (b - (a + 1)) + ((c - 1) - b);
         }
 
         std::cout << ans << std::endl;
