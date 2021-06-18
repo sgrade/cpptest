@@ -1,12 +1,20 @@
 // C. Berpizza
-// Time limit exceeded on test 17
 
 #include <iostream>
-#include <deque>
-#include <map>
 #include <algorithm>
+#include <set>
 
 using namespace std;
+
+struct customComparator {
+    bool operator() (const pair<int, int>& a, const pair<int, int>& b) const
+    {
+        if (a.second > b.second) {
+            return true;
+        }
+        return a.first < b.first;
+    }
+};
 
 
 int main() {
@@ -14,46 +22,41 @@ int main() {
     int q;
     cin >> q;
 
-    deque<pair<int, int>> dq;
-    multimap<int, int, greater<int>> m;
+    // Editorial - https://codeforces.com/blog/entry/85951
+    
+    set<pair<int, int>> ids;
+    set<pair<int, int>, customComparator> m;
 
-    int q1, q2, num = 1;
+    int q1, q2; 
+    int num = 1;
+    pair<int, int> current;
+    
     while (q--) {
 
         cin >> q1;
         
         if (q1 == 1) {
             cin >> q2;
-            dq.push_back(pair(q2, num));
-            m.insert(pair(q2, num));
+            ids.insert(pair(num, q2));
+            m.insert(pair(num, q2));
             ++num;
         }
 
         else if (q1 == 2) {
-            cout << begin(dq)->second << ' ';
-
-            int current_m = begin(dq)->first;
-            auto it = find_if(begin(m), end(m), [current_m](const pair<int, int> p){
-                return p.first == current_m;
-            });
-
-            dq.erase(begin(dq));
-            m.erase(it);
+            current = *begin(ids);
+            cout << current.first << ' ';
+            m.erase(current);
+            ids.erase(begin(ids));
         }
 
         // q1 == 3
         else {
-            cout << begin(m)->second << ' ';
+            current = *begin(m);
+            cout << current.first << ' ';
 
-            int current_m = begin(m)->first;
-            auto it = find_if(begin(dq), end(dq), [current_m](pair<int, int> p){
-                return p.first == current_m;
-            });
-
-            dq.erase(it);
+            ids.erase(current);
             m.erase(begin(m));
         }
-
     }
 
     cout << endl;
