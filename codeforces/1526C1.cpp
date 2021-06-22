@@ -1,7 +1,6 @@
 // C1. Potions (Easy Version)
 
 #include <iostream>
-#include <vector>
 #include <set>
 
 using namespace std;
@@ -11,8 +10,6 @@ int main() {
 
     int n;
     cin >> n;
-
-    vector<int> a(n);
 
     multiset<int> mst;
 
