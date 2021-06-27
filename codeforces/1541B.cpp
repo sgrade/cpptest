@@ -1,5 +1,5 @@
 // B. Pleasant Pairs
-// ime limit exceeded on pretest 2
+// Time limit exceeded on pretest 2
 
 #include <iostream>
 #include <algorithm>
