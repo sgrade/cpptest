@@ -1,5 +1,4 @@
 // C. Challenging Cliffs
-// Wrong answer on pretest 2
 
 #include <iostream>
 #include <algorithm>
@@ -31,45 +30,30 @@ int main() {
         int d = numeric_limits<int>::max();
         int idx1, idx2;
 
-        for (int i = 0; i < n-1; ++i) {
-            if (h[i+1] - h[i] < d) {
-                idx1 = i;
-                idx2 = i+1;
-                d = h[i+1] - h[i];
+        for (int i = 1; i < n; ++i) {
+            if (h[i] - h[i-1] < d) {
+                idx1 = i-1;
+                idx2 = i;
+                d = h[idx2] - h[idx1];
             }
         }
-        ans.push_back(h[idx1]);
-        int last = h[idx2];
-        h.erase(h.begin() + idx1);
-        h.erase(h.begin() + idx2 - 1);
 
-        int h_to_place = n - 2;
-        int left = 0, right = h.size() - 1;
-        while (h_to_place > 0) {
+        // First
+        cout << h[idx1] << ' ';
 
-            while (h[left] == *ans.rbegin()) {
-                ans.push_back(h[left]);
-                --h_to_place;
-                ++left;
+        // Editorial - https://codeforces.com/blog/entry/91381
+        for (int i = idx1 + 1; i < n; ++i) {
+            if (i == idx2) {
                 continue;
             }
-
-            ans.push_back(h[right]);
-            --h_to_place;
-
-            if (left < right) {
-                ans.push_back(h[left]);
-                --h_to_place;
-                --right;
-                ++left;
-            }
+            cout << h[i] << ' ';
+        }
+        for (int i = 0; i < idx1; ++i) {
+            cout << h[i] << ' ';
         }
 
-        ans.push_back(last);
-        for (auto &el: ans) {
-            cout << el << ' ';
-        }
-        cout << endl;
+        // Last
+        cout << h[idx2] << ' ' << endl;
     }
 
     return 0;
