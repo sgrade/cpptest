@@ -32,7 +32,7 @@ int main() {
         int score_a, score_b;
         int attempts_left_a, attempts_left_b;
 
-        // '?' for team = 1, for team b = 0
+        // '?' for team_a = 1, for team_b = 0
         score_a = 0, score_b = 0;
         attempts_left_a = 5, attempts_left_b = 5;
         for (int i = 0; i < 5; ++i) {
@@ -42,7 +42,7 @@ int main() {
                 ans = min(ans, i+1 + i);
                 break;
             } 
-            
+
             score_b += b[i] == '1';
             attempts_left_b -= 1;
             if (score_a > score_b + attempts_left_b || score_b > score_a + attempts_left_a) {
