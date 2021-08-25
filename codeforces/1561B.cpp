@@ -1,8 +1,6 @@
 // Charmed by the Game
-// NOT FINISHED
 
 #include <iostream>
-#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -13,28 +11,33 @@ int main() {
     int t;
     cin >> t;
 
-    vector<vector<int>> dp(200000, vector<int>(2));
-    for (int i = 1; i <= 200000; ++i) {
-        // Alice serves first
-        dp[i-1][0] += 1;
-        // Boris serves first
-        dp[i-1][1] += 1;
-    }
-
     while (t--) {
 
         int a, b;
         cin >> a >> b;
 
-        int games = a + b;
+        int total_games = a + b;
 
-        vector<int> ans;
+        vector<int> output;
 
-        int max_receives;
-        for (int g = 1; g <= games; ++g) {
-            max_receives = (g + 2 - 1) / 2;
+        int min_brakes, max_brakes;
+        min_brakes = abs(a - b) / 2;
+        max_brakes = total_games - min_brakes;
+
+        // If total_games is even, there cannot be even number of breaks
+        int increment = total_games % 2 == 0 ? 2 : 1;
+
+        for (int i = min_brakes; i <= max_brakes; i += increment) {
+            output.push_back(i);
         }
 
+        int ans = output.size();
+
+        cout << ans << endl;
+        for (auto &el: output) {
+            cout << el << ' ';
+        }
+        cout << endl;
     }
 
     return 0;
