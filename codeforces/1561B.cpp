@@ -21,7 +21,9 @@ int main() {
         vector<int> output;
 
         int min_brakes, max_brakes;
+        // If both were winning mainly when they served themselves
         min_brakes = abs(a - b) / 2;
+        // If both were winning mainly when the opponent served
         max_brakes = total_games - min_brakes;
 
         // If total_games is even, there cannot be even number of breaks
