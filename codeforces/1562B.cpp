@@ -1,5 +1,4 @@
 // B. Scenes From a Memory
-// Didn't finish in the contest time, but now the submission is not allowed. Need to checl later.
 
 #include <iostream>
 #include <algorithm>
