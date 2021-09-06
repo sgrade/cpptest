@@ -1,5 +1,6 @@
 // B. Take Your Places!
-// Wrong answer on pretest 2
+// Wrong answer on pretest 2:
+// wrong answer 40th numbers differ - expected: '2', found: '3'
 
 #include <iostream>
 #include <algorithm>
