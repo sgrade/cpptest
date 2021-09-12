@@ -1,8 +1,5 @@
 // All prime factors (divisors) of a number
 
-// Algorithm used in this file
-// https://www.geeksforgeeks.org/print-all-prime-factors-of-a-given-number/
-
 // Alternative algorithm (not used in this file)
 // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 
@@ -14,7 +11,7 @@ using namespace std;
 
 
 vector<int> allPrimeFactors (int n){
-    // Source - // https://www.geeksforgeeks.org/print-all-prime-factors-of-a-given-number/
+    // Source - https://www.geeksforgeeks.org/print-all-prime-factors-of-a-given-number/
     
     vector<int> v;
     if (n == 0 || n == 1) return v;
