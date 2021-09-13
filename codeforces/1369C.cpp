@@ -1,5 +1,4 @@
 // C. RationalLee
-// Wrong answer on test 2
 
 #include <iostream>
 #include <algorithm>
@@ -7,7 +6,7 @@
 #include <numeric>
 
 using namespace std;
-using ull = unsigned long long;
+using ll = long long;
 
 
 int main() {
@@ -37,25 +36,24 @@ int main() {
         sort(begin(a), end(a), greater<int>());
         sort(begin(w), end(w));
 
-        ull ans = 0;
+        ll ans = 0;
 
         // Friends with one int
-        ans += accumulate(begin(a), begin(a)+friends_with_one_w, 0ULL) * 2;
+        ans += accumulate(begin(a), begin(a)+friends_with_one_w, 0LL) * 2;
 
         k -= friends_with_one_w;
 
         // Rest of max ints
-        ans += accumulate(begin(a)+friends_with_one_w, begin(a)+friends_with_one_w+k, 0ULL);
+        ans += accumulate(begin(a)+friends_with_one_w, begin(a)+friends_with_one_w+k, 0LL);
 
         // Min ints
-        int i = n-1, j = w.size()-1;
+        
+        int idx_a = size(a) - 1;
+        int idx_w = size(w) - 1;
         while (k--) {
-            ans += a[i];
-            i -= w[j] - 2;
-            --j;
-            if (i < 0) {
-                break;
-            }
+            ans += a[idx_a];
+            idx_a -= (w[idx_w] - 1);
+            --idx_w;
         }
 
         cout << ans << endl;
