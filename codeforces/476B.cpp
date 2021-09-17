@@ -21,7 +21,7 @@ void move(int i, int current_position) {
         return;
     }
 
-    // Recurcively trying to move from each i to the end
+    // Recursively trying each possible scenario from i to the end
     if (s2[i] == '+') {
         move(i+1, current_position+1);
     }
