@@ -1,4 +1,4 @@
-    // B. Make it Divisible by 25
+    // A. Chores
 
     #include <iostream>
     #include <vector>
