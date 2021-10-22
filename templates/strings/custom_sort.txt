@@ -1,0 +1,3 @@
+Check:
+1536B.cpp - Sort set by size and lexicographically
+1575A.cpp - Sort vector of strings: different checks for odd-indexed and even-indexed chars in the compared strings
