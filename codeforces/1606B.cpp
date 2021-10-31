@@ -1,9 +1,6 @@
 // B. Update Files
-// Wrong answer on test 3
 
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <math.h>
 
 using namespace std;
@@ -26,7 +23,7 @@ ll nextPowerOf2(ll n)
         count += 1;
     }
      
-    return 1 << count;
+    return 1LL << count;
 }
 
 
@@ -46,7 +43,7 @@ int main() {
         ll p = nextPowerOf2(k);
 
         if (p >= n) {
-            ans = (ll)log2(n);
+            ans = (ll)log2l(n);
             // Check if n is not a power of two
             // https://www.geeksforgeeks.org/program-to-find-whether-a-given-number-is-power-of-2/
             if (n & (n - 1)) {
