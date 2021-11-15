@@ -1,4 +1,4 @@
-// 
+// A. Mathematical Addition
 
 #include <iostream>
 
