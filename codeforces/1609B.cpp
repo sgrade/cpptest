@@ -1,12 +1,19 @@
 // B. William the Vigilant
-// Rework required. I wrongly interpreted the task, thus the implementation is also wrong.
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
 using namespace std;
+
+
+int check(vector<char> &abc, int &i) {
+    int cnt = 0;
+    for (int pos = i - 2; pos < i+1; ++pos) {
+        cnt += abc[pos] == 'a' && abc[pos+1] == 'b' && abc[pos+2] == 'c';
+    }
+    return cnt;
+}
 
 
 int main() {
@@ -17,71 +24,42 @@ int main() {
     string s;
     cin >> s;
 
+    vector<char> abc(begin(s), end(s));
 
-    int cnt = 0;
-
-    vector<bool> abc(n);
-
-    int p = 0;
+    int cnt_abc = 0;
+    int pos = 0;
     while (true) {
-        p = s.find("abc", p);
-        if (p != string::npos) {
-            ++cnt;
-            for (int i = 0; i < 3; ++i) {
-                abc[p+i] = true;
-            }
-            p += 3;
+        pos = s.find("abc", pos);
+        if (pos != string::npos) {
+            ++cnt_abc;
+            pos += 3;
         }
         else {
             break;
         }
     }
 
+    vector<int> ans(q);
+
     int i;
-    char ch;
-
-    vector<int> output(q);
-    string pattern = "abc";
-
+    char c;
+    bool prev, cur;
+    
     for (int j = 0; j < q; ++j) {
-        
-        output[j] = cnt;
-        
-        cin >> i >> ch;
+
+        cin >> i >> c;
         --i;
+
+        // Inspiration for the implementation 
+        // https://codeforces.com/contest/1609/submission/137222999
+        cnt_abc -= check(abc, i);
+        abc[i] = c;
+        cnt_abc += check(abc, i);
         
-        if (s[i] != ch) {
-            
-            if (abc[i] == true) {
-                --output[j];
-            }
-
-            else {
-                int c = pattern.find(ch);
-                i -= c;
-                int cntr = 0;
-                bool found = true;
-                for (int k = i; cntr < 3; ++k) {
-                    if (k == c) {
-                        continue;
-                    }
-                    if (k == n || abc[k] == true) {
-                        found = false;
-                    }
-                    if (s[i] != pattern[cntr]) {
-                        found = false;
-                    }
-                    ++cntr;
-                }
-                if (found) {
-                    ++output[j];
-                }
-            }
-
-        }
+        ans[j] = cnt_abc;
     }
 
-    for (auto &el: output) {
+    for (auto &el: ans) {
         cout << el << '\n';
     }
 
