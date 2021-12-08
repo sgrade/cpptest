@@ -1,5 +1,4 @@
 // B. Pleasant Pairs
-// Time limit exceeded on pretest 2
 
 #include <iostream>
 #include <algorithm>
@@ -19,22 +18,25 @@ int main() {
         int n;
         cin >> n;
 
-        vector<int> a(n);
-        for (auto &el: a) {
-            cin >> el;
+        vector<int> a(n+1);
+        for (int i = 1; i < n+1; ++i) {
+            cin >> a[i];
         }
 
         ull ans = 0ULL;
         int i, j;
-        for (ull i_plus_j = 3; i_plus_j <= (n-1) + n; ++i_plus_j) {
-            i = 1;
-            j = i_plus_j - i;
-            while (i < j) {
-                if (a[i-1] * a[j-1] == i_plus_j) {
+        for (i = 1; i < n+1; ++i) {
+            // Idea - https://codeforces.com/contest/1541/submission/120648155
+            int aj = 1;
+            while (true) {
+                j = a[i] * aj - i;
+                if (j > n) {
+                    break;
+                }
+                if (j > i && a[j] == aj) {
                     ++ans;
                 }
-                ++i;
-                --j;
+                ++aj;
             }
         }
 
