@@ -33,8 +33,9 @@ int main() {
 
         int ans = 0;
         // Editorial - https://codeforces.com/blog/entry/99031
+        int n2 = n / 2;
         for (int i = 0; i < l; ++i) {
-            if (cnt[i] > (n / 2)) {
+            if (cnt[i] > n2) {
                 ans += 1 << i;
             }
         }
