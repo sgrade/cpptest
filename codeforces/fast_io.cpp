@@ -14,10 +14,7 @@ int main() {
     // https://codeforces.com/contest/1574/my
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
-    // NEED TO TEST
-    cout.tie(NULL);
-
+  
     // Also this
     cout << "USE '\n' instead of endl" << 'n';
 
