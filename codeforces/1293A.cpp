@@ -27,9 +27,8 @@ int main() {
             a.insert(tmp);
         }
 
-        int ans = 0;
-
         ++n;
+        int ans = 0;
 
         // Idea - https://codeforces.com/contest/1293/submission/69125876
         while (true) {
