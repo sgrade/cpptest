@@ -1,9 +1,7 @@
 // A. Kitchen Utensils
 
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <set>
+#include <map>
 
 using namespace std;
 
@@ -13,16 +11,22 @@ int main() {
     int n, k;
     cin >> n >> k;
 
-    vector<int> a(n);
-    for (int &el: a) {
-        cin >> el;
-    }
-    sort (begin(a), end(a));
+    // Editorial - https://codeforces.com/blog/entry/63324
 
-    set<int> st(begin(a), end(a));
-    int t = size(st);
+    int tmp;
+    map<int, int> mp;
+    for (int i = 0; i < n; ++i) {
+        cin >> tmp;
+        ++mp[tmp];
+    }
+
+    int mx = 0;
+    for (auto &p: mp) {
+        mx = max(mx, p.second);
+    }
+
+    int t = size(mp);
     
-    int mx = *rbegin(st);
     int p = (mx + k - 1) / k;
 
     int ans = p * t * k - n;
