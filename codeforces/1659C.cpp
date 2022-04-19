@@ -1,5 +1,4 @@
 // C. Line Empire
-// NOT FINISHED
 
 #include <iostream>
 #include <vector>
