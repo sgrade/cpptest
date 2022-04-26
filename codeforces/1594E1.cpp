@@ -9,7 +9,7 @@ const int MOD = 1e9 + 7;
 
 
 // Source - https://www.geeksforgeeks.org/write-an-iterative-olog-y-function-for-powx-y/
-ll power (const ll &base, const ll &exponent) {
+inline ll power (const ll &base, const ll &exponent) {
 
     if (exponent == 0) return 1;
     
