@@ -1,9 +1,7 @@
 // C. Dolce Vita
-// NOT FINISHED
 
 #include <iostream>
 #include <vector>
-#include <map>
 #include <algorithm>
 
 using namespace std;
@@ -33,44 +31,48 @@ int main() {
         ll ans = 0;
 
         n = a.size();
+        sort(a.begin(), a.end());
+
+        ll sm = 0;
+
+        int i;
+        for (i = 0; i < n && sm + a[i] <= x; ++i) {
+            sm += a[i];
+        }
+        --i;
+
+        // Key ideas - https://codeforces.com/contest/1671/submission/154524890
         
-        if (n > 0) {
+        ll packs, days;
+        ll base = 0;
 
-            sort(a.begin(), a.end());
+        // Iterate through the packs from the most to least expensive
+        for (; i > -1; --i) {
+            
+            if (x - sm >= 0) {
+                // Number of days we can afford buying in all shops up to the i-th shop 
+                days = (x - sm) / (i + 1) + 1;
 
-            ll sm = 0;
-            int i = 0;
+                // Packs we buy
+                packs = (i + 1) * days;
 
-            for (; i < n; ++i) {
-                if (sm + a[i] > x) break;
-                sm += a[i];
+                ans += packs;
+
+                // On that day the sm will increase 1 per day per pack for i+1 packs
+                sm += packs;
+
+                // After that day we don't buy the packs from that shop
+                // So we substract that's shop contribution
+                sm -= a[i] + days + base;
+
+                // When later we increment sm, we don't need to take into 
+                // account the i-th shop contribution
+                base += days;
             }
 
-            if (i == n) --i;
-
-            int cnt = i + 1;
-            ll rounds = 1;
-
-            while (true) {
-
-                ans += cnt;
-                sm += cnt;
-                
-                while (sm > x) {
-                    sm -= a[i] + rounds;
-                    --cnt;
-                    --i;
-                    if (i == 0) break;
-                }
-                
-                if (i == 0) {
-                    ans += x - (a[i] + rounds);
-                    break;
-                }
-
-                if (i < 0) break;
-
-                ++rounds;
+            else {
+                // We cannot afford buying from the i-th shop;
+                sm -= a[i] + base;
             }
         }
         
