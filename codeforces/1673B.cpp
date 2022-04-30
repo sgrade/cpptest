@@ -1,5 +1,5 @@
 // B. A Perfectly Balanced String?
-// NOT CHECKED
+// Time limit exceeded on test 3
 
 #include <iostream>
 #include <map>
@@ -33,28 +33,30 @@ int main() {
 
         if (n_ss > 1) {
 
-            vector<vector<int>> v(n, vector<int>(26));
+            vector<map<char, int>> v(n);
 
             // Ideas are from https://www.geeksforgeeks.org/queries-frequencies-characters-substrings/
             
-            for (int i = 0; i < n; ++i) ++v[i][s[i] - 'a'];
+            for (int i = 0; i < n; ++i) ++v[i][s[i]];
 
             for (int i = 1; i < n; i++) {
-                for (int j = 0; j < 26; j++)
-                    v[i][j] += v[i - 1][j];
+                for (auto &ch: ss) {
+                    v[i][ch] += v[i-1][ch];
+                }
             }
 
             int l = 0, r = 0, d;
             int mn, mx, cur;
-            for (d = 2; l + d < n; ++d) {
-                for (l = 0; l < n - 2; ++l) {
+            for (d = 1; l + d < n; ++d) {
+                for (l = 0; l < n - 1; ++l) {
                     for (r = l + d; r < n; ++r) {
                         mn = numeric_limits<int>::max();
                         mx = 0;
-                        for (int i = 0; i < 26; ++i) {
-                            cur = v[r][i] - v[l][i];
+                        for (auto &ch: ss) {
+                            cur = v[r][ch];
+                            if (l != 0) cur -= v[l-1][ch];
                             mx = max(mx, cur);
-                            mn = min(mx, cur);
+                            mn = min(mn, cur);
                             if (mx - mn > 1) {
                                 ans = false;
                                 goto ANS;
