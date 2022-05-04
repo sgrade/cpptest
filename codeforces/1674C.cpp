@@ -23,18 +23,15 @@ int main() {
         string t;
         cin >> t;
 
-        int ans = 1;
+        long long ans = 1;
 
         if (t.find('a') != string::npos) {
             if (t.size() > 1) ans = -1;
         }
         else {
-            ans += s.size();
-            int n = s.size() - 1;
-            while (n > 0) {
-                ans += n;
-                --n;
-            }
+            // Editorial - https://codeforces.com/blog/entry/102482
+            int n = s.size();
+            ans = 2LL << (n - 1);
         }
 
         cout << ans << '\n';
