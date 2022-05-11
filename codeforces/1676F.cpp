@@ -1,5 +1,4 @@
 // F. Longest Strike
-// Time limit exceeded on test 6
 
 #include <iostream>
 #include <algorithm>
@@ -41,41 +40,36 @@ int main() {
 
         if (mp.size() > 0) {
 
-            it = mp.begin();
+            map<int, int>::iterator it1 = mp.begin(), it2;
+            ans = 0;
+            l = it1->first;
+            r = it1->first;
 
-            map<int, int>::reverse_iterator rit;
+            while (it1 != mp.end()) {
 
-            while (it != mp.end()) {
+                cur_l = it1->first;
+                it2 = it1;
+                ++it2;
 
-                rit =  mp.rbegin();
+                while (it2 != mp.end()) {
 
-                while (rit != mp.rend()) {
-
-                    cur_l = it -> first;
-                    cur_r = rit ->first;
-                    
-                    if (cur_l > cur_r) break;
-
-                    bool found = true;
-                    for (int i = cur_l; i <= cur_r; ++i) {
-                        if (mp.find(i) == mp.end()) {
-                            found = false;
-                            break;
-                        }
+                    if (it2->first - it1->first > 1){
+                        break;
                     }
 
-                    if (found) {
-                        cur_ans = cur_r - cur_l;
-                        if (cur_ans > ans) {
-                            ans = cur_ans;
-                            l = cur_l;
-                            r = cur_r;
-                        }
+                    cur_r = it2->first;
+                    cur_ans = cur_r - cur_l;
+                    if (cur_ans > ans) {
+                        ans = cur_ans;
+                        r = cur_r;
+                        l = cur_l;
                     }
-                    ++rit;
+
+                    ++it1;
+                    ++it2;
                 }
 
-                ++it;
+                it1 = it2;
             }
 
         }
