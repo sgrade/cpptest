@@ -1,8 +1,7 @@
 // F. Longest Strike
-// NOT FINISHED
+// Time limit exceeded on test 6
 
 #include <iostream>
-#include <vector>
 #include <algorithm>
 #include <map>
 
@@ -34,33 +33,56 @@ int main() {
 
         while (it != mp.end()) {
             if (it->second < k) mp.erase(it++);
+            else ++it;
         }
 
-        bool ans = false;
-        int d = 0;
+        int ans = -1, cur_ans;
+        int l, r, cur_l, cur_r;
 
         if (mp.size() > 0) {
 
-            int l, r;
-
             it = mp.begin();
 
-            map<int, int>::reverse_iterator rit = mp.rbegin();
+            map<int, int>::reverse_iterator rit;
 
-            while (true) {
-                
-                if (it == mp.end() || rit == mp.rend()) break;
+            while (it != mp.end()) {
 
-                l = it -> first;
-                r = rit ->first;
-                
-                if (l > r) break;
+                rit =  mp.rbegin();
 
-                for (int i = l; l <= r; ++l) {
-                    if (mp.find(i) == mp.end()) break;
+                while (rit != mp.rend()) {
+
+                    cur_l = it -> first;
+                    cur_r = rit ->first;
+                    
+                    if (cur_l > cur_r) break;
+
+                    bool found = true;
+                    for (int i = cur_l; i <= cur_r; ++i) {
+                        if (mp.find(i) == mp.end()) {
+                            found = false;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        cur_ans = cur_r - cur_l;
+                        if (cur_ans > ans) {
+                            ans = cur_ans;
+                            l = cur_l;
+                            r = cur_r;
+                        }
+                    }
+                    ++rit;
                 }
+
+                ++it;
             }
 
+        }
+
+        if (ans == -1) cout << "-1\n";
+        else {
+            cout << l << ' ' << r << '\n';
         }
     }
 
