@@ -1,2 +1,2 @@
 # cpptest
-Generic C++ exercises
+C++ exercises: algorithms, data structures.
