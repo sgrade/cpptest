@@ -1,4 +1,5 @@
-// https://leetcode.com/explore/interview/card/amazon/76/array-and-strings/2973/
+// 819. Most Common Word
+// https://leetcode.com/problems/most-common-word/
 
 #include <bits/stdc++.h>
 
