@@ -3,7 +3,6 @@
  
 #include <iostream>
 #include <algorithm>
-#include <list>
 #include <vector>
  
 using namespace std;
@@ -22,22 +21,18 @@ int main() {
         int n, m;
         cin >> n;
  
-        list<int> a;
+        vector<int> a(n);
         
-        int tmp;
         for (int i = 0; i < n; ++i) {
-            cin >> tmp;
-            a.push_back(tmp);
+            cin >> a[i];
         }
  
         cin >> m;
         vector<int> b(m);
         for (int &el: b) cin >> el;
  
-        list<int>::iterator it;
         for (int i = 0; i < m; ++i) {
-            it = next(a.begin(), b[i]);           
-            a.splice(a.end(), a, a.begin(), it);
+            rotate(a.begin(), a.begin() + b[i], a.end());
         }
  
         cout << a.front() << '\n';
