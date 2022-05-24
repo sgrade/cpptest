@@ -1,9 +1,8 @@
 // B. Card Trick
-// Time limit exceeded on test 3
  
 #include <iostream>
-#include <algorithm>
 #include <vector>
+#include <numeric>
  
 using namespace std;
  
@@ -19,23 +18,20 @@ int main() {
     while (t--) {
  
         int n, m;
+
         cin >> n;
- 
-        vector<int> a(n);
-        
-        for (int i = 0; i < n; ++i) {
-            cin >> a[i];
-        }
+        vector<int> a(n);        
+        for (int &el: a) cin >> el;
  
         cin >> m;
         vector<int> b(m);
         for (int &el: b) cin >> el;
  
-        for (int i = 0; i < m; ++i) {
-            rotate(a.begin(), a.begin() + b[i], a.end());
-        }
- 
-        cout << a.front() << '\n';
+        // Idea from - https://codeforces.com/contest/1681/submission/158153598
+        long long sum = accumulate(b.begin(), b.end(), 0LL);
+        int rem = sum % n;
+        
+        cout << a[sum % n] << '\n';
     }
  
     return 0;
