@@ -1,5 +1,4 @@
 // C. Circular Local MiniMax
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
@@ -23,72 +22,29 @@ int main() {
 
         vector<int> a(n);
         for (int &el: a) cin >> el;
-
         sort(a.begin(), a.end());
 
         bool ans = true;
+        vector<int> b;
         
-        int left = -1;
-
-        for (int i = 1; i < n; ++i) {
-
-            if (a[i-1] < a[i]) {
-                if (left == -1) {
-                    left = i;
-                }
-                else {
-                    continue;
-                }
-            }
-
-            else if (a[i-1] == a[i]) {
-
-                if (left != -1) {
-                    swap(a[i], a[left]);
-                    if (left + 2 < i - 1) {
-                        left = i + 2;
-                    }
-                    else {
-                        left = -1;
-                    }
-                }
-
-                else {
-                    bool found = false;
-                    for (int j = i + 1; j < n; ++j) {
-                        if (a[i] < a[j]) {
-                            found = true;
-                            swap(a[i], a[j]);
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        ans = false;
-                        break;
-                    }
-                }
-            }
-
-            else {
-                continue;
-            }
+        if (n % 2 != 0) {
+            ans = false;
         }
 
-        if (ans) {
-
-            for (int i = 1; i < n - 1; i += 2) {
-                
-                if (a[i] < a[i+1]) {
-                    swap(a[i], a[i+1]);
-                }
-                else {
+        else {
+            
+            // Editorial - https://codeforces.com/blog/entry/103198
+            int m = n / 2;
+            
+            for (int i = 1; i < m; ++i) {
+                if (a[i] == a[i + m - 1]) {
                     ans = false;
-                    break;
                 }
             }
 
-            if (a[n-1] <= a[0]) {
-                ans = false;
+            for (int i = 0, j = m; ans, i < m, j < n; ++i, ++j) {
+                b.push_back(a[i]);
+                b.push_back(a[j]);
             }
         }
 
@@ -97,7 +53,7 @@ int main() {
         }
         else {
             cout << "YES\n";
-            for (int &el: a) {
+            for (int &el: b) {
                 cout << el << ' ';
             }
             cout << '\n';
