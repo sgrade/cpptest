@@ -1,5 +1,5 @@
 // C. Sum of Substrings
-// Wrong answer on pretest 2
+// Slightly different implementation than in 1691C.cpp
 
 #include <iostream>
 #include <algorithm>
@@ -36,7 +36,6 @@ int main() {
         }
 
         long long ans = 1LL * ones * 11;
-        bool placed = false;
 
         if (ones > 0) {
 
@@ -51,7 +50,6 @@ int main() {
                     swap(a[last], a[n - 1]);
                     k -= n - (last + 1);
                     ans -= 10;
-                    placed = true;
                 }
             }
 
@@ -59,19 +57,8 @@ int main() {
                 ans -= 1;
             }
             else {
-                if (ones == 1) {
-                    if (!placed) {
-                        first = last;
-                    }
-                    else {
-                        first = k + 1;
-                    }
-                }
-                else {
-                    first = distance(a.begin(), find(a.begin(), a.end(), true));
-                }
-                
-                if (first <= k) {
+                first = distance(a.begin(), find(a.begin(), a.end(), true));
+                if (first != n-1 && first <= k) {
                     ans -= 1;
                     k -= first;
                 }

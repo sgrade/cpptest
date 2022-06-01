@@ -1,5 +1,4 @@
 // C. Sum of Substrings
-// Wrong answer on pretest 2
 
 #include <iostream>
 #include <algorithm>
@@ -35,12 +34,13 @@ int main() {
 
             size_t first, last;
 
+            last = s.find_last_of('1');
+            first = ones == 1 ? last : s.find_first_of('1');
             if (s[n-1] == '1') {
                 ans -= 10;
                 placed[n - 1] = true;
             }
             else {
-                last = s.find_last_of('1');
                 if (last != string::npos && n - (last + 1) <= k) {
                     placed[last] = true;
                     k -= n - (last + 1);
@@ -52,7 +52,6 @@ int main() {
                 ans -= 1;
             }
             else {
-                first = ones == 1 ? last : s.find_first_of('1');
                 if (first != string::npos && first <= k && !placed[first]) {
                     ans -= 1;
                     k -= first;
