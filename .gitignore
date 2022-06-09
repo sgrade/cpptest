@@ -56,3 +56,9 @@ F.cpp
 G.cpp
 
 a.out
+
+# gcov
+*.gcov
+*.gcda
+*.gcno
+
