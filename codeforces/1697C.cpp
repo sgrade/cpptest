@@ -1,5 +1,4 @@
 // C. awoo's Favorite Problem
-// Wrong answer on test 2
 
 #include <iostream>
 #include <algorithm>
@@ -29,9 +28,9 @@ int main() {
         map<char, int> s_cnt, t_cnt;
 
         bool ans = true;
-        // int need_b = 0, need_c = true;
-        queue<int> need_b, need_c;
-        int left, right;
+        queue<char> s_without_b, t_without_b;  // s and t without b
+        vector<int> count_b_s(1), count_b_t(1);
+        int sum = 0;
 
         for (int i = 0; i < n; ++i) {
             ++s_cnt[s[i]];
@@ -44,71 +43,44 @@ int main() {
                 goto ANS;
             }
         }
-
+        
+        // Idea is from https://codeforces.com/contest/1697/submission/160289797
         for (int i = 0; i < n; ++i) {
-            if (s[i] != t[i]) {
-                
-                if(t[i] == 'a') {
-                    
-                    if (!need_b.empty() && s[i] == 'b') {
-                        left = need_b.front();
-                        right = i;
-                        need_b.pop();
-                        swap(s[left], s[right]);
-                    }
-
-                    else if (!need_c.empty() && s[i] == 'c') {
-                        left = need_c.front();
-                        right = i;
-                        need_c.pop();
-                        swap(s[left], s[right]);
-                    }
-
-                    else {
-                        ans = false;
-                        goto ANS;
-                    }
-                }
-                
-                else if (t[i] == 'b') {
-                     if (!need_c.empty()) {
-
-                        if (s[i] == 'c') {
-                            left = need_c.front();
-                            right = i;
-                            need_c.pop();
-                            swap(s[left], s[right]);
-                            continue;
-                        }
-                        else {
-                            ans = false;
-                            goto ANS;
-                        }
-                    }
-                    need_b.push(i);
-                }
-                
-                else if (t[i] == 'c') {
-                    if (!need_b.empty()) {
-
-                        if (s[i] == 'b') {
-                            left = need_b.front();
-                            right = i;
-                            need_b.pop();
-                            swap(s[left], s[right]);
-                            continue;
-                        }
-                        else {
-                            ans = false;
-                            goto ANS;
-                        }
-                    }
-                    need_c.push(i);
-                }
+            if (s[i] == 'b') {
+                count_b_s.back() += 1;
+            }
+            else {
+                s_without_b.push(s[i]);
+                count_b_s.push_back(0);
+            }
+            if (t[i] == 'b') {
+                count_b_t.back() += 1;
+            }
+            else {
+                t_without_b.push(t[i]);
+                count_b_t.push_back(0);
             }
         }
-
-        if (!need_b.empty() || !need_c.empty()) ans = false;
+        
+        for (int i = 0; i < n - s_cnt['b']; ++i) {
+            if (s_without_b.front() != t_without_b.front()) {
+                ans = false;
+                break;
+            }
+            sum += count_b_s[i] - count_b_t[i];
+            // If sum > 0, we need to shift 'b' to the left, which is not possible with 'a'
+            if (sum > 0 && s_without_b.front() == 'a') {
+                ans = false;
+                break;
+            }
+            // If sum < 0, we need to shift 'b' to the right, which is not possible with 'c'
+            if (sum < 0 && s_without_b.front() == 'c') {
+                ans = false;
+                break;
+            }
+            s_without_b.pop();
+            t_without_b.pop();
+        }
 
         ANS:
         cout << (ans ? "YES\n" : "NO\n");
