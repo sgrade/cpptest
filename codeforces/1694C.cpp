@@ -1,5 +1,4 @@
 // C. Directional Increase
-// NOT FINISHED
 
 #include <iostream>
 #include <algorithm>
@@ -23,21 +22,31 @@ int main() {
         cin >> n;
 
         vector<int> a(n);
-        int zeroes = 0;
         for (int &el: a) {
             cin >> el;
         }
 
-        for (int i = n - 1; i > -1; ++i) {
-            if (a[i] == 0) ++zeroes;
-            else break;
-        }
-
         long long sum = accumulate(a.begin(), a.end(), 0LL);
         
-        bool ans = false;
+        bool ans = sum == 0 ? true: false;
 
-        if (sum == 0 && (n - zeroes) % 2 == 0) ans = true;
+        // Editorial - https://codeforces.com/blog/entry/103952
+        long long tmp = 0;
+        int i = 0;
+        for (; i < n; ++i) {
+            tmp += a[i];
+            if (tmp < 0) {
+                ans = false;
+                break;
+            }
+            if (tmp == 0) {
+                ++i;
+                break;
+            }
+        }
+        for (; ans && i < n; ++i) {
+            if (a[i] != 0) ans = false;
+        }
 
         cout << (ans ? "Yes\n": "No\n");
     }
