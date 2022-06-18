@@ -1,3 +1,4 @@
+```cpp
 // Source - https://www.geeksforgeeks.org/int_max-int_min-cc-applications/
 
 #include <limits.h>
@@ -10,6 +11,4 @@ int main(){
     cout << INT_MIN;
     return 0;
 }
-
-// Check for integer overflow for addition, substraction and multiplication
-// https://stackoverflow.com/questions/199333/how-do-i-detect-unsigned-integer-multiply-overflow
+```
