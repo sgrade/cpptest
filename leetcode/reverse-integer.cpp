@@ -1,9 +1,7 @@
 // 7. Reverse Integer
 // https://leetcode.com/problems/reverse-integer/
 
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <limits.h>
 
 
 class Solution {
