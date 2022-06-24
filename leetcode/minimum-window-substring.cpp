@@ -10,7 +10,7 @@ class Solution {
 public:
     string minWindow(string s, string t) {
         
-        map <char, int> count_t;
+        unordered_map <char, int> count_t;
         for (int i = 0; i < t.size(); ++i) 
             ++count_t[t[i]];
         
@@ -24,7 +24,7 @@ public:
         int need = count_t.size(), have = 0;
         int left = 0, right = 0;
         char ch;
-        map<char, int> count_window;
+        unordered_map<char, int> count_window;
         pair<int, int> ans(numeric_limits<int>::max(), 0);
         int d;
         

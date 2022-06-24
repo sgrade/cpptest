@@ -13,7 +13,7 @@ public:
         int ans = 0;
         int n = s.size();
         
-        map<char, int> mp;
+        unordered_map<char, int> mp;
         
         int left = 0, right = 0;
         char ch;
