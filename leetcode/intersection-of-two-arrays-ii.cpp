@@ -9,11 +9,27 @@ using namespace std;
 class Solution {
 public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
-        sort(nums1.begin(), nums1.end());
-        sort(nums2.begin(), nums2.end());
-        nums1.erase(set_intersection(nums1.begin(), nums1.end(), 
-            nums2.begin(), nums2.end(), nums1.begin()), 
-            nums1.end());
-        return nums1;
+        if (nums1.size() > nums2.size()) {
+            return intersect(nums2, nums1);
+        }
+        unordered_map<int, int> counter;
+        for (const int &num: nums1) {
+            ++counter[num];
+        }
+        
+        /*  From leetcode:
+            For our solutions here, we use one of the arrays to store the result. 
+            As we find common numbers, we copy them to the first array starting from the beginning. 
+            This idea is from this solution by sankitgupta.
+        */
+        int k = 0;
+        unordered_map<int, int>::iterator it;
+        for (const int &num: nums2) {
+            it = counter.find(num);
+            if (it != counter.end() && --it->second >= 0) {
+                nums1[k++] = num;
+            }
+        }
+        return vector(nums1.begin(), nums1.begin() + k);
     }
 };
