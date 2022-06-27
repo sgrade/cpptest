@@ -1,7 +1,7 @@
 source - [https://leetcode.com/problems/string-to-integer-atoi/solution/](https://leetcode.com/problems/string-to-integer-atoi/solution/)
 ```cpp
 // Check overflow and underflow conditions. 
-int sign;
+int sign = 1;
 if (digit > 0) sign = 1;
 else if (digit < 0) sign = -1;
 // !!! treat case digit == 0 separately if required !!!
