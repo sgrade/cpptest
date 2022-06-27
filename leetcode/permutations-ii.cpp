@@ -12,7 +12,7 @@ public:
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         int n = nums.size();
         ans.clear();
-        map<int, int> counter;
+        unordered_map<int, int> counter;
         for (int i = 0; i < n; ++i) {
             ++counter[nums[i]];
         }
@@ -21,7 +21,7 @@ public:
         return ans;
     }
     
-    void backtrack(vector<int> comb, int& n, map<int, int>& counter, vector<vector<int>>& ans) {
+    void backtrack(vector<int> comb, int& n, unordered_map<int, int>& counter, vector<vector<int>>& ans) {
         if (comb.size() == n) {
             ans.push_back(comb);
             return;

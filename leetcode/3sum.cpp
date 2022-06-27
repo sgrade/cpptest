@@ -20,16 +20,16 @@ public:
                 if (i != 0 && (nums[i-1] == nums[i])) continue;
                 left = i + 1;
                 right = n - 1;
-                twoSum(nums, i, left, right, nums[i]);
+                twoSum(nums, i, left, right);
             }
         }
         return ans;
     }
     
-    void twoSum(vector<int>& nums, int i, int left, int right, int target) {
+    void twoSum(vector<int>& nums, int i, int left, int right) {
         int x;
         while (left < right) {
-            x = target + nums[left] + nums[right];
+            x = nums[i] + nums[left] + nums[right];
             if (x == 0) {
                 ans.push_back(vector<int>({nums[i], nums[left], nums[right]}));
                 ++left;

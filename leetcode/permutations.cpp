@@ -18,6 +18,7 @@ public:
     void backtrack(int& n, vector<int>& nums, vector<vector<int>>& ans, int first) {
         if (first == n) {
             ans.push_back(nums);
+            return;
         }
         for (int i = first; i < n; ++i) {
             swap(nums[first], nums[i]);
