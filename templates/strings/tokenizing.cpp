@@ -10,17 +10,48 @@ using namespace std;
 
 int main() {
 
-    string sentence = "I speak Latin";
+    // C++ strings
     
-    istringstream iss(sentence);
-    string word;
+    string sentence;
     vector<string> words;
-    int i = 1;
+    string word;
+
+    /*
+    stringstream - works with C++ strings
+    clear() — flushes the stream 
+    str() —  converts a stream of words into a C++ string object.
+    operator << — pushes a string object into the stream.
+    operator >> — extracts a word from the stream.
+    */
+
+    // Space - delimited
+    sentence = "I speak Latin";
+    stringstream iss(sentence);
     while (iss >> word) {
         cout << word.size() << ": " << word << '\n';
         words.emplace_back(word);
     }
     cout << endl;
+
+    // Custom delimitter
+    sentence = "C*C++*Java";
+    words.clear();
+    const char delim = '*';
+    stringstream iss2(sentence);
+    while (getline(iss2, word, delim)) {
+        words.emplace_back(word);
+    }
+    for (string &el: words) {
+        cout << el << ' ';
+    }
+    cout << endl << endl;
+
+    
+    // -------------------
+    // C strings
+    
+    // The main disadvantage of strtok() is that it only works for C style strings.
+    //  Therefore we need to explicitly convert C++ string into a char array.
 
     // https://en.cppreference.com/w/cpp/string/byte/strtok
     char input[] = "one + two * (three - four)!";
