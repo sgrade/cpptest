@@ -9,23 +9,6 @@
 using namespace std;
 
 
-bool twoSum(vector<int>& nums, unordered_set<int>& a, int i, int left, int right) {
-    int x;
-    for (int left = i + 1; left < nums.size() - 1; ++left) {
-        for (int right = nums.size() - 1; right > left; --right) {
-            x = nums[i] + nums[left] + nums[right];
-            if (a.find(x) != a.end()) {
-                continue;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-
 int main() {
 
     ios_base::sync_with_stdio(false);
@@ -39,27 +22,50 @@ int main() {
         int n;
         cin >> n;
 
-        vector<int> A(n);
-        unordered_set<int> a;
-        for (int &el: A) {
-            cin >> el;
-            a.insert(el);
-        }
-
         bool ans = true;
 
-        sort(A.begin(), A.end());
-        int left, right;
-        for (int i = 0; i < n - 2; ++i) {
-            if (i != 0 && (A[i-1] == A[i])) continue;
-            left = i + 1;
-            right = n - 1;
-            if (!twoSum(A, a, i, left, right)) {
+        vector<long long> A;
+        unordered_set<long long> a;
+        int neg = 0, pos = 0, zer = 0;
+        long long tmp;
+        for (int i = 0; i < n; ++i) {
+            cin >> tmp;
+            // Editorial - https://codeforces.com/blog/entry/104310
+            if (tmp < 0) {
+                ++neg;
+            }
+            else if (tmp > 0) {
+                ++pos;
+            }
+            else {
+                if (zer == 3) continue;
+                ++zer;
+            }
+            if (neg > 2 || pos > 2) {
                 ans = false;
-                break;
+            }
+            else {
+                A.push_back(tmp);
+                a.insert(tmp);
+            }
+        }
+
+        n = A.size();
+        long long x;
+        sort(A.begin(), A.end());
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                for (int k = j + 1; k < n; ++k) {
+                    x = A[i] + A[j] + A[k];
+                    if (a.find(x) == a.end()) {
+                        ans = false;
+                        goto ANS;
+                    }
+                }
             }
         }
         
+        ANS:
         cout << (ans ? "YES\n" : "NO\n");
 
     }
