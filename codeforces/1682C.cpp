@@ -1,5 +1,4 @@
 // C. LIS or Reverse LIS?
-// Wrong answer on pretest 2
 
 #include <iostream>
 #include <map>
@@ -29,26 +28,14 @@ int main() {
 
         int ans = 0;
 
-        map<int, int>::iterator it = cnt.begin();
-        int cur;
-        bool add = true;
-        while (it != cnt.end()) {
-            cur = it->first;
-            if (it->second == 1) {
-                if (add) {
-                    ++ans;
-                }
-                add = !add;
-            }
-            else {
-                ++ans;
-            }
-            ++it;
+        // Editorial - https://codeforces.com/blog/entry/103097
+        int x = 0;
+        for (const auto &[key, value]: cnt) {
+            if (value > 1) ++ans;
+            else ++x;
         }
 
-        if (!add && cnt.rbegin()->second > 1) {
-            --ans;
-        }
+        ans += (x + 2 - 1) / 2;
 
         cout << ans << '\n';
     }
