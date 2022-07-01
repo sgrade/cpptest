@@ -8,19 +8,21 @@ using namespace std;
 
 class Logger {
 public:
-    map<string, int> messages;
+    unordered_map<string, int> messages;
     Logger() {
         
     }
     
     bool shouldPrintMessage(int timestamp, string message) {
-        bool ans = false;
-        if (messages.find(message) == messages.end() || timestamp - messages[message] > 9) {
-            ans = true;
-            messages[message] = timestamp;
+        if (messages.find(message) == messages.end()) {
+            messages[message] = timestamp + 9;
+            return true;
         }
-        
-        return ans;
+        if (timestamp > messages[message]) {
+            messages[message] = timestamp + 9;
+            return true;
+        }
+        return false;
     }
 };
 
