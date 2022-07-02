@@ -71,10 +71,14 @@ int main() {
     // https://stackoverflow.com/questions/7621727/split-a-string-into-words-by-multiple-delimiters
     // regex: the '-1' is what makes the regex split (-1 := what was not matched)
     string input_delims = "1first,1second: 1third\n2first 2second|2third";
-    std::regex re2(" [\\|,:]");
+    // Note: the empty substring ("") will be added, when two delims follow each other 
+    // (there is no chars in between). E.g. colon and space ": ".
+    std::regex re2("[ \\|,:\\n]");
     std::sregex_token_iterator first{input_delims.begin(), input_delims.end(), re2, -1}, last;
     std::vector<std::string> tokens{first, last};
-    for (string &t: tokens) cout << "'" << t << "'" << ' ';
+    for (string &t: tokens) {
+        cout << "'" << t << "'" << ' ';
+    }
     cout << endl << endl;
 
     // Below only separates using one delim
@@ -84,7 +88,7 @@ int main() {
     std::string line2;
     vector<string> word_vector;
     while(std::getline(stringStream, line2)) {
-        cout << line2 << endl;
+        // cout << line2 << endl;
         std::size_t prev = 0, pos;
         while ((pos = line2.find_first_of(" ';:|,", prev)) != std::string::npos)
         {
@@ -95,7 +99,9 @@ int main() {
         if (prev < line2.length())
             word_vector.push_back(line2.substr(prev, std::string::npos));
     }
-    for (string &t: tokens) cout << "'" << t << "'" << ' ';
+    for (string &t: word_vector) {
+        cout << "'" << t << "'" << ' ';
+    }
     cout << endl << endl;
 
 
