@@ -12,7 +12,7 @@ public:
         int ans = 0;
         int left = 0, right = 0;
         int n = fruits.size();
-        map<int, int> types;
+        unordered_map<int, int> types;
         for (; right < n; ++right) {
             ++types[fruits[right]];
             while (types.size() > 2 && left < right) {

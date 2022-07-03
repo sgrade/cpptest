@@ -15,7 +15,7 @@ public:
         return ans;
     }
     
-    void backtrack(const int& n, vector<string>& ans, string s, int open, int close) {
+    void backtrack(const int &n, vector<string> &ans, string &s, int open, int close) {
         if (s.size() == 2 * n) {
             ans.push_back(s);
             return;

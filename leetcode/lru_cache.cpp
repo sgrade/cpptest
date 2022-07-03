@@ -33,7 +33,6 @@ public:
         if (cache.size() == capacity_) {
             keys.erase(cache.back().first);
             cache.pop_back();
-            
         }
         cache.push_front({key, value});
         keys[key] = cache.begin();

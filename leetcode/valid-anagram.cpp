@@ -9,8 +9,8 @@ using namespace std;
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if (s.size() < t.size()) {
-            return isAnagram (t, s);
+        if (s.size() != t.size()) {
+            return false;
         }
         unordered_map<char, int> counter_s, counter_t;
         for (char &c: s) {

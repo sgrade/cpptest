@@ -14,23 +14,23 @@ public:
         int ans = 0;
         
         int n = height.size();
-        int maxL = 0, maxR = 0;
-        int idxL = -1, idxR = n;
+        int max_l = 0, max_r = 0;
+        int idx_l = -1, idx_r = n;
         int current;
         
         for (int i = 0; i < n; ++i) {
             
-            if (maxL <= maxR) {
-                ++idxL;
-                current = max(0, min(maxL, maxR) - height[idxL]);
+            if (max_l <= max_r) {
+                ++idx_l;
+                current = max(0, min(max_l, max_r) - height[idx_l]);
                 ans += current;
-                maxL = max(maxL, height[idxL]);
+                max_l = max(max_l, height[idx_l]);
             }
             else {
-                --idxR;
-                current = max(0, min(maxL, maxR) - height[idxR]);
+                --idx_r;
+                current = max(0, min(max_l, max_r) - height[idx_r]);
                 ans += current;               
-                maxR = max(maxR, height[idxR]);
+                max_r = max(max_r, height[idx_r]);
             }
         }
         
