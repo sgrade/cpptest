@@ -3,10 +3,22 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <map>
-#include <limits>
 
 using namespace std;
+
+
+bool check (const vector<int>& p, const int & t) {
+    long long free_time = 0, need_time = 0;
+    for (int i = 1; i < p.size(); ++i) {
+        if (p[i] < t) {
+            free_time += (t - p[i]) / 2;
+        }
+        else {
+            need_time += p[i] - t;
+        }
+    }
+    return need_time <= free_time;
+}
 
 
 int main() {
@@ -31,33 +43,21 @@ int main() {
         }
         sort(p.begin() + 1, p.end());
 
-        int ans = *p.rbegin();
+        int ans;
 
-        int left = 1, right = n;
+        int left = p[1], right = p[n] * 2;
         int mid;
-        int diff;
-        while (left < right) {
-            mid = p[left] + (p[right] - p[left])/2;
-            int free = 0, busy = 0;
-            int i = 1;
-            for (; i < n + 1; ++i) {
-                if (mid <= p[i]) {
-                    break;
-                }
-                free += (mid - p[i] + 2 - 1) / 2;
-            }
-            for (; i < n + 1; ++i) {
-                busy += p[i] - mid;
-            }
-            if (free < busy) {
-                left = mid + 1;
-                ans = min(ans, mid);
-            }
-            else if (free > busy) {
+        
+        // Editorial - https://codeforces.com/blog/entry/104671
+
+        while (left <= right) {
+            mid = left + (right - left)/2;
+            if (check(p, mid)) {
+                ans = mid;
                 right = mid - 1;
             }
             else {
-                break;
+                left = mid + 1;
             }
         }
        
