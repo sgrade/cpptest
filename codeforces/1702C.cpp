@@ -2,8 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 
 using namespace std;
 
@@ -21,31 +20,25 @@ int main() {
         int n, k;
         cin >> n >> k;
 
-        unordered_map<int, pair<int, int>> u;
+        map<int, int> first, last;
         int tmp;
         for (int i = 0; i < n; ++i) {
             cin >> tmp;
-            if (u.find(tmp) == u.end()){
-                u[tmp] = pair<int, int>(i, i);
+            if (first.find(tmp) == first.end()){
+                first[tmp] = i;
             }
-            else {
-                u[tmp].second = i;
-            }
+            last[tmp] = i;
         }
 
         int a, b;
-        vector<bool> ans(k);
         for (int i = 0; i < k; ++i) {
             cin >> a >> b;
-            if (u.find(a) != u.end() && u.find(b) != u.end()) {
-                if (u[a].first <= u[b].second) {
-                    ans[i] = true;
-                }
+            if (first.count(a) && last.count(b) && first[a] <= last[b]) {
+                cout << "YES\n";
             }
-        }
-
-        for (const bool &el: ans) {
-            cout << (el ? "YES\n" : "NO\n");
+            else {
+                cout << "NO\n";
+            }
         }
     }
 
