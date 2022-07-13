@@ -1,5 +1,4 @@
 // E. Split Into Two Sets
-// Wrong answer on test 2
 
 #include <iostream>
 #include <algorithm>
@@ -46,9 +45,9 @@ int main() {
         int a, b;
         for (int i = 0; i < n; ++i) {
             cin >> a >> b;
-            if (a == b) ans = false;
             graph[a].emplace_back(b);
             graph[b].emplace_back(a);
+            if (a == b || graph[a].size() > 2 || graph[b].size() > 2) ans = false;
         }
         
         if (ans) {
