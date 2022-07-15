@@ -27,7 +27,8 @@ int main() {
                 ans[i][j] = flag1 ^ flag2;
                 if (j % 2 == 0) flag1 = !flag1;
             }
-            flag2 = !flag2;
+            flag1 = true;
+            if (i % 2 == 0) flag2 = !flag2;
         }
 
         for (int i = 0; i < n; ++i) {
