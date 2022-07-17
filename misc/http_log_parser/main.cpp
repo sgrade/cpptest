@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>          // istringstream
 #include <vector>
+#include <queue>
 
 #include <map>              // Search, removal, and insertion operations have logarithmic complexity.
 #include <unordered_map>    // Search, insertion, and removal of elements have average constant-time complexity.
@@ -49,6 +50,40 @@ std::string GetWebSiteSection (const std::string &request) {
     return request.substr(first_forward_slash_index, section_end_index - first_forward_slash_index);
 }
 
+void PrintStatsFor10Sec (
+    const std::unordered_map<std::string, unsigned long long> &hits, 
+    const std::unordered_map<std::string, unsigned long long> &http_status_counter) 
+{
+    std::cout << "Current stats: \n";
+    for (const auto &[section, count]: hits) {
+        std::cout << section << ":\t" << count << '\n';
+    }
+    std::cout << "HTTP status counts: \n";
+    for (const auto &[status, count]: http_status_counter) {
+        std::cout << status << ":\t" << count << '\n';
+    }
+}
+
+void RestartStatsFor10Sec (
+    long &prev_time,
+    std::unordered_map<std::string, unsigned long long> &hits, 
+    std::unordered_map<std::string, unsigned long long> &http_status_counter, 
+    std::unordered_map<std::string, unsigned long long> &buffer_hits, 
+    std::unordered_map<std::string, unsigned long long> &buffer_http_status_counter) 
+{
+    hits.clear();
+    http_status_counter.clear();
+    for (const auto &[key, value]: buffer_hits) {
+        hits[key] = value;
+    }
+    for (const auto &[key, value]: buffer_http_status_counter) {
+        http_status_counter[key] = value;
+    }
+    buffer_hits.clear();
+    http_status_counter.clear();
+    prev_time = prev_time + 10;
+}
+
 
 int main() {
 
@@ -80,11 +115,25 @@ int main() {
     // temporary string to store input file lines
     std::string line;
 
-    // read the first line with the column names
+    // read the first line of the log file with the column names:
+    //  "remotehost","rfc931","authuser","date","request","status","bytes"
     std::cin >> line >> std::ws;
+    // we don't process the first line
+
+    // Moving average for past two minutes
+    // Using lambda to compare elements in the min heap
+    auto cmp = [](const std::pair<long, int> &left, const std::pair<long, int> &right) { 
+        return left.first > right.first; 
+    };
+    // Min heap to store traffic for past 2 minutes
+    std::priority_queue<std::pair<long, int>, std::vector<std::pair<long, int>>, decltype(cmp)> traffic_past_2_min;
+    // Helper variables for the moving average
+    unsigned long long total_traffic_past_2_min = 0ULL;
+    long double average = 0.0;
 
     // read the rest of the input line by line
-    while (std::getline(std::cin, line)) {
+    while (std::getline(std::cin, line)) 
+    {
         std::vector<std::string> tokens = SplitLogLine(line);
         std::string section = GetWebSiteSection(tokens[4]);
 
@@ -108,30 +157,25 @@ int main() {
             ++hits[section];
             ++http_status_counter[tokens[5]];
         }
-
         if (current_time - prev_time >= 10 + max_log_delay) {
             // Print the stats
-            std::cout << "Current stats: \n";
-            for (const auto &[section, count]: hits) {
-                std::cout << section << ":\t" << count << '\n';
-            }
-            for (const auto &[status, count]: http_status_counter) {
-                std::cout << status << ":\t" << count << '\n';
-            }
-
+            PrintStatsFor10Sec(hits, http_status_counter);
             // Clear current stats, move the stats from the buffer to current, clear the buffer
-            hits.clear();
-            http_status_counter.clear();
-            for (const auto &[key, value]: buffer_hits) {
-                hits[key] = value;
-            }
-            for (const auto &[key, value]: buffer_http_status_counter) {
-                http_status_counter[key] = value;
-            }
-            buffer_hits.clear();
-            http_status_counter.clear();
-            prev_time = prev_time + 10;
+            RestartStatsFor10Sec(prev_time, hits, http_status_counter, 
+                buffer_hits, buffer_http_status_counter);
         }
+
+        // Calculate past 2 minutes average
+        while (!traffic_past_2_min.empty() && current_time - traffic_past_2_min.top().first > 120) {
+            total_traffic_past_2_min -= traffic_past_2_min.top().second;
+            traffic_past_2_min.pop();
+        }
+        // tokens[6] is bytes
+        int bytes = stoi(tokens[6]);
+        total_traffic_past_2_min += bytes;
+        traffic_past_2_min.emplace(std::pair<long, int>(current_time, bytes));
+        average = 1.0 * total_traffic_past_2_min / traffic_past_2_min.size();
+        std::cout << "Average: " << average << '\n';
     }
 
     return 0;
