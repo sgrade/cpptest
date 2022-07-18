@@ -1,5 +1,7 @@
+/*
 // Balance between performance and readability / maintainability
 // C++ 20
+*/
 
 #include <iostream>
 #include <string>
@@ -11,7 +13,7 @@
 #include <unordered_map>    // Search, insertion, and removal of elements have average constant-time complexity.
 // Note: in practice, when number of keys is small, map works faster than unordered_map 
 // because of hashing overhead in unordered_map. 
-// In this problem then number of keys is small. Thus, map is preferred over unordered_map.
+// In this problem the number of keys is small: map is preferred over unordered_map.
 // If we use it for other logs, where number of keys is huge, refactor for unordered_map. Mind sorting output.
 
 
@@ -25,12 +27,12 @@ int ParseCLIArguments (const int &argc, char* argv[], bool &no_stats, int &numbe
         const std::string arg1(argv[1]);
 
         if (arg1 == "-h" || arg1 == "--help" || arg1 == "help") {
-            std::cout << "Usage: logmon [THRESHOLD] [no-stats] < input_data.txt" << std::endl;;
+            std::cout << "Usage: logmon [THRESHOLD] [no-stats] < input_log.txt" << std::endl;;
             std::cout << "Examples: " << std::endl;
             std::cout << "./logmon < sample_csv.txt" << std::endl;
             std::cout << "./logmon no-stats < sample_csv.txt" << std::endl;
-            std::cout << "./logmon 10 < sample_csv.txt" << std::endl;
-            std::cout << "./logmon 10 no-stats < sample_csv.txt" << std::endl;
+            std::cout << "./logmon 12 < sample_csv.txt" << std::endl;
+            std::cout << "./logmon 12 no-stats < sample_csv.txt" << std::endl;
             std::cout << "The threshold should be in the range from 1 to " 
             << std::numeric_limits<int>::max() << std::endl;
             return 0;
@@ -72,7 +74,7 @@ int ParseCLIArguments (const int &argc, char* argv[], bool &no_stats, int &numbe
             }
         }
     }
-    return 0;
+    return -1;
 }
 
 std::vector<std::string> SplitLogLine (const std::string &line) 
@@ -172,7 +174,7 @@ int main(int argc, char* argv[])
 
     // Parsing CLI arguments
     int parse_cli_return_code = ParseCLIArguments(argc, argv, no_stats, number_of_requests_threshold);
-    if (parse_cli_return_code != 0) {
+    if (parse_cli_return_code != -1) {
         return parse_cli_return_code;
     }
     
@@ -257,7 +259,7 @@ int main(int argc, char* argv[])
 
         // Calculate past 2 minutes average
         int time_diff = 0;
-        // std::map sorts items automatically (red-black tree)
+        // std::map sorts items automatically (red-black tree).
         // Thus, the first (begin) and last (rbegin) elements of the map point to
         // the oldest and the youngest timestamps of the traffic stats window
         while (!traffic_past_2_min.empty() && 
