@@ -4,7 +4,7 @@
 
 HTTP log monitoring console program. 
 
-Reads a CSV-encoded HTTP access log from standard input in the format in sample_csv.txt. If the format is different, the program will crush. No special handlers for format checking were developed to keep logmon simple. 
+Reads a CSV-encoded HTTP access log from standard input in the format in log.txt. If the format is different, the program will crush. No special handlers for format checking were developed to keep logmon simple. 
 
 For every 10 seconds of log lines, logmon displays stats about the traffic during those 10s. 
 
@@ -40,22 +40,22 @@ Stats is printed for every 10 seconds of logs.
 ### Examples
 
 ```
-./logmon < sample_csv.txt
+./logmon < log.txt
 ```
 
 #### Custom threshold for alert
 ```
-./logmon 12 < sample_csv.txt
+./logmon 12 < log.txt
 ```
 
 #### Suppress 10-sec statistics (show only alerts)
 ```
-./logmon no-stats < sample_csv.txt
+./logmon no-stats < log.txt
 ```
 
 #### Custom threshold for alert and suppress 10-sec statistics
 ```
-./logmon 12 no-stats < sample_csv.txt
+./logmon 12 no-stats < log.txt
 ```
 
 #### Getting help

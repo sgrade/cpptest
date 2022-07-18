@@ -13,10 +13,10 @@ int ParseCLIArguments (const int &argc, char* argv[], bool &no_stats, int &reque
         if (arg1 == "-h" || arg1 == "--help" || arg1 == "help") {
             std::cout << "Usage: logmon [THRESHOLD] [no-stats] < input_log.txt" << std::endl;;
             std::cout << "Examples: " << std::endl;
-            std::cout << "./logmon < sample_csv.txt" << std::endl;
-            std::cout << "./logmon no-stats < sample_csv.txt" << std::endl;
-            std::cout << "./logmon 12 < sample_csv.txt" << std::endl;
-            std::cout << "./logmon 12 no-stats < sample_csv.txt" << std::endl;
+            std::cout << "./logmon < log.txt" << std::endl;
+            std::cout << "./logmon no-stats < log.txt" << std::endl;
+            std::cout << "./logmon 12 < log.txt" << std::endl;
+            std::cout << "./logmon 12 no-stats < log.txt" << std::endl;
             std::cout << "The threshold should be in the range from 1 to " 
             << std::numeric_limits<int>::max() << std::endl;
             return 0;
