@@ -1,0 +1,2 @@
+"remotehost","rfc931","authuser","date","request","status","bytes"
+"10.0.0.2","-","apache",1549573861,"GET /api/user HTTP/1.0",200,1234
