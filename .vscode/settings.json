@@ -81,5 +81,6 @@
         "span": "cpp",
         "stop_token": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }
