@@ -1,5 +1,5 @@
 // C. Recover an RBS
-// Not finished
+// Time limit exceeded on test 3
 
 #include <iostream>
 #include <string>
@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void backtrack(string &s, const int &n, int &cnt, int i, stack<char> &st) {
+void backtrack(string &s, const int &n, int &cnt, int i, stack<char> st) {
     if (cnt > 1) 
         return;
     
@@ -24,7 +24,7 @@ void backtrack(string &s, const int &n, int &cnt, int i, stack<char> &st) {
         backtrack(s, n, cnt, i + 1, st);
     }
     else if (s[i] == ')') {
-        if (st.empty()) {
+        if (st.empty() || st.top() == ')') {
             st.push(')');
         }
         else {
@@ -33,13 +33,13 @@ void backtrack(string &s, const int &n, int &cnt, int i, stack<char> &st) {
         backtrack(s, n, cnt, i + 1, st);
     }
     else {  // s[i] == '?'
-        st.push('(');
-        backtrack(s, n, cnt, i + 1, st);
-        st.pop();
+        s[i] = '(';
+        backtrack(s, n, cnt, i, st);
 
-        st.push(')');
-        backtrack(s, n, cnt, i + 1, st);
-        st.pop();
+        s[i] = ')';
+        backtrack(s, n, cnt, i, st);
+
+        s[i] = '?';
     }
 }
 
