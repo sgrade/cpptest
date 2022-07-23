@@ -1,46 +1,47 @@
 // C. Recover an RBS
-// Time limit exceeded on test 3
+// Not finished
 
 #include <iostream>
 #include <string>
 #include <stack>
+#include <vector>
 
 using namespace std;
 
+int open, close;
+vector<int> q;
 
-void backtrack(string &s, const int &n, int &cnt, int i, stack<char> st) {
-    if (cnt > 1) 
-        return;
+void CountRBS (const string s) {
+    string rbs = "";
     
-    if (i == n) {
-        if (st.empty()) {
-            ++cnt;
-        }
-        return;
-    }
+    open = s.size() / 2;
+    close = s.size() / 2;
+    q.clear();
 
-    if (s[i] == '(') {
-        st.push('(');
-        backtrack(s, n, cnt, i + 1, st);
+    for (int i = 0; i < s.size(); ++i) {
+        if (s[i] == '(') --open;
+        else if (s[i] == ')') --close;
+        else q.push_back(i);
     }
-    else if (s[i] == ')') {
-        if (st.empty() || st.top() == ')') {
-            st.push(')');
+}
+
+bool IsRBS(string &s) {
+    stack<char> st;
+    for (const char &c: s) {
+        if (c == '(') {
+            st.push('(');
         }
         else {
+            if (st.empty() || st.top() == ')') {
+                return false;
+            }
             st.pop();
         }
-        backtrack(s, n, cnt, i + 1, st);
     }
-    else {  // s[i] == '?'
-        s[i] = '(';
-        backtrack(s, n, cnt, i, st);
-
-        s[i] = ')';
-        backtrack(s, n, cnt, i, st);
-
-        s[i] = '?';
+    if (st.empty()) {
+        return true;
     }
+    return false;
 }
 
 
@@ -58,12 +59,30 @@ int main() {
         cin >> s;
         
         int n = s.size();
+
+        // Editorial - https://codeforces.com/blog/entry/105164
                 
-        int cnt = 0;
+        int cnt = 1;
 
-        stack<char> st;
+        CountRBS(s);
 
-        backtrack(s, n, cnt, 0, st);
+        // Create RBS;
+        // Idea is from the editorial
+        for (int i = 0; i < q.size(); ++i) {
+            if (i < open) {
+                s[q[i]] = '(';
+            }
+            else {
+                s[q[i]] = ')';
+            }
+        }
+
+        if (open > 0 && close > 0) {
+            swap(s[q[open - 1]], s[q[open]]);
+            if (IsRBS(s)) {
+                cnt = 2;
+            }
+        }
 
         cout << (cnt == 1 ? "YES\n" : "NO\n");
     }
