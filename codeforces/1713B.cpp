@@ -1,5 +1,4 @@
 // B. Optimal Reduction
-// Wrong answer on pretest 2
 
 #include <iostream>
 #include <vector>
@@ -27,11 +26,20 @@ int main() {
 
         bool ans = true;
         
+        int j;
         for (int i = 1; i < n - 1; ++i) {
-            if (a[i - 1] > a[i] && a[i] < a[i + 1]) {
+            j = i;
+            while (j < n - 1 && a[j] == a[j + 1]) {
+                ++j;
+            }
+            if (j == n - 1) {
+                break;
+            }
+            if (a[i - 1] > a[i] && a[i] < a[j + 1]) {
                 ans = false;
                 break;
             }
+            i = j;
         }
 
         cout << (ans ? "YES\n" : "NO\n");
