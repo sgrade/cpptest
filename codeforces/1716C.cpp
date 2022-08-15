@@ -1,6 +1,5 @@
 // C. Robot in a Hallway
 // Wrong answer on test 2
-// After that not finished
 
 #include <iostream>
 #include <algorithm>
@@ -33,16 +32,6 @@ int main() {
         long long ans = numeric_limits<int>::max(), cur_ans;
 
         // Top row left to right then bottom row right to left
-        /*
-        cur_ans = 0;
-        for (int j = 1; j < m; ++j) {
-            cur_ans = max(a[0][j] + 1, cur_ans + 1);
-        }
-        for (int j = m - 1; j >= 0; --j) {
-            cur_ans = max(a[1][j] + 1, cur_ans + 1);
-        }
-        ans = min(cur_ans, ans);
-        */
 
         cur_ans = 0;
         vector<vector<long long>> top_then_bot(2, vector<long long>(m));
@@ -57,16 +46,6 @@ int main() {
         ans = min(cur_ans, ans);
 
         // Bottom row left to right then top right to left
-        /*
-        cur_ans = 0;
-        for (int j = 0; j < m; ++j) {
-            cur_ans = max(a[1][j] + 1, cur_ans + 1);
-        }
-        for (int j = m - 1; j > 0; --j) {
-            cur_ans = max(a[0][j] + 1, cur_ans + 1);
-        }
-        ans = min(cur_ans, ans);
-        */
         cur_ans = 0;
         vector<vector<long long>> bot_then_top(2, vector<long long>(m));
         for (int j = 0; j < m; ++j) {
@@ -106,8 +85,21 @@ int main() {
         ans = min(cur_ans, ans);
 
         // Decide if I need to keep walking up-down or switch to horizontal
-        
-        
+        for (int j = 0; j < m; ++j) {
+            if (j < m - 1) {
+                cur_ans = (j % 2 == 0 ? top_then_bot[1][j] : top_then_bot[1][j + 1]);
+                cur_ans -= top_then_bot[0][j] - vertical[0][j];
+                ans = min(ans, cur_ans);
+            }
+        } 
+        for (int j = 0; j < m; ++j) {
+            if (j < m - 1) {
+                cur_ans = (j % 2 == 0 ? bot_then_top[0][j + 1] : bot_then_top[0][j]);
+                cur_ans -= bot_then_top[1][j] - vertical[1][j];
+                ans = min(ans, cur_ans);
+            }
+        }
+
         cout << ans << '\n';
     }
 
