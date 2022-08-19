@@ -31,17 +31,17 @@ int main() {
             count_so_far[i] = st.size();
         }
 
-        vector<int> max_idx(n);
-        max_idx[0] = indexes[a[0]];
-        for (int i = 1; i < n; ++i) {
-            max_idx[i] = max(max_idx[i - 1], indexes[a[i]]);
-        }
-
         int ans = 0;
 
+        int idx = 0;
         for (int i = 0; i < n - 1; ++i) {
-            if (a[i] > a[i + 1]) {
-                ans = min(count_so_far[max_idx[i]], max_idx[i]);
+            if (a[i] > a[i] + 1) {
+                idx = max(idx, indexes[a[i]]);
+                ans = max(ans, count_so_far[idx]);
+                if (idx < n - 1 && a[idx] > a[idx + 1]) {
+                    ++idx;
+                }
+                ans = min(ans, idx);
             }
         }
 
