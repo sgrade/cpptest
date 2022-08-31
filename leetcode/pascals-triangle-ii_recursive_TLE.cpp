@@ -1,6 +1,6 @@
 // 119. Pascal's Triangle II
 // https://leetcode.com/problems/pascals-triangle-ii/
-// 119. Pascal's Triangle II
+// TLE
 
 #include <bits/stdc++.h>
 
@@ -28,8 +28,6 @@ public:
 
 
 int main() {
-
-    cout << "HELLO!\n";
 
     Solution sol;
     vector<int> a = sol.getRow(3);
