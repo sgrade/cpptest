@@ -1,30 +1,31 @@
 // C. Word Game
-
+ 
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-
+#include <algorithm>
+ 
 using namespace std;
-
-
+ 
+ 
 int main() {
 
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
     int t;
     cin >> t;
-
+ 
     while (t--) {
-
-        ios_base::sync_with_stdio(false);
-        cin.tie(NULL);
-
+ 
         int n;
         cin >> n;
-
+ 
         vector<int> ans(3);
-
+ 
         map<string, vector<int>> mp;
-
+ 
         string s;
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < n; ++j) {
@@ -35,7 +36,7 @@ int main() {
                 ++mp[s][i];
             }
         }
-
+ 
         int cnt, idx;
         for (auto &[word, vect]: mp) {
             cnt = count(vect.begin(), vect.end(), 0);
@@ -53,14 +54,12 @@ int main() {
                 }
             }
         }
-
+ 
         for (int &el: ans) {
             cout << el << ' ';
         }
         cout << '\n';
     }
-
-    cout << __cplusplus << '\n';
-
+ 
     return 0;
 }
