@@ -4,10 +4,9 @@
         {
             "type": "shell",
             "label": "g++ build active file",
-            "command": "/usr/bin/g++",
+            "command": "/usr/local/bin/g++",
             "args": [
-                "--std",
-                "c++20",
+                "-std=c++20",
                 "-g", 
                 "${file}", 
                 "-o", 
