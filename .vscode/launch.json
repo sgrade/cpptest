@@ -16,11 +16,17 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
-            {
-                "description": "Enable pretty-printing for gdb",
-                "text": "-enable-pretty-printing",
-                "ignoreFailures": true
-            }
+                // https://github.com/Microsoft/vscode-cpptools/issues/1414#issuecomment-409343151
+                {
+                    "description": "Pretty printing for gdb prerequisites",
+                    "text": "python import sys;sys.path.insert(0, '/usr/share/gcc/python');from libstdcxx.v6.printers import register_libstdcxx_printers;register_libstdcxx_printers(None)",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
             ],
             "preLaunchTask": "g++ build active file",
             "miDebuggerPath": "/usr/bin/gdb"
