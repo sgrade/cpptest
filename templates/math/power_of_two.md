@@ -1,1 +1,1 @@
-Check 1606B.cpp
+Check codeforces/1606B.cpp
