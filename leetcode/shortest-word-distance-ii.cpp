@@ -18,46 +18,17 @@ public:
         return GetDistance(word1, word2);
     }
 private:
-    map<string, vector<int>> indexes;
+    unordered_map<string, vector<int>> indexes;
     int GetDistance(const string& w1, const string& w2) {
         vector<int>::iterator it1 = indexes[w1].begin(), it2 = indexes[w2].begin();
-        int ans = abs(*it1 - *it2);
-        bool w1_finished = true;
-        while (true) {
+        int ans = numeric_limits<int>::max();
+        while (it1 < indexes[w1].end() && it2 < indexes[w2].end()) {
+            ans = min(ans, abs(*it1 - *it2));
             if (*it1 < *it2) {
                 ++it1;
-                if (it1 == indexes[w1].end()) {
-                    break;
-                }
             }
             else {
                 ++it2;
-                if (it2 == indexes[w2].end()) {
-                    w1_finished = false;
-                    break;
-                }
-            }
-            ans = min(ans, abs(*it1 - *it2));
-        }
-        int last, current;
-        if (w1_finished) {
-            last = indexes[w1].back();
-            while (++it2 < indexes[w2].end()) {
-                current = *it2;
-                if (abs(current - last) > ans) {
-                    break;
-                }
-                ans = current - last;
-            }
-        }
-        else {
-            last = indexes[w2].back();
-            while (++it1 < indexes[w1].end()) {
-                current = *it1;
-                if (abs(current - last) > ans) {
-                    break;
-                }
-                ans = current - last;
             }
         }
 
