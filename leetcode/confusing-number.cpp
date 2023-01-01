@@ -12,25 +12,19 @@ public:
         if (n == 0) return false;
         int tmp = n;
         int x, rotated_n = 0;
-        unordered_set invalid = {2, 3, 4, 5, 7};
-        unordered_map<int, int> rotated = {
-            {0, 0}, 
-            {1, 1}, 
-            {6, 9},
-            {8, 8},
-            {9, 6}
-        };
         while (tmp > 0 && tmp % 10 == 0) {
             tmp /= 10;
         }
         while (tmp > 0) {
             x = tmp % 10;
             tmp /= 10;
-            if (invalid.find(x) != invalid.end()) {
+            if (x == 2 || x == 3 || x == 4 || x == 5 || x == 7) {
                 return false;
             }
             rotated_n *= 10;
-            rotated_n += rotated[x];
+            if (x == 6) x = 9;
+            else if (x == 9) x = 6;
+            rotated_n += x;
         }
         
         return rotated_n == n ? false : true;
