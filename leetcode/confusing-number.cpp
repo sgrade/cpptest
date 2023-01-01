@@ -10,20 +10,9 @@ class Solution {
 public:
     bool confusingNumber(int n) {
         if (n == 0) return false;
-        int x = n;
-        vector<int> digits;
+        int tmp = n;
+        int x, rotated_n = 0;
         unordered_set invalid = {2, 3, 4, 5, 7};
-        while (x > 0) {
-            digits.emplace_back(x % 10);
-            x /= 10;
-            if (invalid.find(digits.back()) != invalid.end()) {
-                return false;
-            }
-        }
-        int i = 0;
-        while (digits[i] == 0) {
-            ++i;
-        }
         unordered_map<int, int> rotated = {
             {0, 0}, 
             {1, 1}, 
@@ -31,12 +20,19 @@ public:
             {8, 8},
             {9, 6}
         };
-        x = rotated[digits[i]];
-        ++i;
-        for (; i < digits.size(); ++i) {
-            x *= 10;
-            x += rotated[digits[i]];
+        while (tmp > 0 && tmp % 10 == 0) {
+            tmp /= 10;
         }
-        return x == n ? false : true;
+        while (tmp > 0) {
+            x = tmp % 10;
+            tmp /= 10;
+            if (invalid.find(x) != invalid.end()) {
+                return false;
+            }
+            rotated_n *= 10;
+            rotated_n += rotated[x];
+        }
+        
+        return rotated_n == n ? false : true;
     }
 };
