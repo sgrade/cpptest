@@ -14,15 +14,11 @@ public:
             ++counter[difficulty];
         }
         int ans = 0, rem;
-        for (auto &[difficulty, count]: counter) {
-            if (count == 1) {
+        for (auto &p: counter) {
+            if (p.second == 1) {
                 return -1;
             }
-            rem = count % 3;
-            ans += count / 3;
-            if (rem > 0) {
-                ++ans;
-            }
+            ans += (p.second) / 3 + (p.second % 3 > 0);
         }
         return ans;
     }
