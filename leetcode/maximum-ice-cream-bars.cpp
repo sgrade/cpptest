@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// SLOW
 class Solution {
 public:
     int maxIceCream(vector<int>& costs, int coins) {
