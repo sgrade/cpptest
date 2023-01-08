@@ -9,62 +9,56 @@ using namespace std;
 // Based on Leetcodes's Approach #2 Backtracking
 class Solution {
 public:
-    vector<string> ans;
+    set<string> ans;
     vector<string> generatePalindromes(string s) {
        map<char, int> counter;
-        vector<char> st(s.size() / 2);
+        string st;
         if (!CanPermutePalindrome(s, counter)) {
             return vector<string>();
         }
-        char ch = '0';
-        int k = 0;
-        for (int i = 0; i < counter.size(); ++i) {
-            if (counter[i] % 2 == 1) {
-                ch = (char) i;
+        char mid_ch = '0';
+        for (auto &[ch, count]: counter) {
+            if (count % 2 == 1) {
+                mid_ch = ch;
             }
-            for (int j = 0; j < counter[i] / 2; ++j) {
-                st[k++] = (char) i;
+            for (int j = 0; j < count / 2; ++j) {
+                st += ch;
             }
         }
-        permute(st, 0, ch);
-        return ans;
+        permute(st, 0, mid_ch);
+        return vector<string>(ans.begin(), ans.end());
     }
 
 private:
     bool CanPermutePalindrome(string s, map<char, int>& counter) {
-        int count = 0;
+        int odd = 0;
         for (int i = 0; i < s.size(); ++i) {
             ++counter[s[i]];
-            if (counter[s[i]] % 2 == 0) {
-                --count;
-            }
-            else {
-                ++count;
+        }
+        for (auto &[_, count]: counter) {
+            if (count % 2 != 0) {
+                ++odd;
             }
         }
-        return count <= 1;
+        return odd <= 1;
     }
 
-    void permute(vector<char> s, int l, char ch) {
-        if (l == s.size()) {
-            string current;
-            for (const char& ch: s) {
-                current += ch;
-            }
-            if (ch != '0') {
-                current += ch;
-            }
-            for (int i = s.size() - 1; i >= 0; --i) {
-                current += s[i];
-            }
-            ans.emplace_back(current);
+    void permute(string st, int l, char mid_ch) {
+        if (l == st.size()) {
+            string current = st;
+            if (mid_ch != '0') {
+                current += mid_ch;
+            };
+            reverse(st.begin(), st.end());
+            current += st;
+            ans.emplace(current);
         }
         else {
-            for (int i = l; i < s.size(); ++i) {
-                if (s[l] != s[i] || l == i) {
-                    swap(s[l], s[i]);
-                    permute(s, l + 1, ch);
-                    swap(s[l], s[i]);
+            for (int i = l; i < st.size(); ++i) {
+                if (st[l] != st[i] || l == i) {
+                    swap(st[l], st[i]);
+                    permute(st, l + 1, mid_ch);
+                    swap(st[l], st[i]);
                 }
             }
         }
