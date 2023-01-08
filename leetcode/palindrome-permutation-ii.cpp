@@ -9,7 +9,7 @@ using namespace std;
 // Based on Leetcodes's Approach #2 Backtracking
 class Solution {
 public:
-    set<string> ans;
+    unordered_set<string> ans;
     vector<string> generatePalindromes(string s) {
        map<char, int> counter;
         string st;
