@@ -14,7 +14,7 @@ public:
     string encode(vector<string>& strs) {
         string encoded, len;
         for (const string& s: strs) {
-            len = s.size();
+            len = to_string(s.size());
             for (int i = 0; i < 4 - len.size(); ++i) {
                 encoded += '0';
             }
