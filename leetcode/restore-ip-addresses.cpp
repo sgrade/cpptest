@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// SLOW
+
 // Some ideas are based on https://leetcode.com/problems/restore-ip-addresses/solutions/2868540/restore-ip-addresses/comments/1767097
 class Solution {
 public:
