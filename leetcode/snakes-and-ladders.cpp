@@ -6,33 +6,45 @@
 using namespace std;
 
 
-// Solution works, but not correctly:
-//  I thought I can do only one cell forward, but according to the task I can jump up to 6 steps forward.
+// The original solution from commit #c1ce5ed was corrected with 
+// the ideas from Leetcode's Approach 1: Breadth-first search
 class Solution {
 public:
     int snakesAndLadders(vector<vector<int>>& board) {
         rows = board.size();
         cols = board[0].size();
-        int max_idx = rows * rows;
+        max_idx = rows * rows;
 
-        vector<int> counter(max_idx + 1);
+        vector<int> dist(max_idx + 1, -1);  // distance from cell 1 to a cell with index i
+        dist[1] = 0;
         vector<bool> dont_come_back(max_idx + 1);
 
-        int moves = 0;
         int current_cell_idx = 1;
-        while (current_cell_idx < max_idx) {
-            move (board, counter, dont_come_back, current_cell_idx, moves);
+        q.emplace(current_cell_idx);
+        while (!q.empty()) {
+            current_cell_idx = q.front();
+            q.pop();
+            move (board, dist, dont_come_back, current_cell_idx);
         }
 
-        return counter[rows * rows];
+        return dist[rows * rows];
     }
 
 private:
-    int rows, cols;
+    int rows, cols, max_idx;
+    queue<int> q;
+    void move (const vector<vector<int>>& board, vector<int>& dist, vector<bool>& dont_come_back, int& current_cell_idx) {
+        for (int i = current_cell_idx + 1; i < min(current_cell_idx + 7, max_idx + 1); ++i) {
+            auto [row, col] = getRowCol(i);
+            int next_cell_idx = board[row][col] != -1 ? board[row][col] : i;
+            if (dist[next_cell_idx] == -1) {
+                dist[next_cell_idx] = dist[current_cell_idx] + 1;
+                q.emplace(next_cell_idx);
+            }
+        }
+    }
 
-    void move (const vector<vector<int>>& board, vector<int>& counter, vector<bool>& dont_come_back, int& current_cell_idx, int& moves) {
-        moves = min(counter[current_cell_idx], moves) + 1;
-        
+    pair<int, int> getRowCol (int& current_cell_idx) {
         int rem = current_cell_idx % rows;
         int row = rows - (current_cell_idx - 1) / rows - 1;
         int col;
@@ -42,21 +54,6 @@ private:
         else {                      // right to left
             col = rem == 0 ? 0 : cols - rem;
         }
-              
-        int jump_cell_idx = board[row][col] != -1 ? board[row][col] : current_cell_idx + 1;
-
-        int next_cell_idx;
-        if (jump_cell_idx < current_cell_idx && !dont_come_back[jump_cell_idx]) {
-            next_cell_idx = jump_cell_idx;
-            dont_come_back[jump_cell_idx] = true;
-        }
-        else {
-            next_cell_idx = current_cell_idx + 1;
-        }
-
-        counter[jump_cell_idx] = counter[jump_cell_idx] == 0 ? moves : min(counter[jump_cell_idx], moves);
-        counter[current_cell_idx + 1] = counter[current_cell_idx + 1] == 0 ? moves : min(counter[current_cell_idx + 1], moves);
-
-        current_cell_idx = next_cell_idx;
+        return pair<int, int>(row, col);
     }
 };
