@@ -7,6 +7,8 @@ using namespace std;
 
 
 // Based on Leetcode's Approach 1: Breadth First Search
+// Optimized the iteration: 
+// queue is not needed as there is only one neighbor (next_node)
 class Solution {
 public:
     int closestMeetingNode(vector<int>& edges, int node1, int node2) {
@@ -32,25 +34,16 @@ public:
 private:
     int n;
     void bfs(const int& start_node, const vector<int>& edges, vector<int>& dist) {
-        queue<int> q;
-        q.emplace(start_node);
-
         vector<bool> visited(n);
         dist[start_node] = 0;
+        visited[start_node] = true;
 
-        int node, neighbor;
-        while (!q.empty()) {
-            node = q.front();
-            q.pop();
-            if (visited[node]) {
-                continue;
-            }
-            visited[node] = true;
-            neighbor = edges[node];
-            if (neighbor != -1 && !visited[neighbor]) {
-                dist[neighbor] = dist[node] + 1;
-                q.emplace(neighbor);
-            }
+        int current_node = start_node, next_node = edges[current_node];
+        while (next_node != -1 && !visited[next_node]) {
+            dist[next_node] = dist[current_node] + 1;
+            visited[next_node] = true;
+            current_node = next_node;
+            next_node = edges[current_node];
         }
     }
 };

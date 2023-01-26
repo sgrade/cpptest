@@ -8,6 +8,7 @@ using namespace std;
 
 // Based on Leetcode's Approach 2: Depth First Search
 // I used iterative dfs instead of recursive
+// Stack is not requires as there is only one neighbor (next node)
 class Solution {
 public:
     int closestMeetingNode(vector<int>& edges, int node1, int node2) {
@@ -37,22 +38,12 @@ private:
         visited[start_node] = true;
         dist[start_node] = 0;
         
-        stack<int> st;
-        st.emplace(start_node);
-        int current_node, next_node;
-        while (!st.empty()) {
-            current_node = st.top();
-            st.pop();
-            visited[current_node] = true;
-
+        int current_node = start_node, next_node = edges[current_node];
+        while (next_node != -1 && !visited[next_node]) {
+            visited[next_node] = true;
+            dist[next_node] = dist[current_node] + 1;
+            current_node = next_node;
             next_node = edges[current_node];
-            if (next_node != -1 && !visited[next_node]) {
-                st.emplace(next_node);
-                dist[next_node] = dist[current_node] + 1;
-            }
-            else {
-                return;
-            }
         }
     }
 };
