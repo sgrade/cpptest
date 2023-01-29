@@ -18,12 +18,25 @@ public:
     }
     
     int pop() {
-        int len = q.size() - 1;
-        while (len--) {
+        int len = q.size();
+        
+        while (len > 2) {
             q.emplace(q.front());
+            q.pop();
+            --len;
         }
+
         int frnt = q.front();
+
+        if (q.size() == 2) {
+            top_element = frnt;
+            q.emplace(q.front());
+            q.pop();
+        }
+
+        frnt = q.front();
         q.pop();
+        
         return frnt;
     }
     
