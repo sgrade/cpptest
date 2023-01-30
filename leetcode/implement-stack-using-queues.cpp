@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// Based on Leetcode's Approach #3 (One Queue, push - O(n)O(n)O(n), pop O(1)O(1)O(1) )
 class MyStack {
 public:
     MyStack() {
@@ -13,35 +14,23 @@ public:
     }
     
     void push(int x) {
-        top_element = x;
         q.emplace(x);
-    }
-    
-    int pop() {
         int len = q.size();
-        
-        while (len > 2) {
+        while (len > 1) {
             q.emplace(q.front());
             q.pop();
             --len;
         }
-
+    }
+    
+    int pop() {
         int frnt = q.front();
-
-        if (q.size() == 2) {
-            top_element = frnt;
-            q.emplace(q.front());
-            q.pop();
-        }
-
-        frnt = q.front();
         q.pop();
-        
         return frnt;
     }
     
     int top() {
-        return top_element;
+        return q.front();
     }
     
     bool empty() {
