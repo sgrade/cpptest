@@ -6,40 +6,36 @@
 using namespace std;
 
 
+// Based on one of the Leetcode's accepted solutions
 class ZigzagIterator {
 public:
     ZigzagIterator(vector<int>& v1, vector<int>& v2) {
-        int n1 = v1.size(), n2 = v2.size(), n = n1 + n2;
-        int idx1 = 0, idx2 = 0;
-        bool even = true;
-        while (n--) {
-            if (idx1 < n1 && even) {
-                q.emplace(v1[idx1++]);
-                if (idx2 < n2) {
-                    even = false;
-                }
-            }
-            else {
-                q.emplace(v2[idx2++]);
-                if (idx1 < n1) {
-                    even = true;
-                }
-            }
-        }
+        its.emplace_back(v1.begin());
+        its.emplace_back(v2.begin());
+        ends.emplace_back(v1.end());
+        ends.emplace_back(v2.end());
+        done.emplace_back(v1.empty());
+        done.emplace_back(v2.empty());
+        turn = done[0] ? 1 : 0;
     }
 
     int next() {
-        int frnt = q.front();
-        q.pop();
-        return frnt;
+        ans = *(its[turn]++);
+        if (its[turn] == ends[turn]) done[turn] = true;
+        if (!done[1 - turn]) turn = 1 - turn;
+        return ans;
     }
 
     bool hasNext() {
-        return !q.empty();
+        return !done[turn];
     }
 
 private:
-    queue<int> q;
+    int turn;
+    vector<bool> done;
+    vector<vector<int>::iterator> its;
+    vector<vector<int>::iterator> ends;
+    int ans;
 };
 
 /**
