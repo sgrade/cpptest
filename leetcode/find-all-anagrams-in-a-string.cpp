@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// SLOW
 class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
@@ -26,27 +27,26 @@ public:
         need = need_counter.size();
 
         for (; right < s_size; ++right) {
-            while (right < s_size && right < left + p_size - 1) {
-                ch = s[right];
-                if (need_counter.find(ch) == need_counter.end()) {
-                    have = 0;
-                    have_counter.clear();
-                    left = right + 1;
-                    continue;
-                }
-                ++have_counter[ch];
-                if (have_counter[ch] == need_counter[ch]) {
-                    ++have;
-                }
+            ch = s[right];
+            ++have_counter[ch];
+            if (have_counter[ch] == need_counter[ch]) {
+                ++have;
             }
-            
-            left = right - p_size + 1;
+            if (need_counter.find(ch) == need_counter.end()) {
+                have = 0;
+                have_counter.clear();
+                continue;
+            }
+
+            left = right - p.size() + 1;
             if (have == need)
                 ans.emplace_back(left);
                 
-            if (have_counter[left] == need_counter[left])
-                --have;
-            --have_counter[s[left]];
+            if (left >= 0) {
+                if (have_counter[s[left]] == need_counter[s[left]])
+                    --have;
+                --have_counter[s[left]];
+            }
         }
         return ans;
     }
