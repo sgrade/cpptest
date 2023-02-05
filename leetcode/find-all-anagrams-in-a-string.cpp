@@ -6,36 +6,30 @@
 using namespace std;
 
 
-// SLOW
 class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
-        vector<int> ans;
-        unordered_map<char, int> need_counter, have_counter;
+        vector<int> ans, need_counter(26), have_counter(26);
 
         int s_size, p_size;
         s_size = s.size(), p_size = p.size();
         if (s_size < p_size || s_size == 0) return ans;
 
-        char ch;
+        int ch_idx;
         int right = 0, left = 0, have, need;
 
         need = 0, have = 0;
         for (const char& ch: p) {
-            ++need_counter[ch];
+            ch_idx = ch - 'a';
+            ++need_counter[ch_idx];
         }
-        need = need_counter.size();
+        need = 26 - count(need_counter.begin(), need_counter.end(), 0);
 
         for (; right < s_size; ++right) {
-            ch = s[right];
-            ++have_counter[ch];
-            if (have_counter[ch] == need_counter[ch]) {
+            ch_idx = s[right] - 'a';
+            ++have_counter[ch_idx];
+            if (have_counter[ch_idx] == need_counter[ch_idx]) {
                 ++have;
-            }
-            if (need_counter.find(ch) == need_counter.end()) {
-                have = 0;
-                have_counter.clear();
-                continue;
             }
 
             left = right - p.size() + 1;
@@ -43,9 +37,10 @@ public:
                 ans.emplace_back(left);
                 
             if (left >= 0) {
-                if (have_counter[s[left]] == need_counter[s[left]])
+                ch_idx = s[left] - 'a';
+                if (have_counter[ch_idx] == need_counter[ch_idx])
                     --have;
-                --have_counter[s[left]];
+                --have_counter[ch_idx];
             }
         }
         return ans;
