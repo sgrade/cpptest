@@ -16,20 +16,13 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-
 class Solution {
 public:
     TreeNode* invertTree(TreeNode* root) {
-        if (root == nullptr) return nullptr;
-        TreeNode *right = invertTree(root->right);
-        TreeNode *left = invertTree(root->left);
-        root->left = right;
-        root->right = left;
+        if(root == nullptr) return nullptr;
+        swap(root->left, root->right);
+        invertTree(root->left);
+        invertTree(root->right);
         return root;
     }
 };
-
-int main() {
-
-    return 0;
-}
