@@ -6,7 +6,6 @@
 using namespace std;
 
 
-// SLOW
 class Solution {
 public:
     bool canPermutePalindrome(string s) {
@@ -14,13 +13,10 @@ public:
         for (const char& ch: s) ++counter[ch - 'a'];
         int odd = 0;
         for (int i = 0; i < 26; ++i) {
-            if (counter[i] != 0) {
-                if (counter[i] % 2 != 0) {
-                    ++odd;
-                    if (odd > 1) return false;
-                }
+            if (counter[i] % 2 != 0) {
+                ++odd;
             }
         }
-        return true;
+        return odd < 2;
     }
 };
