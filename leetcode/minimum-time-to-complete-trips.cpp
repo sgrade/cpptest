@@ -9,7 +9,6 @@ using namespace std;
 class Solution {
 public:
     long long minimumTime(vector<int>& time, int totalTrips) {
-        sort(time.begin(), time.end());
         long long left = 0, right = 1LL * time[0] * totalTrips, mid, trips;
         while (left < right) {
             mid = left + (right - left) / 2;
