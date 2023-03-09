@@ -14,18 +14,32 @@ struct ListNode {
 };
 
 
-// SLOW
+
+// Based on Leetcode's Approach 2: Floyd's Tortoise and Hare
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        while (head) {
-            if (nodes.find(head) != nodes.end())
-                return head;
-            nodes.emplace(head);
-            head = head->next;
+        if (head == nullptr) return nullptr;
+        ListNode* intersect = GetIntersect(head);
+        if (intersect == nullptr) return nullptr;
+
+        ListNode* ptr1 = head;
+        ListNode* ptr2 = intersect;
+        while (ptr1 != ptr2) {
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        }
+        return ptr1;
+    }
+private:
+    ListNode* GetIntersect(ListNode* head) {
+        ListNode* tortoise = head;
+        ListNode* hare = head;
+        while (hare != nullptr && hare->next != nullptr) {
+            tortoise = tortoise->next;
+            hare = hare->next->next;
+            if (tortoise == hare) return tortoise;
         }
         return nullptr;
     }
-private:
-    unordered_set<ListNode*> nodes;
 };
