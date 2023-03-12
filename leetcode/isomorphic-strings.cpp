@@ -6,23 +6,27 @@
 using namespace std;
 
 
-// SLOW
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        unordered_map<char, char> chars;
-        unordered_set<char> values;
-        char ch;
+        vector<char> chars(128, 0);
+        vector<bool> mapped(128);
+        size_t idx_s, idx_t;
         for (int i = 0; i < s.size(); ++i) {
-            if (chars.find(s[i]) != chars.end()) {
-                if (t[i] != chars[s[i]]) 
-                    return false;
+            idx_s = s[i] - 0;
+            idx_t = t[i] - 0;
+            if (chars[idx_s] == t[i]) {
+                continue;
             }
-            else
-                if (values.find(t[i]) != values.end())
+
+            else {
+                if (chars[idx_s] != 0)
                     return false;
-                chars[s[i]] = t[i];
-                values.emplace(t[i]);
+                if (mapped[idx_t] != 0) 
+                    return false;
+                chars[idx_s] = t[i];
+                mapped[idx_t] = true;
+            }
         }
         return true;
     }
