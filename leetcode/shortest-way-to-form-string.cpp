@@ -6,8 +6,7 @@
 using namespace std;
 
 
-// Beats 32%
-// Based on Leetcode's Approach 3: Two Pointers
+// Based on Leetcode's Approach 4: Inverted Index and Binary Search
 class Solution {
 public:
     int shortestWay(string source, string target) {
@@ -17,24 +16,26 @@ public:
             if (!chars[ch - 'a']) return -1;
         }
 
-        int ans = 0;
-       
+        int ans = 1;
+
         size_t s_len = source.size(), t_len = target.size();
         size_t s_idx = 0, t_idx = 0;
-        while (t_idx < t_len) {
-            if (s_idx == 0)
-                ++ans;
-            while (source[s_idx++] != target[t_idx]) {
-                s_idx %= s_len;
-                // If we need to start from the beginning of the source
-                if (s_idx == 0)
-                    ++ans;
-            }
-            // If the chars are equal, the incremented s_idx not % in the loop, so we do it here
-            s_idx %= s_len;
-            ++t_idx;
-        }
 
+        vector<vector<int>> indexes(26, vector<int>());
+        for (size_t si = 0; si < s_len; ++si) 
+            indexes[source[si] - 'a'].emplace_back(si);
+
+        for (size_t ti = 0; ti < t_len; ++ti) {
+            t_idx = target[ti] - 'a';
+            s_idx = lower_bound(indexes[t_idx].begin(), indexes[t_idx].end(), s_idx) - indexes[t_idx].begin();
+            if (s_idx == indexes[t_idx].size()) {
+                ++ans;
+                s_idx = indexes[t_idx][0] + 1;
+            }
+            else 
+                s_idx = indexes[t_idx][s_idx] + 1;
+        }
+        
         return ans;
     }
 };
