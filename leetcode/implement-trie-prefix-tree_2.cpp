@@ -13,12 +13,11 @@ using namespace std;
  * bool param_3 = obj->startsWith(prefix);
  */
 
-// NOT FINISHED
 class TrieNode {
 public:
-    TrieNode() : children(26, nullptr) {}
+    TrieNode() : children(26, nullptr) {};
     bool ContainsKey(char ch) {
-        return children[ch - 'a'];
+        return children[ch - 'a'] != nullptr;
     }
     TrieNode* Get(char ch) {
         return children[ch - 'a'];
@@ -27,14 +26,14 @@ public:
         children[ch - 'a'] = node;
     }
     void SetEnd() {
-        is_end = true;
+        end_of_word = true;
     }
     bool IsEnd() {
-        return is_end;
+        return end_of_word;
     }
 private:
-    vector<TrieNode*> children(26, nullptr);
-    bool is_end;
+    vector<TrieNode*> children;
+    bool end_of_word;
 };
 
 
@@ -65,18 +64,18 @@ public:
     }
     
     bool startsWith(string prefix) {
-        return search(prefix);
+        TrieNode* node = root;
+        for (size_t i = 0; i < prefix.size(); ++i) {
+            if (node->ContainsKey(prefix[i])) {
+                node = node->Get(prefix[i]);
+            }
+            else {
+                return false;
+            }
+        }
+        return node->IsEnd();
     }
 
 private:
     TrieNode* root = new TrieNode();
 };
-
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie* obj = new Trie();
- * obj->insert(word);
- * bool param_2 = obj->search(word);
- * bool param_3 = obj->startsWith(prefix);
- */
