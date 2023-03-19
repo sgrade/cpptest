@@ -12,11 +12,8 @@ using namespace std;
 
 struct TrieNode {
     vector<TrieNode*> children;
-    bool is_end_of_word;
-    TrieNode() {
-        children.assign(26, nullptr);
-        is_end_of_word = false;
-    }
+    bool is_end_of_word = false;
+    TrieNode(): children(26) {};
 };
 
 
