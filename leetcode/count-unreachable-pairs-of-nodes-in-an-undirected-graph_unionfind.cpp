@@ -13,9 +13,9 @@ public:
         iota (parent.begin(), parent.end(), 0);
     }
     int find (int x) {
-        while (x != parent[x])
-            x = parent[x];
-        return x;
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
     }
     void UnionSet (int x, int y) {
         int xset = find(x), yset = find(y);
