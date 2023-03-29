@@ -6,45 +6,52 @@
 using namespace std;
 
 
-// Based on the Editorial's Approach 2: Breadth First Search
+// Based on the Editorial's Approach 3: Union-find
+class UnionFind {
+public:
+    UnionFind (int size): parent(size), rank(size, 0) {
+        iota (parent.begin(), parent.end(), 0);
+    }
+    int find (int x) {
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    void UnionSet (int x, int y) {
+        int xset = find(x), yset = find(y);
+        if (xset == yset)
+            return;
+        else if (rank[xset] < rank[yset])
+            parent[xset] = yset;
+        else if (rank[xset] > rank[yset])
+            parent[yset] = xset;
+        else {
+            parent[yset] = xset;
+            ++rank[xset];
+        }
+    }
+private:
+    vector<int> parent, rank;
+};
+
 class Solution {
 public:
     long long countPairs(int n, vector<vector<int>>& edges) {
-        vector<vector<int>> adj(n);
-        for (const vector<int>& edge: edges) {
-            adj[edge[0]].emplace_back(edge[1]);
-            adj[edge[1]].emplace_back(edge[0]);
-        }
+        UnionFind dsu(n);
+        for (const vector<int>& edge: edges)
+            dsu.UnionSet(edge[0], edge[1]);
+        unordered_map<int, int> component_size;
+        for (int i = 0; i < n; ++i)
+            ++component_size[dsu.find(i)];
+        
         long long pair_numbers = 0;
-        long long component_size = 0;
         long long remaining_nodes = n;
-        vector<bool> visited(n);
-        for (size_t i = 0; i < n; ++i) {
-            if (!visited[i]) {
-                component_size = bfs(i, adj, visited);
-                pair_numbers += component_size * (remaining_nodes - component_size);
-                remaining_nodes -= component_size;
-            }
+        int current_size;
+        for (const auto& [component, size]: component_size) {
+            current_size = size;
+            pair_numbers += size * (remaining_nodes - size);
+            remaining_nodes -= size;
         }
         return pair_numbers;
-    }
-private:
-    int bfs (int node, vector<vector<int>>& adj, vector<bool>& visited) {
-        int component_size = 1;
-        visited[node] = true;
-        queue<int> q;
-        q.emplace(node);
-        while (!q.empty()) { 
-            node = q.front();
-            q.pop();
-            for (const int& neighbor: adj[node]) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    ++component_size;
-                    q.emplace(neighbor);
-                }
-            }
-        }
-        return component_size;
     }
 };
