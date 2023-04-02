@@ -9,10 +9,15 @@ using namespace std;
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-        for (int& num: nums) {
-            num *= num;
+        int n = nums.size(), left = 0, right = n - 1;
+        vector<int> ans(n);
+        int ans_idx = n - 1;
+        while (left <= right) {
+            if (abs(nums[left]) < abs(nums[right]))
+                ans[ans_idx--] = nums[right] * nums[right--];
+            else
+                ans[ans_idx--] = nums[left] * nums[left++];
         }
-        sort(nums.begin(), nums.end());
-        return nums;
+        return ans;
     }
 };
