@@ -9,21 +9,33 @@ using namespace std;
 class Solution {
 public:
     vector<string> summaryRanges(vector<int>& nums) {
-        if (nums.size() == 1) return {to_string(nums[0])};
-        vector<string> ans;
-        int left = 0, right = 0;
-        nums.emplace_back(0);
-        while (right < nums.size() - 1) {
-            ++right;
-            if (nums[right] - 1 == nums[right - 1]) continue;
-            if (right - left == 1) {
-                ans.emplace_back(to_string(nums[left]));
+        if (nums.size() == 1) {
+            ans.emplace_back(to_string(nums[0]));
+            return ans;
+        }
+        int left = 0, right = 1, n = nums.size();
+        while (right < nums.size()) {
+            if (nums[right] - 1 == nums[right - 1]) {
+                ++right;
+                continue;
             }
-            else {
-                ans.emplace_back(to_string(nums[left]) + "->" + to_string(nums[right - 1]));
-            }
+            AddToAns (nums, left, right);
             left = right;
+            right = left + 1;
+        }
+        if (left < n) {
+            AddToAns (nums, left, right);
         }
         return ans;
+    }
+private:
+    vector<string> ans;
+    void AddToAns (vector<int>& nums, int& left, int& right) {
+        if (right - 1 == left) {
+            ans.emplace_back(to_string(nums[left]));
+        }
+        else {
+            ans.emplace_back(to_string(nums[left]) + "->" + to_string(nums[right - 1]));
+        }
     }
 };
