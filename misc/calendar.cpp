@@ -50,8 +50,8 @@ TResult FindSlot(const vector<TCalendar>& invited, int startTime, int endTime, i
     }
 
     sort (busy_intervals.begin(), busy_intervals.end());
-    vector<pair<int, int>> merged;
 
+    vector<pair<int, int>> merged;
     int start = busy_intervals[0].first, end = busy_intervals[0].second;
     for (int i = 1; i < busy_intervals.size(); ++i) {
         int current_start = busy_intervals[i].first;
