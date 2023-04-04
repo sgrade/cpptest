@@ -6,20 +6,13 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 3: Dynamic Programming
 class Solution {
 public:
     int climbStairs(int n) {
-        if (n == 1) return 1;
-        else if (n == 2) return 2;
-        int prev_prev = 1, prev = 2;
-        n -= 2;
-        int ans = 0;
-        while (n--) {
-            ans = prev_prev + prev;
-            prev_prev = prev;
-            prev = ans;
-        }
-        return ans;
+        vector<int> dp(45);
+        dp[0] = 1, dp[1] = 2;
+        for (int i = 2; i < n; ++i)
+            dp[i] = dp[i - 2] + dp[i - 1];
+        return dp[n - 1];
     }
 };
