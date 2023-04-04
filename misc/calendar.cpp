@@ -9,8 +9,8 @@
 // if the algo is to be generalized to a wider dataset or frequent lookups, I would convert the TCalendar 
 // from vector to a data structure optimized for target lookups. In this case, we would not search from the beginning 
 // of the calendars each time we call FindSlot.
-// If the search inteval (endTime - startTime) is infinity, I would break it into the relatively short chunks and
-// make a recursive call for the chunks (each FindSlot call still targets a relatively short interval, e.g. a day). 
+// If the search inteval (endTime - startTime) is infinity, I would break it into a set of relatively short chunks and
+// make recursive calls for the chunks (each FindSlot call still targets a relatively short interval, e.g. a day). 
 // Then we would need to store the last chunk traversal results in a helper data structure. With that, the 
 // the subsequent calls of FindSlot would start not from the beginning of each calendar, but from the meeting we stopped last time.
 
