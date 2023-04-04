@@ -1,5 +1,20 @@
 // Yandex / Nebius
 
+// Assumptions:
+// We are solving not an artificial, but a real life problem with constraints people usually see in practice
+// Specifically, the search interval is relatively short (e.g. endTime - startTime <= 10 * duration)
+// The merge of busy_intervals is done only for this short interval. Thus, the time/space complexity 
+// for per-row traversal with merge (O(num_of_people * num_of_meetings_per_person_in_search_interval)) has 
+// minimal impact on the end result. The data structure for TCalendar influences the result much more. Thus,
+// if the algo is to be generalized to a wider dataset or frequent lookups, I would convert the TCalendar 
+// from vector to a data structure optimized for target lookups. In this case, we would not search from the beginning 
+// of the calendars each time we call FindSlot.
+// If the search inteval (endTime - startTime) is infinity, I would break it into the relatively short chunks and
+// make a recursive call for the chunks (each FindSlot call still targets a relatively short interval, e.g. a day). 
+// Then we would need to store the last chunk traversal results in a helper data structure. With that, the 
+// the subsequent calls of FindSlot would start not from the beginning of each calendar, but from the meeting we stopped last time.
+
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -28,14 +43,17 @@ TResult FindSlot(const vector<TCalendar>& invited, int startTime, int endTime, i
     for (int person = 0; person < persons; ++person) {
         int meeting;
         int meetings = invited[person].size();
+        // Skip the meetings, which end before the target interval
         for (meeting = 0; meeting < meetings; ++meeting) {
             if (invited[person][meeting].EndTime <= startTime)
                 continue;
             else
                 break;
         }
+        // Only store the meetings in the target interval
         for (; meeting < meetings; ++meeting) {
             int current_start = invited[person][meeting].StartTime;
+            // Break the search when found a meeting starting after the target interval
             if (current_start > endTime)
                 break;
             int current_end = invited[person][meeting].EndTime;
