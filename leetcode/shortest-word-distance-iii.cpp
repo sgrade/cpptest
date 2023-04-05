@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     int shortestWordDistance(vector<string>& wordsDict, string word1, string word2) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int n = wordsDict.size();
         int idx1 = n, idx2 = -n;
         int ans = n;
