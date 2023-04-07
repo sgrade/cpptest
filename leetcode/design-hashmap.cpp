@@ -10,11 +10,11 @@ using namespace std;
 class MyHashMap {
 public:
     MyHashMap() {
-        storage.resize(1024);
+        storage.resize(2069);
     }
     
     void put(int key, int value) {
-        int bucket = key % (sizeof(storage) / sizeof(storage[0]));
+        int bucket = key % 2069;
         for (auto& [pkey, pvalue]: storage[bucket])
             if (pkey == key) {
                 pvalue = value;
@@ -24,7 +24,7 @@ public:
     }
     
     int get(int key) {
-        int bucket = key % (sizeof(storage) / sizeof(storage[0]));
+        int bucket = key % 2069;
         for (auto& [pkey, pvalue]: storage[bucket])
             if (pkey == key)
                 return pvalue;
@@ -32,7 +32,7 @@ public:
     }
     
     void remove(int key) {
-        int bucket = key % (sizeof(storage) / sizeof(storage[0]));
+        int bucket = key % 2069;
         vector<pair<int, int>>::iterator it = storage[bucket].begin();
         while (it != storage[bucket].end()) {
             if ((*it).first == key) {
