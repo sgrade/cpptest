@@ -80,7 +80,15 @@
         "ranges": "cpp",
         "span": "cpp",
         "stop_token": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "source_location": "cpp",
+        "barrier": "cpp",
+        "expected": "cpp",
+        "latch": "cpp",
+        "semaphore": "cpp",
+        "spanstream": "cpp",
+        "stacktrace": "cpp",
+        "syncstream": "cpp"
     },
     "cmake.configureOnOpen": false
 }
