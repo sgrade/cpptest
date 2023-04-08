@@ -17,9 +17,12 @@ public:
     }
     
     int add(int val) {
-        pq.emplace(val);
-        if (pq.size() > k)
+        if (pq.size() < k)
+            pq.emplace(val);
+        else if (val > pq.top()) {
+            pq.emplace(val);
             pq.pop();
+        }
         return pq.top();
     }
 
