@@ -1,5 +1,4 @@
 // B. Li Hua and Pattern
-// Wrong answer
 
 #include <iostream>
 #include <vector>
@@ -22,72 +21,40 @@ int main() {
         cin >> n >> k;
 
         vector<vector<int>> a(n, vector<int>(n));
-        vector<vector<int>> r(n, vector<int>(n));
-        int ones = 0, zeroes;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 cin >> a[i][j];
-                r[n - 1 - i][n - 1 - j] = a[i][j];
-                ones += a[i][j];
             }
         }
 
-        bool ans = true;
+        // Editorial - https://codeforces.com/blog/entry/114890
+        // Sample solution - https://codeforces.com/contest/1797/submission/201272464
+        bool ans = false;
 
-        // Scenario 0 - no need to convert
-        for (int i = 0; ans && (i < n); ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (a[i][j] != r[i][j]) {
-                    ans = false;
-                    break;
-                }
-            }
-        }
-
-        if (ans) {
-            goto ANS;
-        }
-
-        // Scenario 1 - convert all to one color
-        zeroes = n * n - ones;
-        if (k > 0 && ((k >= ones && (k - ones) % k == 0) || (k >= zeroes && (k - zeroes) % k == 0))) {
-            ans = true;
-            goto ANS;
-        }
-
-        // Scenario 2 - rotate
+        int cnt = 0;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (a[i][j] != r[i][j]) {
-                    r[i][j] = a[i][j];
-                    --k;
-                    if (k < 0)
-                        goto ANS;
+                if (a[i][j] != a[n - 1 - i][n - 1 - j]) {
+                    ++cnt;
                 }
             }
-            if (k < 0)
-                goto ANS;
         }
+        // Two cells are not equal to each other, but 
+        // we need to change only one of them to be equal to the other.
+        // And cnt will always be even.
+        cnt /= 2;
 
-        if (k % 2 != 0) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (r[i][j] != r[n - 1 - i][n - 1 - j]) {
-                        --k;
-                        ans = true;
-                        goto ANS;
-                    }
-                }
-                if (k < 0)
-                    goto ANS;
-            }
-        }
-
-        if (k % 2 == 0) {
+        if (k == cnt) {
             ans = true;
         }
+        else if (k > cnt) {
+            int rem = k - cnt;
+            // If rem != 0, but n is odd, we can still change the center and it will not affect the rotation.
+            // Else we need to change a cell even number of times to stay the same.
+            if (n % 2 != 0 || rem % 2 == 0) 
+                ans = true;
+        }
 
-        ANS:
         cout << (ans ? "YES\n" : "NO\n");
     }
 
