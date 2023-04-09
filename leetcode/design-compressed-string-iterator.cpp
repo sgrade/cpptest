@@ -22,7 +22,7 @@ public:
         cnt = 0;
         idx = next_idx;
         ++next_idx;
-        while (next_idx < s.size() && isdigit(s[next_idx]))
+        while (isdigit(s[next_idx]))
             cnt = cnt * 10 + (s[next_idx++] - '0');
         --cnt;
         return s[idx];
@@ -43,3 +43,4 @@ private:
  * char param_1 = obj->next();
  * bool param_2 = obj->hasNext();
  */
+ 
