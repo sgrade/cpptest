@@ -8,44 +8,38 @@ using namespace std;
 
 class Leaderboard {
 public:
-    Leaderboard() {
-        
-    }
+    Leaderboard() {}
     
     void addScore(int playerId, int score) {
+        if (scores.find(playerId) != scores.end()) {
+            top_scores.erase(pair<int, int>(scores[playerId], playerId));
+        }
         scores[playerId] += score;
-        max_heap.emplace(pair<int, int>(scores[playerId], playerId));
+        top_scores.emplace(pair<int, int>(scores[playerId], playerId));
     }
     
     int top(int K) {
         int top_k_sum = 0;
-        int cnt = 0;
-        queue<pair<int, int>> temp;
-        while (!max_heap.empty() && cnt < K) {
-            pair<int, int> p = max_heap.top();
-            max_heap.pop();
-            if (scores[p.second] != p.first)
-                continue;
-            ++cnt;
-            top_k_sum += p.first;
-            temp.emplace(p);
-        }
-        while (!temp.empty()) {
-            max_heap.emplace(temp.front());
-            temp.pop();
+        auto it = top_scores.begin();
+        while (it != top_scores.end() && K--) {
+            top_k_sum += it->first;
+            ++it;
         }
         return top_k_sum;
     }
     
     void reset(int playerId) {
-        scores[playerId] = 0;
+        if (scores.find(playerId) != scores.end()) {
+            top_scores.erase(pair<int, int>(scores[playerId], playerId));
+        }
+        scores.erase(playerId);
     }
 
 private:
-    // player id to score
+    // player id -> score
     unordered_map<int, int> scores;
     // pair<score, playerid>
-    priority_queue<pair<int, int>> max_heap;
+    set<pair<int, int>, greater<pair<int, int>>> top_scores;
 };
 
 /**
