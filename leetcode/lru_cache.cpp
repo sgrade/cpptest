@@ -10,18 +10,17 @@ using namespace std;
 class LRUCache {
 public:    
     LRUCache(int capacity) {
-        capacity_ = capacity;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        this->capacity = capacity;
     }
     
     int get(int key) {
-        if (keys.find(key) != keys.end()) {
-            auto it = keys[key];
-            cache.splice(cache.begin(), cache, it);
-            return it -> second;
-        }
-        else {
+        if (keys.find(key) == keys.end()) 
             return -1;
-        }
+        auto it = keys[key];
+        cache.splice(cache.begin(), cache, it);
+        return it -> second;
     }
     
     void put(int key, int value) {
@@ -30,15 +29,16 @@ public:
             cache.erase(it);
             keys.erase(key);
         }
-        if (cache.size() == capacity_) {
+        if (cache.size() == capacity) {
             keys.erase(cache.back().first);
             cache.pop_back();
+            
         }
         cache.push_front({key, value});
         keys[key] = cache.begin();
     }
 private:
-    int capacity_;
+    int capacity;
     unordered_map<int, list<pair<int, int>>::iterator> keys;
     list<pair<int, int>> cache;
 };
