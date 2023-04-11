@@ -8,40 +8,42 @@ using namespace std;
 
 
 class LRUCache {
-public:    
-    LRUCache(int capacity) {
+public:
+    LRUCache (int capacity) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
         this->capacity = capacity;
     }
-    
+
     int get(int key) {
-        if (keys.find(key) == keys.end()) 
+        if (keys.find(key) == keys.end())
             return -1;
         auto it = keys[key];
         cache.splice(cache.begin(), cache, it);
-        return it -> second;
+        return it->second;
     }
     
     void put(int key, int value) {
         if (keys.find(key) != keys.end()) {
             auto it = keys[key];
-            cache.erase(it);
-            keys.erase(key);
+            cache.splice(cache.begin(), cache, it);
+            cache.front().second = value;
+            return;
         }
         if (cache.size() == capacity) {
             keys.erase(cache.back().first);
             cache.pop_back();
-            
         }
-        cache.push_front({key, value});
+        cache.emplace_front(pair<int, int>(key, value));
         keys[key] = cache.begin();
-    }
+    }  
+
 private:
     int capacity;
-    unordered_map<int, list<pair<int, int>>::iterator> keys;
     list<pair<int, int>> cache;
+    unordered_map<int, list<pair<int, int>>::iterator> keys;
 };
+
 
 /**
  * Your LRUCache object will be instantiated and called as such:
