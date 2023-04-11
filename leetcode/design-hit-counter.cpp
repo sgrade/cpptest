@@ -6,24 +6,28 @@
 using namespace std;
 
 
+// Based on Editorials' Approach #2: Using Deque with Pairs
 class HitCounter {
 public:
     void hit(int timestamp) {
-        ++hits[timestamp];
+        if (hits.empty() || hits.back().first != timestamp)
+            hits.emplace(pair<int, int>(timestamp, 1));
+        else
+            ++hits.back().second;
+        ++total;
     }
     
     int getHits(int timestamp) {
-        map<int, int>::iterator it = hits.lower_bound(timestamp - 299);
-        int total = 0;
-        while (it != hits.end()) {
-            total += it->second;
-            ++it;
+        while (!hits.empty() && hits.front().first < timestamp - 299) {
+            total -= hits.front().second;
+            hits.pop();
         }
         return total;
     }
 
 private:
-    map<int, int> hits;
+    queue<pair<int, int>> hits;
+    int total = 0;
 };
 
 /**
