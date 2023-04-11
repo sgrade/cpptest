@@ -8,25 +8,16 @@ using namespace std;
 
 class HitCounter {
 public:
-    HitCounter() {
-        
-    }
-    
     void hit(int timestamp) {
         ++hits[timestamp];
-        while (!hits.empty() && hits.begin()->first < timestamp - 300 + 1) {
-            hits.erase(hits.begin());
-        }
     }
     
     int getHits(int timestamp) {
-        int current_timestamp = hits.begin()->first;
-        while (!hits.empty() && hits.begin()->first < timestamp - 300 + 1) {
-            hits.erase(hits.begin());
-        }
+        map<int, int>::iterator it = hits.lower_bound(timestamp - 299);
         int total = 0;
-        for (const auto& [_, current]: hits) {
-            total += current;
+        while (it != hits.end()) {
+            total += it->second;
+            ++it;
         }
         return total;
     }
