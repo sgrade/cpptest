@@ -20,12 +20,16 @@ public:
         if (v_it == time_map.end())
             return "";
         vector<pair<int, string>> values = v_it->second;
-        auto it = lower_bound (values.rbegin(), values.rend(), timestamp, 
-        [timestamp](const pair<int, string>& p, const int ts){
-            return p.first > ts;
-        });
-        if (it == values.rend())
+        if (timestamp < values[0].first)
             return "";
+        auto it = upper_bound (values.begin(), values.end(), timestamp, 
+        [](const int value, const pair<int, string>& p){
+            return value < p.first;
+        });
+        if (it == values.end()) {
+            return values.rbegin()->second;
+        }
+        --it;
         return it->second;
     }
 
