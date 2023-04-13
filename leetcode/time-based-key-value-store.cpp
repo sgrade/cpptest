@@ -5,7 +5,6 @@
 
 using namespace std;
 
-// TLE
 class TimeMap {
 public:
     TimeMap() {}
@@ -15,29 +14,30 @@ public:
     }
     
     string get(string key, int timestamp) {
-        // Idea for the binary search implementation is from Sample 264 ms submission
-        auto v_it = time_map.find(key);
-        if (v_it == time_map.end())
+        if (time_map.find(key) == time_map.end())
             return "";
-        vector<pair<int, string>> values = v_it->second;
-        if (timestamp < values[0].first)
+        return binary_search(time_map[key], timestamp);
+    }
+
+    string binary_search (vector<pair<int, string>>& v, int& timestamp) {
+        if (timestamp < v[0].first)
             return "";
-        auto it = upper_bound (values.begin(), values.end(), timestamp, 
-        [](const int value, const pair<int, string>& p){
-            return value < p.first;
-        });
-        if (it == values.end()) {
-            return values.rbegin()->second;
+        int left = 0, right = v.size(), mid;
+        while (left < right) {
+            mid = left + (right - left) / 2;
+            if (v[mid].first == timestamp)
+                return v[mid].second;
+            else if (v[mid].first < timestamp)
+                left = mid + 1;
+            else 
+                right = mid;
         }
-        --it;
-        return it->second;
+        return v[right - 1].second;
     }
 
 private:
     // key -> vector<pair<timestamp, value>>
     unordered_map<string, vector<pair<int, string>>> time_map;
-    // timestamp -> value
-    unordered_map<int, string> timestamps;
 };
 
 /**
