@@ -12,17 +12,12 @@ public:
     
     void set(string key, string value, int timestamp) {
         time_map[key].emplace_back(pair<int, string>(timestamp, value));
-        timestamps[timestamp] = value;
     }
     
     string get(string key, int timestamp) {
         if (time_map.find(key) == time_map.end())
             return "";
-        if (timestamps.find(timestamp) != timestamps.end())
-            return timestamps[timestamp];
-        vector<pair<int, string>>& values = time_map[key];
-        string value = binary_search(time_map[key], timestamp);
-        return value;
+        return binary_search(time_map[key], timestamp);
     }
 
     string binary_search (vector<pair<int, string>>& v, int& timestamp) {
@@ -31,7 +26,9 @@ public:
         int left = 0, right = v.size(), mid;
         while (left < right) {
             mid = left + (right - left) / 2;
-            if (v[mid].first < timestamp)
+            if (v[mid].first == timestamp)
+                return v[mid].second;
+            else if (v[mid].first < timestamp)
                 left = mid + 1;
             else 
                 right = mid;
