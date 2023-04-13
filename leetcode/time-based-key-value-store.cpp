@@ -15,25 +15,18 @@ public:
     }
     
     string get(string key, int timestamp) {
-        if (time_map.find(key) == time_map.end())
+        // Idea for the binary search implementation is from Sample 264 ms submission
+        auto v_it = time_map.find(key);
+        if (v_it == time_map.end())
             return "";
-        return binary_search(time_map[key], timestamp);
-    }
-
-    string binary_search (vector<pair<int, string>>& v, int& timestamp) {
-        if (timestamp < v[0].first)
+        vector<pair<int, string>> values = v_it->second;
+        auto it = lower_bound (values.rbegin(), values.rend(), timestamp, 
+        [timestamp](const pair<int, string>& p, const int ts){
+            return p.first > ts;
+        });
+        if (it == values.rend())
             return "";
-        int left = 0, right = v.size(), mid;
-        while (left < right) {
-            mid = left + (right - left) / 2;
-            if (v[mid].first == timestamp)
-                return v[mid].second;
-            else if (v[mid].first < timestamp)
-                left = mid + 1;
-            else 
-                right = mid;
-        }
-        return v[right - 1].second;
+        return it->second;
     }
 
 private:
