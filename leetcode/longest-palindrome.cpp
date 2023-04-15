@@ -14,16 +14,14 @@ public:
         unordered_map<char, int> counter;
         for (const char& ch: s)
             ++counter[ch];
-        int ans = 0, odd = 0;
+        int ans = 0;
         for (const auto& [_, cnt]: counter) {
             if (cnt % 2 == 0)
                 ans += cnt;
-            else {
-                ans += cnt / 2 * 2;
-                ++odd;
-            }
+            else
+                ans += cnt -1;
         }
-        if (odd > 0) 
+        if (s.size() > ans) 
             ++ans;
         return ans;
     }
