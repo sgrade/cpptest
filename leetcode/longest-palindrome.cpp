@@ -9,11 +9,13 @@ using namespace std;
 class Solution {
 public:
     int longestPalindrome(string s) {
-        vector<int> counter(123);
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        unordered_map<char, int> counter;
         for (const char& ch: s)
             ++counter[ch];
         int ans = 0, odd = 0;
-        for (const int& cnt: counter) {
+        for (const auto& [_, cnt]: counter) {
             if (cnt % 2 == 0)
                 ans += cnt;
             else {
