@@ -17,7 +17,7 @@ public:
     int allocate(int size, int mID) {
         auto left_it = memory.begin(), right_it = memory.begin();
         ++right_it;
-        while (*left_it != memory.back()) {
+        while (right_it != memory.end()) {
             int left = left_it->second, right = right_it->first;
             if (right - left >= size) {
                 auto new_block_it = memory.emplace(right_it, pair<int, int>(left, left + size));
@@ -34,9 +34,9 @@ public:
         if (blocks.find(mID) == blocks.end())
             return 0;
         int units = 0;
-        for (list<pair<int, int>>::iterator it: blocks[mID]) {
-            units += it->second - it->first;
-            memory.erase(it);
+        for (list<pair<int, int>>::iterator block_it: blocks[mID]) {
+            units += block_it->second - block_it->first;
+            memory.erase(block_it);
         }
         blocks.erase(mID);
         return units;
