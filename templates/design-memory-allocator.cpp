@@ -10,26 +10,22 @@ class Allocator {
 public:
     Allocator(int n) {
         this->n = n;
-        memory.resize(n);
+        memory.emplace(memory.end(), pair<int, int>(0, 0));   // pre-head
+        memory.emplace(memory.end(), pair<int, int>(n, n));   // post-tail
     }
     
     int allocate(int size, int mID) {
-        int left = 0;
-        while (left < n) {
-            int cnt = 0;
-            int i = left;
-            for (; i < n; ++i) {
-                if (memory[i] == 0)
-                    ++cnt;
-                else
-                    break;
-            }
-            if (cnt >= size) {
-                fill(memory.begin() + left, memory.begin() + left + size, mID);
-                blocks[mID].emplace_back(left, left + size);
+        auto left_it = memory.begin(), right_it = memory.begin();
+        ++right_it;
+        while (*left_it != memory.back()) {
+            int left = left_it->second, right = right_it->first;
+            if (right - left >= size) {
+                auto new_block_it = memory.emplace(right_it, pair<int, int>(left, left + size));
+                blocks[mID].emplace_back(new_block_it);
                 return left;
             }
-            left = i + 1;
+            ++left_it;
+            ++right_it;
         }
         return -1;
     }
@@ -38,9 +34,9 @@ public:
         if (blocks.find(mID) == blocks.end())
             return 0;
         int units = 0;
-        for (const auto& [left, right]: blocks[mID]) {
-            fill(memory.begin() + left, memory.begin() + right, 0);
-            units += right - left;
+        for (list<pair<int, int>>::iterator it: blocks[mID]) {
+            units += it->second - it->first;
+            memory.erase(it);
         }
         blocks.erase(mID);
         return units;
@@ -48,8 +44,8 @@ public:
 
 private:
     int n;
-    vector<int> memory;
-    unordered_map<int, vector<pair<int, int>>> blocks;
+    list<pair<int, int>> memory;
+    unordered_map<int, vector<list<pair<int, int>>::iterator>> blocks;
 };
 
 /**
