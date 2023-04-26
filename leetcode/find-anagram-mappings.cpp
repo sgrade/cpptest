@@ -9,15 +9,14 @@ using namespace std;
 class Solution {
 public:
     vector<int> anagramMappings(vector<int>& nums1, vector<int>& nums2) {
-        int n = nums1.size();
-        unordered_map<int, queue<int>> ar2;
-        for (int i = 0; i < n; ++i)
-            ar2[nums2[i]].emplace(i);
-        vector<int> ans(n);
-        for (int i = 0; i < n; ++i) {
-            ans[i] = ar2[nums1[i]].front();
-            ar2[nums1[i]].pop();
-        }
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        unordered_map<int, int> ar2;
+        for (int i = 0; i < nums2.size(); ++i)
+            ar2[nums2[i]] = i;
+        vector<int> ans;
+        for (const int& num: nums1)
+            ans.emplace_back(ar2[num]);
         return ans;
     }
 };
