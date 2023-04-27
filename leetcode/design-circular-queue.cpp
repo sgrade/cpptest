@@ -13,46 +13,43 @@ public:
     }
     
     bool enQueue(int value) {
-        if (main_q.size() == k) {
+        if (q.size() - front_idx == k)
             return false;
-        }
-        main_q.emplace_back(value);
+        q.emplace_back(value);
         return true;
     }
     
     bool deQueue() {
-        if (main_q.empty()) {
+        if (front_idx == q.size())
             return false;
-        }
-        main_q.pop_front();
+        ++front_idx;
         return true;
     }
     
     int Front() {
-        if (main_q.empty()) {
+        if (front_idx == q.size())
             return -1;
-        }
-        return main_q.front();
+        return q[front_idx];
     }
     
     int Rear() {
-        if (main_q.empty()) {
+        if (front_idx == q.size())
             return -1;
-        }
-        return main_q.back();
+        return q.back();
     }
     
     bool isEmpty() {
-        return main_q.empty();
+        return front_idx == q.size();
     }
     
     bool isFull() {
-        return main_q.size() == k;
+        return q.size() - front_idx == k;
     }
 
 private:
     int k;
-    list<int> main_q;
+    vector<int> q;
+    int front_idx = 0;
 };
 
 /**
