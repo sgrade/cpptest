@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     int longestSubarray(vector<int>& nums, int limit) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         for (; right < nums.size(); ++right) {
             while (!minq.empty() && minq.back() > nums[right])
                 minq.pop_back();
