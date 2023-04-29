@@ -10,19 +10,14 @@ using namespace std;
 class Solution {
 public:
     int longestSubarray(vector<int>& nums, int limit) {
-        int ans = 0;
-        int left = 0;
-        for (int right = 0; right < nums.size(); ++right) {
+        for (; right < nums.size(); ++right) {
             while (!minq.empty() && minq.back() > nums[right])
                 minq.pop_back();
             minq.emplace_back(nums[right]);
             while (!maxq.empty() && maxq.back() < nums[right])
                 maxq.pop_back();
             maxq.emplace_back(nums[right]);
-            if (maxq.front() - minq.front() <= limit) {
-                ans = max(ans, right - left + 1);
-            }
-            else {
+            if (maxq.front() - minq.front() > limit) {
                 if (minq.front() == nums[left])
                     minq.pop_front();
                 if (maxq.front() == nums[left])
@@ -30,9 +25,10 @@ public:
                 ++left;
             }
         }
-        return ans;
+        return right - left;
     }
 
 private:
+    int left = 0, right = 0;
     deque<int> minq, maxq;
 };
