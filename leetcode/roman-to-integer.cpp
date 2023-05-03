@@ -6,35 +6,27 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 3: Right-to-Left Pass
 class Solution {
 public:
     int romanToInt(string s) {
-        int n = s.size();
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int ans = 0;
-        for (int i = 0; i < n; ++i) {
-            if (i < n - 1) {
-                string candidate = s.substr(i, 2);
-                if (strings.find(candidate) != strings.end()) {
-                    ans += strings[candidate];
-                    ++i;
-                    continue;
-                }
-            }
-            ans += chars[s[i]];
+        for (int i = s.size() - 1; i >= 0; --i) {
+            current = chars[s[i]];
+            if (current < prev)
+                ans -= current;
+            else 
+                ans += current;
+            prev = current;
         }
         return ans;
     }
 
 private:
-    map<string, int> strings {
-        {"IV", 4},
-        {"IX", 9},
-        {"XL", 40},
-        {"XC", 90},
-        {"CD", 400},
-        {"CM", 900}
-    };
-    map<char, int> chars {
+    int current, prev = 0;
+    unordered_map<char, int> chars {
         {'M', 1000},
         {'D', 500},
         {'C', 100},
