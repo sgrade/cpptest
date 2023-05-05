@@ -6,21 +6,21 @@
 using namespace std;
 
 
-// Not finished (Leetcode debugger doesn't work at the moments)
 class StockPrice {
 public:
-    StockPrice() {
-        
-    }
+    StockPrice() {}
     
     void update(int timestamp, int price) {
         auto it = ts_to_price.find(timestamp);
         if (it != ts_to_price.end()) {
             price_to_ts.erase(pair<int, int>(it->second, it->first));
-            price_to_ts.emplace(price, timestamp);
         }
+        price_to_ts.emplace(price, timestamp);
         ts_to_price[timestamp] = price;
-        current_price = price;
+        if (timestamp >= current_timestamp) {
+            current_price = price;
+            current_timestamp = timestamp;
+        }
     }
     
     int current() {
@@ -39,6 +39,7 @@ private:
     unordered_map<int, int> ts_to_price;
     set<pair<int, int>> price_to_ts;
     int current_price = numeric_limits<int>::max();
+    int current_timestamp = 0;
 };
 
 /**
