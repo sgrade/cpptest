@@ -24,7 +24,7 @@ public:
                     for (const int& neigh: graph[j]) {
                         if (visited[neigh] == -1) {
                             st.emplace(neigh);
-                            visited[neigh] = !visited[j];
+                            visited[neigh] = visited[j] ^ 1;
                         }
                         else if (visited[j] == visited[neigh]) {
                             return false;
