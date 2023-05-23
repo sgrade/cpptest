@@ -10,10 +10,11 @@ class KthLargest {
 public:
     KthLargest(int k, vector<int>& nums) {
         this->k = k;
-        for (const int& num: nums)
+        for (const int& num: nums) {
             pq.emplace(num);
-        while (pq.size() > k)
-            pq.pop();
+            if (pq.size() > k)
+                pq.pop();
+        }
     }
     
     int add(int val) {
