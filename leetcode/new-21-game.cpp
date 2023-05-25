@@ -14,7 +14,7 @@ public:
         vector<double> dp(n + 1);
         dp[0] = 1;
         for (int i = 1; i <= n; ++i) {
-            for (int j = i - k + 1; j <= min(i, maxPts); ++j) {
+            for (int j = max(1, i - k + 1); j <= min(i, maxPts); ++j) {
                 dp[i] += dp[i - j] / maxPts;
             }
         }
