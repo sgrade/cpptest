@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// Based on Approach 1: Top-Down Dynamic Programming
+// Based on Approach 2: Bottom-Up Dynamic Programming
 class Solution {
 public:
     int bestTeamScore(vector<int>& scores, vector<int>& ages) {
@@ -16,23 +16,18 @@ public:
             v[i].first = ages[i], v[i].second = scores[i];
         }
         sort(v.begin(), v.end());
-        vector<vector<int>> dp(n, vector<int>(n, -1));
-        return FindMaxScore(dp, v, -1, 0, n);
-    }
 
-    int FindMaxScore(vector<vector<int>>& dp, const vector<pair<int, int>>& v, int prev, int idx, const int& n) {
-        if (idx >= n)
-            return 0;
-        if (dp[prev + 1][idx] != -1)
-            return dp[prev + 1][idx];
-        
-        if (prev == -1 || v[idx].second >= v[prev].second) {
-            return dp[prev + 1][idx] = max (
-                FindMaxScore(dp, v, prev, idx + 1, n), 
-                 v[idx].second + FindMaxScore(dp, v, idx, idx + 1, n)
-            );
+        vector<int> dp(n);
+        dp[0] = v[0].second;
+        int ans = v[0].second;
+        for (int i = 1; i < n; ++i) {
+            dp[i] = v[i].second;
+            for (int j = 0; j < i; ++j) {
+                if (v[i].second >= v[j].second)
+                    dp[i] = max(dp[i], dp[j] + v[i].second);
+            }
+            ans = max(ans, dp[i]);
         }
-
-        return dp[prev + 1][idx] = FindMaxScore(dp, v, prev, idx + 1, n);
+        return ans;
     }
 };
