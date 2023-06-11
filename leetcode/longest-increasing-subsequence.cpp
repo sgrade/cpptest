@@ -6,18 +6,24 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: Intelligently Build a Subsequence
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
         int n = nums.size();
-        vector<int> dp(n, 1);
-        for (int i = 1; i < n; ++i)
-            for (int j = 0; j < i; ++j) {
-                if (nums[i] > nums[j])
-                    dp[i] = max(dp[i], dp[j] + 1);
+        vector<int> sub = {nums[0]};
+        for (int i = 1; i < n; ++i) {
+            if (nums[i] > sub.back())
+                sub.emplace_back(nums[i]);
+            else {
+                int j = 0;
+                while (nums[i] > sub[j])
+                    ++j;
+                sub[j] = nums[i];
             }
-        return *max_element(dp.begin(), dp.end());
+        }
+        return sub.size();
     }
 };
