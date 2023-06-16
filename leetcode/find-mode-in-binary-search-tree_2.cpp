@@ -5,7 +5,6 @@
 
 using namespace std;
 
-// Not sure why it doesn't work. Checked everything many times. It should work. Maybe a bug in leetcode.
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -18,38 +17,33 @@ struct TreeNode {
 
 class Solution {
 public:
+    vector<int> ans;
     vector<int> findMode(TreeNode* root) {
-        vector<int> ans;
-        dfs(root, ans);
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        dfs(root);
         return ans;
     }
 private:
     int max_cnt = 0; 
     int current_cnt = 0;
     TreeNode* prev = nullptr;
-    void dfs (TreeNode* node, vector<int>& ans) {
-        if (node == nullptr) {
-            return;
-        }
-
-        dfs (node->left, ans);
-
-        if (prev && prev->val == node->val) {
+    void dfs (TreeNode* node) {
+        if (node == nullptr) return;
+        dfs (node->left);
+        if (prev && prev->val == node->val)
             ++current_cnt;
-        }
-        else {
+        else
             current_cnt = 1;
-        }
 
         if (current_cnt > max_cnt) {
             max_cnt = current_cnt;
             ans.clear();
-            ans.emplace_back(node->val);
+            ans.push_back(node->val);
         }
-        else if (current_cnt == max_cnt) {
-            ans.emplace_back(node->val);
-        }
+        else if (current_cnt == max_cnt)
+            ans.push_back(node->val);
         prev = node;
-        dfs (node->right, ans);
+        dfs (node->right);
     }
 };
