@@ -6,20 +6,33 @@
 using namespace std;
 
 
-// Memory Limit Exceeded
+// Time Limit Exceeded
 class Solution {
 public:
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-        vector<vector<int>> ans;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        auto comp = [](vector<int>& v1, vector<int>& v2) {
+            return v1[0] + v1[1] < v2[0] + v2[1];
+        };
+        priority_queue< vector <int>, vector<vector<int>>, decltype(comp) > pq(comp);
+        
         for (int i = 0; i < nums1.size(); ++i) {
             for (int j = 0; j < nums2.size(); ++j) {
-                ans.emplace_back(vector<int>{nums1[i], nums2[j]});
+                if (pq.size() == k) {
+                    if (nums1[i] + nums2[j] > pq.top()[0] + pq.top()[1])
+                        continue;
+                    pq.pop();
+                }
+                pq.emplace(vector<int>{nums1[i], nums2[j]});
             }
         }
-        sort(ans.begin(), ans.end(), [](const vector<int>& v1, const vector<int>& v2) {
-            return v1[0] + v1[1] < v2[0] + v2[1];
-        });
-        ans.erase(ans.begin() + min(k, (int)ans.size()), ans.end());
+
+        vector<vector<int>> ans(pq.size());
+        for (int i = 0; i < ans.size(); ++i) {
+            ans[i] = pq.top();
+            pq.pop();
+        }
         return ans;
     }
 };
