@@ -31,13 +31,13 @@ public:
 
             ans.emplace_back(vector<int>{nums1[idx1], nums2[idx2]});
             
-            if (idx1 + 1 < n1 && visited.find({idx1 + 1, idx2}) == visited.end()) {
+            if (idx1 + 1 < n1 && visited.find(pair<int, int>(idx1 + 1, idx2)) == visited.end()) {
                 min_heap.emplace(nums1[idx1 + 1] + nums2[idx2], pair<int, int>{idx1 + 1, idx2});
-                visited.insert({idx1 + 1, idx2});
+                visited.emplace(idx1 + 1, idx2);
             }
-            if (idx2 + 1 < n2 && visited.find({idx1, idx2 + 1}) == visited.end()) {
+            if (idx2 + 1 < n2 && visited.find(pair<int, int>(idx1, idx2 + 1)) == visited.end()) {
                 min_heap.emplace(nums1[idx1] + nums2[idx2 + 1], pair<int, int>{idx1, idx2 + 1});
-                visited.insert({idx1, idx2 + 1});
+                visited.emplace(idx1, idx2 + 1);
             }
         }
        
