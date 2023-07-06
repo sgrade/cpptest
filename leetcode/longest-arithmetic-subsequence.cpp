@@ -13,11 +13,11 @@ public:
         int n = nums.size();
         int ans = 0;
         int diff;
-        vector<unordered_map<int, int>> dp(n, unordered_map<int, int>());
-        for (int right = 0; right < nums.size(); ++right) {
+        vector<vector<int>> dp(n, vector<int>(1001));
+        for (int right = 1; right < nums.size(); ++right) {
             for (int left = 0; left < right; ++left) {
-                diff = nums[right] - nums[left];
-                dp[right][diff] =  dp[left].find(diff) == dp[left].end() ? 2 : dp[left][diff] + 1;
+                diff = 500 + nums[right] - nums[left];
+                dp[right][diff] = max(2, dp[left][diff] + 1);
                 ans = max(ans, dp[right][diff]);
             }
         }
