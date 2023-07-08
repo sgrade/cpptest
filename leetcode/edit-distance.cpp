@@ -6,31 +6,35 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Memoization: Top-Down Dynamic Programming
+// Based on Editorial's Approach 3: Bottom-Up Dynamic Programming: Tabulation
 class Solution {
 public:
     int minDistance(string word1, string word2) {
         int n1 = word1.size(), n2 = word2.size();
-        vector<vector<int>> memo(n1 + 1, vector<int>(n2 + 1, -1));
-        return traverse(word1, word2, n1, n2, memo);
-    }
+        if (n1 == 0)
+            return n2;
+        if (n2 == 0)
+            return n1;
 
-private:
-    int traverse (string& word1, string& word2, int idx1, int idx2, vector<vector<int>>& memo) {
-        if (idx1 == 0)
-            return idx2;
-        if (idx2 == 0)
-            return idx1;
-        if (memo[idx1][idx2] != -1)
-            return memo[idx1][idx2];
-        if (word1[idx1 - 1] == word2[idx2 - 1])
-            return traverse(word1, word2, idx1 - 1, idx2 - 1, memo);
-        else {
-            int insert_operation, delete_operation, replace_operation;
-            insert_operation = traverse(word1, word2, idx1, idx2 - 1, memo);
-            delete_operation = traverse(word1, word2, idx1 - 1, idx2, memo);
-            replace_operation = traverse(word1, word2, idx1 - 1, idx2 - 1, memo);
-            return memo[idx1][idx2] = min({insert_operation, delete_operation, replace_operation}) + 1;
+        vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1));
+        for (int idx1 = 1; idx1 <= n1; ++idx1) 
+            dp[idx1][0] = idx1;
+        for (int idx2 = 1; idx2 <= n2; ++idx2)
+            dp[0][idx2] = idx2;
+        
+        for (int idx1 = 1; idx1 <= n1; ++idx1) {
+            for (int idx2 = 1; idx2 <= n2; ++idx2) {
+                if (word1[idx1 - 1] == word2[idx2 - 1])
+                    dp[idx1][idx2] = dp[idx1 - 1][idx2 - 1];
+                else {
+                    dp[idx1][idx2] = min ({
+                        dp[idx1 - 1][idx2],
+                        dp[idx1][idx2 - 1],
+                        dp[idx1 - 1][idx2 - 1]
+                    }) + 1;
+                }
+            }
         }
+        return dp[n1][n2];
     }
 };
