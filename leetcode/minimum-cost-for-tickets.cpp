@@ -6,32 +6,29 @@
 using namespace std;
 
 
-// Wrong Answer
+// Based on Editorial's Approach 2: Bottom-up Dynamic Programming
 class Solution {
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
-        n = days.size();
-        return traverse(0, 0, 0, days, costs);
-    }
+        int n = days.size();
+        int last_day = days[n - 1];
+        vector<int> dp(last_day + 1);
+        
+        int i = 0;
+        for (int day = 1; day <= last_day; ++day) {
+            if (day < days[i]) {
+                dp[day] = dp[day - 1];
+            }
+            else {
+                ++i;
+                dp[day] = min({
+                    dp[day - 1] + costs[0],
+                    dp[max(0, day - 7)] + costs[1],
+                    dp[max(0, day - 30)] + costs[2]
+                });
+            }
+        }
 
-private:
-    int n;
-    vector<int> x = {1, 7, 30};
-    int traverse (int i, int valid_until, int total_cost, vector<int>& days, vector<int>& costs) {
-        if (i >= n - 1) return total_cost;
-        int current_cost = numeric_limits<int>::max();
-        for (int j = 0; j < 3; ++j) {
-            current_cost = min(
-                current_cost, 
-                traverse(i + 1, days[i] + x[j], total_cost + costs[j], days, costs)
-            );
-        }
-        if (days[i] < valid_until) {
-            current_cost = min (
-                current_cost,
-                traverse(i + 1, valid_until, total_cost, days, costs)
-            );
-        }
-        return current_cost;
+        return dp[last_day];
     }
 };
