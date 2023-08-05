@@ -6,22 +6,29 @@
 using namespace std;
 
 
+// Optimized with Leetcode's Sample 0 ms submission
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        int n = s.size();
+        n = s.size();
+        dp.resize(n, -1);
         unordered_set<string> words(wordDict.begin(), wordDict.end());
-        vector<bool> dp(n + 1);
-        dp[0] = true;
-        for (int right = 1; right <= n; ++right) {
-            for (int left = 0; left < right; ++left) {
-                if (dp[left] && 
-                    words.find(s.substr(left, right - left)) != words.end()) {
-                    dp[right] = true;
-                    break;
-                }
-            }
+        return solve(s, 0, words);
+    }
+private:
+    int n;
+    vector<int> dp;
+    bool solve(string& s, int i, unordered_set<string>& words) {
+        if (i == n)
+            return true;
+        if (dp[i] != -1)
+            return dp[i];
+        string subs;
+        for (int j = i; j < n; ++j) {
+            subs += s[j];
+            if (words.find(subs) != words.end() && solve(s, j + 1, words))
+                return true;
         }
-        return dp[n];
+        return dp[i] = 0;
     }
 };
