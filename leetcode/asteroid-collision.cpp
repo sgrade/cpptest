@@ -6,7 +6,6 @@
 using namespace std;
 
 
-// Wrong Answer on testcase [-2,-1,1,2]
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
@@ -25,14 +24,13 @@ public:
             abs_left = abs(left);
             abs_right = abs(right);
             
-            if (left + right != abs_left + abs_right) {
+            if (left > 0 && right < 0) {
                 if (abs_left == abs_right) {
                     lst.erase(left_it--);
-                    lst.erase(right_it--);
+                    lst.erase(right_it++);
                 }
                 else if (abs_left > abs_right) {
                     lst.erase(right_it++);
-                    ++left_it;
                 }
                 else {
                     lst.erase(left_it--);
@@ -45,8 +43,9 @@ public:
             }
 
             if (left_it == lst.begin()) {
-                ++right_it;
                 ++left_it;
+                right_it = left_it;
+                ++right_it;
             }
         }
 
