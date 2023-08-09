@@ -6,51 +6,34 @@
 using namespace std;
 
 
+// Based on Editorial's Approach: Stack
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
-
-        list<int> lst (asteroids.begin(), asteroids.end());
-        lst.emplace_front(0);
-        list<int>::iterator left_it = lst.begin(), right_it = lst.begin();
-        ++left_it;
-        ++right_it;
-        ++right_it;
-        int left, right, abs_left, abs_right;
-
-        while (right_it != lst.end()) {
-            left = *left_it;
-            right = *right_it;
-            abs_left = abs(left);
-            abs_right = abs(right);
-            
-            if (left > 0 && right < 0) {
-                if (abs_left == abs_right) {
-                    lst.erase(left_it--);
-                    lst.erase(right_it++);
+        stack<int> st;
+        bool current_asteroid_exlpodes;
+        for (const int& asteroid: asteroids) {
+            current_asteroid_exlpodes = false;
+            while (!st.empty() && st.top() > 0 && asteroid < 0) {
+                if (abs(st.top()) < abs(asteroid)) {
+                    st.pop();
+                    continue;
                 }
-                else if (abs_left > abs_right) {
-                    lst.erase(right_it++);
+                else if (abs(st.top()) == abs(asteroid)) {
+                    st.pop();
                 }
-                else {
-                    lst.erase(left_it--);
-                }
+                current_asteroid_exlpodes = true;
+                break;
             }
-            else {
-                ++right_it;
-                ++left_it;
-                continue;
-            }
-
-            if (left_it == lst.begin()) {
-                ++left_it;
-                right_it = left_it;
-                ++right_it;
-            }
+            if (!current_asteroid_exlpodes)
+                st.emplace(asteroid);
         }
-
-        left_it = lst.begin();
-        ++left_it;
-        return vector<int>(left_it, lst.end());
+        vector<int> ans(st.size());
+        int i = st.size() - 1;
+        while (!st.empty()) {
+            ans[i--] = st.top();
+            st.pop();
+        }
+        return ans;
     }
 };
