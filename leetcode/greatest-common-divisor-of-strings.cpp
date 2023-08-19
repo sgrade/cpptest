@@ -6,42 +6,13 @@
 using namespace std;
 
 
-// TLE
+// Based on Editorial's Approach 2: Greatest Common Divisor
 class Solution {
 public:
     string gcdOfStrings(string str1, string str2) {
-        string ans;
-
-        if (str1.size() < str2.size())
-            swap(str1, str2);
-        size_t n1 = str1.size(), n2 = str2.size();
-
-        for (int len = n2; len > 0; --len) {
-            if (n1 % len != 0 || n2 % len != 0)
-                continue;
-            string current_candidate = str2.substr(0, len);
-            size_t candidate_len = current_candidate.size();
-            bool found1 = false, found2 = false;
-            size_t i = 0;
-            while (i < n2) {
-                string tmp = str2.substr(i, candidate_len);
-                if (tmp != current_candidate)
-                    break;
-            }
-            if (i == n2) 
-                found2 = true;
-            i = 0;
-            while (i < n1) {
-                string tmp = str1.substr(i, candidate_len);
-                if (tmp != current_candidate)
-                    break;
-            }
-            if (i == n1)
-                found1 = true;
-            if (found1 && found2)
-                return current_candidate;
-        }
-
-        return ans;
+        if (str1 + str2 != str2 + str1)
+            return "";
+        int gcd_len = gcd (str1.size(), str2.size());
+        return str1.substr(0, gcd_len);
     }
 };
