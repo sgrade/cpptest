@@ -6,24 +6,27 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Bottom-Up Dynamic Programming
+// Based on Editorial's Approach 3: Space Optimized Bottom-Up Dynamic Programming
 class Solution {
 public:
     bool validPartition(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n + 1);
+        vector<int> dp(3);
         dp[0] = 1;
 
         for (int i = 0; i < n; ++i) {
             int dp_idx = i + 1;
+            bool ans = false;
             if (i > 0 && nums[i] == nums[i - 1])
-                dp[dp_idx] |= dp[dp_idx - 2];
+                ans |= dp[(dp_idx - 2) % 3];
             if (i > 1 && nums[i] == nums[i - 1] && nums[i] == nums[i - 2])
-                dp[dp_idx] |= dp[dp_idx - 3];
+                ans |= dp[(dp_idx - 3) % 3];
             if (i > 1 && nums[i] == nums[i - 1] + 1 && nums[i] == nums[i - 2] + 2)
-                dp[dp_idx] |= dp[dp_idx - 3];
+                ans |= dp[(dp_idx - 3) % 3];
+            
+            dp[dp_idx % 3] = ans;
         }
 
-        return dp[n];
+        return dp[n % 3];
     };
 };
