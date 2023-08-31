@@ -19,6 +19,8 @@ struct TreeNode {
 class Solution {
 public:
     vector<double> averageOfLevels(TreeNode* root) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         vector<double> ans;
 
         // BFS
@@ -26,13 +28,16 @@ public:
         queue<pair<int, TreeNode*>> q;
         q.emplace(0, root);
         
-        vector<vector<int>> levels;
+        // sum of vals, number of nodes
+        vector<pair<double, int>> levels;
         while (!q.empty()) {
             auto& [level, node] = q.front();
             if (levels.size() == level)
-                levels.emplace_back(vector<int>{node->val});
-            else
-                levels[level].emplace_back(node->val);
+                levels.emplace_back(node->val, 1);
+            else {
+                levels[level].first += node->val;
+                ++levels[level].second;
+            }
             if (node->left)
                 q.emplace(level + 1, node->left);
             if (node->right)
@@ -40,8 +45,8 @@ public:
             q.pop();
         }
 
-        for (const vector<int>& level: levels) {
-            ans.emplace_back(accumulate(level.begin(), level.end(), 0.0) / level.size());
+        for (const auto& [sum, nodes]: levels) {
+            ans.emplace_back(sum / nodes);
         }
         return ans;
     }
