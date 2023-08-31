@@ -24,30 +24,26 @@ public:
         vector<double> ans;
 
         // BFS
-        // level, node
-        queue<pair<int, TreeNode*>> q;
-        q.emplace(0, root);
+        queue<TreeNode*> q;
+        q.emplace(root);
         
-        // sum of vals, number of nodes
-        vector<pair<double, int>> levels;
         while (!q.empty()) {
-            auto& [level, node] = q.front();
-            if (levels.size() == level)
-                levels.emplace_back(node->val, 1);
-            else {
-                levels[level].first += node->val;
-                ++levels[level].second;
+            double sum = 0.0, cnt = 0;
+            queue<TreeNode*> temp;
+            while (!q.empty()) {
+                TreeNode* node = q.front();
+                q.pop();
+                sum += node->val;
+                ++cnt;
+                if (node->left)
+                    temp.emplace(node->left);
+                if (node->right)
+                    temp.emplace(node->right);
             }
-            if (node->left)
-                q.emplace(level + 1, node->left);
-            if (node->right)
-                q.emplace(level + 1, node->right);
-            q.pop();
+            ans.emplace_back(sum / cnt);
+            q = temp;
         }
 
-        for (const auto& [sum, nodes]: levels) {
-            ans.emplace_back(sum / nodes);
-        }
         return ans;
     }
 };
