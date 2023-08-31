@@ -28,13 +28,12 @@ public:
         q.emplace(root);
         
         while (!q.empty()) {
-            double sum = 0.0, cnt = 0;
+            double sum = 0.0, cnt = q.size();
             queue<TreeNode*> temp;
             while (!q.empty()) {
                 TreeNode* node = q.front();
                 q.pop();
                 sum += node->val;
-                ++cnt;
                 if (node->left)
                     temp.emplace(node->left);
                 if (node->right)
