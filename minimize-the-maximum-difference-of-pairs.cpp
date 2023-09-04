@@ -12,6 +12,8 @@ using namespace std;
 class Solution {
 public:
     int minimizeMax(vector<int>& nums, int p) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         n = nums.size();
         sort(nums.begin(), nums.end());
         int left = 0, right = nums[n - 1] - nums[0], mid;
