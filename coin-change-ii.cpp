@@ -6,26 +6,20 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Bottom-Up Dynamic Programming
+// Based on Editorial's Approach 3: Dynamic Programming with Space Optimization
 class Solution {
 public:
     int change(int amount, vector<int>& coins) {
         int n = coins.size();
-
-        // i - current coin, j - amount to get
-        vector<vector<int>> dp(n + 1, vector<int>(amount + 1));
-        for (vector<int>& num_of_ways: dp)
-            num_of_ways[0] = 1;
+        vector<int> dp(amount + 1);
+        dp[0] = 1;
         
         for (int i = n - 1; i >= 0; --i) {
-            for (int j = 1; j <= amount; ++j) {
-                if (coins[i] > j)
-                    dp[i][j] = dp[i + 1][j];
-                else
-                    dp[i][j] = dp[i + 1][j] + dp[i][j - coins[i]];
+            for (int j = coins[i]; j <= amount; ++j) {
+                dp[j] += dp[j - coins[i]];
             }
         }
 
-        return dp[0][amount];
+        return dp[amount];
     }
 };
