@@ -1,7 +1,12 @@
 // 92. Reverse Linked List II
 // https://leetcode.com/problems/reverse-linked-list-ii/
 
-// Based on Leetcode's Approach 2: Iterative Link Reversal.
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+// Based on Editorial's Approach 2: Iterative Link Reversal.
 
 // Definition for singly-linked list.
 struct ListNode {
@@ -15,37 +20,35 @@ struct ListNode {
 class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int left, int right) {
-        if (head == nullptr || head->next == nullptr) {
+        if (!head->next || left == right)
             return head;
-        }
-        
-        ListNode *current = head, *prev = nullptr;
-        
+
+        ListNode* cur = head;
+        ListNode* prev = nullptr;
         while (--left) {
-            prev = current;
-            current = current->next;
+            prev = cur;
+            cur = cur->next;
             --right;
         }
-        
-        ListNode *left_end = prev, *right_end = current;
-        
+
+        ListNode* prefix_end = prev;
+        ListNode* mid_end = cur;
+
         ListNode* nxt = nullptr;
         while (right--) {
-            nxt = current->next;
-            current->next = prev;
-            prev = current;
-            current = nxt;
+            nxt = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = nxt;
         }
-        
-        if (left_end != nullptr) {
-            left_end->next = prev;
-        }
-        else {
+
+        if (prefix_end != nullptr)
+            prefix_end->next = prev;
+        else
             head = prev;
-        }
         
-        right_end->next = current;
-        
+        mid_end->next = cur;
+
         return head;
     }
 };
