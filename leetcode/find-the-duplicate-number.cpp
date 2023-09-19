@@ -6,33 +6,22 @@
 using namespace std;
 
 
-// Based on Leetcode's Approach 5: Binary Search
+// Based on Editorial's Approach 7: Floyd's Tortoise and Hare (Cycle Detection)
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        int left = 1, right = nums.size();
-        int duplicate, mid;
-        while (left <= right) {
-            mid = left + (right - left) / 2;
-            if (CountLessOrEqual(mid, nums) > mid) {
-                duplicate = mid;
-                right = mid - 1;
-            }
-            else {
-                left = mid + 1;
-            }
-        }
-        return duplicate;
-    }
+        int tortoise = nums[0], hare = nums[0];
+        do {
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
+        } while (tortoise != hare);
 
-private:
-    int CountLessOrEqual (int current, vector<int> &nums) {
-        int cnt = 0;
-        for (const int &num: nums) {
-            if (num <= current) {
-                ++cnt;
-            }
+        tortoise = nums[0];
+        while (tortoise != hare){
+            tortoise = nums[tortoise];
+            hare = nums[hare];
         }
-        return cnt;
+
+        return hare;
     }
 };
