@@ -9,35 +9,25 @@ using namespace std;
 class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         
         int n = nums.size();
-        int total = accumulate(nums.begin(), nums.end(), 0);
-        
-        bool found = false;
-        int ans = n;
+        int target = accumulate(nums.begin(), nums.end(), 0) - x;
+        int ans = 1e5 + 1;
         
         int left = 0, right = 0, sum = 0;
-        
         while (right < n) {
-            
             sum += nums[right];
-            
-            while (sum > (total - x) && left <= right) {
+            while (sum > target && left <= right) {
                 sum -= nums[left];
                 ++left;
             }
-            
-            if (sum == (total - x)) {
-                found = true;
+            if (sum == target)
                 ans = min(ans, n - (right - left + 1));
-            }
-            
             ++right;
         }
         
-        if (!found)
-            return -1;
-        else 
-            return ans;
+        return ans == 1e5 + 1 ? -1 : ans;
     }
 };
