@@ -9,14 +9,16 @@ using namespace std;
 class Solution {
 public:
     string reverseWords(string s) {
-        string ans = "";
-        stringstream ss(s);
-        string word;
-        while (getline(ss, word, ' ')) {
-            reverse(word.begin(), word.end());
-            ans += word + ' ';
+        size_t n = s.size(), left = 0, right = 0;
+        while (left < s.size()) {
+            while (right < n && !isspace(s[right]))
+                ++right;
+            reverse(s.begin() + left, s.begin() + right);
+            left = right + 1;
+            while (left < n && s[left] == ' ')
+                ++left;
+            right = left;
         }
-        ans.pop_back();
-        return ans;
+        return s;
     }
 };
