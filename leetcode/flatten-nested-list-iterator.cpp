@@ -1,6 +1,6 @@
 // 341. Flatten Nested List Iterator
 // https://leetcode.com/problems/flatten-nested-list-iterator/
-// Based on https://leetcode.com/problems/flatten-nested-list-iterator/discuss/2017509/Easy-peasy-solution-C%2B%2B-.-Recursion.
+
 
 #include <bits/stdc++.h>
 
@@ -23,38 +23,41 @@ class NestedInteger {
     const vector<NestedInteger> &getList() const;
 };
 
+// Based on Editorial's Approach 2: Stack
 class NestedIterator {
 public:
     NestedIterator(vector<NestedInteger> &nestedList) {
-        flatten(nestedList);
+        for (int i = nestedList.size() - 1; i >= 0; --i)
+            st.emplace(nestedList[i]);
     }
     
     int next() {
-        return flattened[idx++];
+        if (!hasNext())
+            throw;
+        int ans = st.top().getInteger();
+        st.pop();
+        return ans;
     }
     
     bool hasNext() {
-        return idx < flattened.size();
+        makeStackTopAnInteger();
+        return !st.empty();
     }
 
 private:
-    vector<int> flattened;
-    int idx = 0;
-
-    void flatten(const vector<NestedInteger> &nestedList) {
-        for (const auto &next_element: nestedList) {
-            if (next_element.isInteger()) {
-                flattened.emplace_back(next_element.getInteger());
-            }
-            else {
-                flatten(next_element.getList());
-            }
+    stack<NestedInteger> st;
+    void makeStackTopAnInteger() {
+        while (!st.empty() && !st.top().isInteger()) {
+            vector<NestedInteger> nested_list = st.top().getList();
+            st.pop();
+            for (int i = nested_list.size() - 1; i >= 0; --i)
+                st.emplace(nested_list[i]);
         }
     }
 };
 
 /**
-Your NestedIterator object will be instantiated and called as such:
-NestedIterator i(nestedList);
-while (i.hasNext()) cout << i.next();
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i(nestedList);
+ * while (i.hasNext()) cout << i.next();
  */
