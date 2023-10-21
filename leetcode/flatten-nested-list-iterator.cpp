@@ -23,35 +23,32 @@ class NestedInteger {
     const vector<NestedInteger> &getList() const;
 };
 
-// Based on Editorial's Approach 2: Stack
+
+// Optimized with an idea from Sample 0 ms submission
 class NestedIterator {
 public:
     NestedIterator(vector<NestedInteger> &nestedList) {
-        for (int i = nestedList.size() - 1; i >= 0; --i)
-            st.emplace(nestedList[i]);
+        parse(nestedList);
     }
     
     int next() {
-        if (!hasNext())
-            throw;
-        int ans = st.top().getInteger();
-        st.pop();
-        return ans;
+        int next_integer = q.front();
+        q.pop();
+        return next_integer;
     }
     
     bool hasNext() {
-        makeStackTopAnInteger();
-        return !st.empty();
+        return !q.empty();
     }
 
 private:
-    stack<NestedInteger> st;
-    void makeStackTopAnInteger() {
-        while (!st.empty() && !st.top().isInteger()) {
-            vector<NestedInteger> nested_list = st.top().getList();
-            st.pop();
-            for (int i = nested_list.size() - 1; i >= 0; --i)
-                st.emplace(nested_list[i]);
+    queue<int> q;
+    void parse(const vector<NestedInteger>& nested_list) {
+        for (const NestedInteger& ni: nested_list) {
+            if (ni.isInteger())
+                q.emplace(ni.getInteger());
+            else
+                parse(ni.getList());
         }
     }
 };
