@@ -6,48 +6,28 @@
 using namespace std;
 
 
-// Memory Limit Exceeded
 class Solution {
 public:
     int maximalNetworkRank(int n, vector<vector<int>>& roads) {
-        vector<vector<int>> adj(n);
+        vector<int> neighbors(n);
+        vector<vector<bool>> connected(n, vector<bool>(n));
         for (const vector<int>& road: roads) {
-            adj[road[0]].emplace_back(road[1]);
-            adj[road[1]].emplace_back(road[0]);
-        }
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        pq.emplace(adj[0].size(), 0);
-        pq.emplace(adj[1].size(), 1);
-        for (int city = 2; city < n; ++city) {
-            int connected_roads = adj[city].size();
-            if (connected_roads < pq.top().first)
-                continue;
-            else if (connected_roads > pq.top().first)
-                pq.pop();
-            pq.emplace(connected_roads, city);
+            ++neighbors[road[0]];
+            ++neighbors[road[1]];
+            connected[road[0]][road[1]] = true;
+            connected[road[1]][road[0]] = true;
         }
         
-        // There can be multiple cities with the same number of roads;
-        int second_max_roads = pq.top().first;
-        vector<int> second_max_cities;
-        while (pq.top().first == second_max_roads) {
-            second_max_cities.emplace_back(pq.top().second);
-            pq.pop();
-        }
-        
-        int max_roads = pq.top().first;
-        int ans = max_roads + second_max_roads;
-        
-        while (!pq.empty()) {
-            int max_city = pq.top().second;
-            vector<int>& neighbors = adj[max_city];
-            for (const int& city: second_max_cities) {
-                if (find(neighbors.begin(), neighbors.end(), city) == neighbors.end())
-                    return ans;
+        int ans = 0, current_ans;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                current_ans = neighbors[i] + neighbors[j];
+                if (connected[i][j])
+                    --current_ans;
+                ans = max(ans, current_ans);
             }
-            pq.pop();
         }
         
-        return ans - 1;
+        return ans;
     }
 };
