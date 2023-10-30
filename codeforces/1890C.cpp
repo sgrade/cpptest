@@ -1,9 +1,8 @@
 // C. Qingshan Loves Strings 2
-// NOT FINISHED
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <deque>
 
 using namespace std;
 
@@ -21,34 +20,55 @@ int main() {
         string s;
         cin >> s;
 
-        bool ans = true;
-        vector<int> output;
+        vector<int> ans;
 
         if (n % 2 != 0) {
-            ans = false;
-            goto ANS;
+            cout << "-1\n";
+            continue;
         }
 
-        // The string is already good
-        for (int i = 0; i < n / 2; ++i) {
-            if (s[i] == s[n - i - 1]) {
-                ans = false;
-                break;
+        int zeroes = 0, ones = 0;
+        deque<char> q;
+        for (int i = 0; i < n; ++i) {
+            if (s[i] == '0')
+                ++zeroes;
+            else
+                ++ones;
+            q.emplace_back(s[i]);
+        }
+
+        if (zeroes != ones) {
+            cout << "-1\n";
+            continue;
+        }
+
+        int idx = 0;
+        while (!q.empty()) {
+            if (q.front() == q.back()) {
+                if (q.front() == '0') {
+                    q.emplace_back('0');
+                    q.emplace_back('1');
+                    ans.emplace_back(n - idx);
+                }
+                else {
+                    q.emplace_front('1');
+                    q.emplace_front('0');
+                    ans.emplace_back(idx);
+                }
+                n += 2;
+            }
+            while (!q.empty() && q.front() != q.back()) {
+                q.pop_front();
+                q.pop_back();
+                ++idx;
             }
         }
-        if (ans)
-            goto ANS;
 
+        cout << ans.size() << '\n';
+        for (const int& el: ans)
+            cout << el << ' ';
+        cout << "\n";
 
-        ANS:
-            if (!ans)
-                cout << "-1\n";
-            else {
-                cout << output.size() << "\n";
-                for (const int& el: output)
-                    cout << el << ' ';
-                cout << "\n";
-            }
     }
 
     return 0;
