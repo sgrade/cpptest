@@ -6,26 +6,31 @@
 using namespace std;
 
 
+// Optimized with ideas from a sample 16ms solution.
 class Solution {
 public:
     string sortVowels(string s) {
-        vector<char> chars;
-        queue<int> indexes;
-        for (int i = 0; i < s.size(); ++i) {
-            if (vowels.find(s[i]) != vowels.end()) {
-                chars.emplace_back(s[i]);
-                indexes.emplace(i);
-            }
+        int n = s.size();
+        vector<int> counter(128);
+        for (int i = 0; i < n; ++i) {
+            if (isVowel(s[i]))
+                ++counter[s[i] - 'A'];
         }
-        sort(chars.begin(), chars.end());
-        int i;
-        for (const char& ch: chars) {
-            i = indexes.front();
-            indexes.pop();
-            s[i] = ch;
+        int counter_idx = 0;
+        for (int i = 0; i <n; ++i) {
+            if (isVowel(s[i])) {
+                while (counter[counter_idx] == 0)
+                    ++counter_idx;
+                s[i] = counter_idx + 'A';
+                --counter[counter_idx];
+            }
         }
         return s;
     }
 private:
-    unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+    bool isVowel(char ch) {
+        if (ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u' || ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U')
+            return true;
+    return false;
+    }
 };
