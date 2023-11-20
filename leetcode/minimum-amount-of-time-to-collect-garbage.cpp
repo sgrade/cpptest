@@ -24,15 +24,11 @@ public:
         }
 
         int ans = 0;
-        int distance = 0;
         // Total travel
-        for (int i = 1; i < n; ++i) {
-            distance += travel[i - 1];
-            for (const auto& [_, last_idx]: last) {
-                if (i == last_idx)
-                    ans += distance;
-            }
-        }
+        for (int i = 1; i < n - 1; ++i)
+            travel[i] += travel[i - 1];
+        for (const auto& [unit, last_idx]: last)
+            ans += last[unit] == 0 ? 0 : travel[last_idx - 1];
         // Total collect garbage
         for (const auto& [_, count]: counter)
             ans += count;
