@@ -20,14 +20,19 @@ public:
     }
 private:
     bool check (vector<int> v) {
-        auto [mn, mx] = minmax_element(v.begin(), v.end());
+        int mn = numeric_limits<int>::max(), mx = numeric_limits<int>::min();
         int n = v.size();
-        if ((*mx - *mn) % (n - 1) != 0)
+        unordered_set<int> elements;
+        for (const int& el: v) {
+            mn = min(mn, el);
+            mx = max(mx, el);
+            elements.emplace(el);
+        }
+        if ((mx - mn) % (n - 1) != 0)
             return false;
-        int d = ((*mx - *mn) / (n - 1));
-        unordered_set<int> elements(v.begin(), v.end());
-        int current = *mn + d;
-        while (current < *mx) {
+        int d = ((mx - mn) / (n - 1));
+        int current = mn + d;
+        while (current < mx) {
             if (elements.find(current) == elements.end())
                 return false;
             current += d;
