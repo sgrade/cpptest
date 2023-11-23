@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: No Sorting
 class Solution {
 public:
     vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
@@ -19,11 +20,17 @@ public:
     }
 private:
     bool check (vector<int> v) {
-        sort(v.begin(), v.end());
-        int d = v[1] - v[0];
-        for (int i = 2; i < v.size(); ++i) {
-            if (v[i] - v[i - 1] != d)
+        auto [mn, mx] = minmax_element(v.begin(), v.end());
+        int n = v.size();
+        if ((*mx - *mn) % (n - 1) != 0)
+            return false;
+        int d = ((*mx - *mn) / (n - 1));
+        unordered_set<int> elements(v.begin(), v.end());
+        int current = *mn + d;
+        while (current < *mx) {
+            if (elements.find(current) == elements.end())
                 return false;
+            current += d;
         }
         return true;
     }
