@@ -6,26 +6,26 @@
 using namespace std;
 
 
-// NOT FINISHED
+// Optimized with Editorial's Approach 2: Two Pointers
 class Solution {
 public:
     bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2) {
-        int i = 0, j = -1, n2 = word2.size();
-        for (const string& s: word1) {
-            for (const char& ch: s) {
-                ++j;
-                if (i == n2 && j == -1)
-                    return false;
-                if (ch != word2[i][j])
-                    return false;
-                if (j == word2[i].size() - 1) {
-                    ++i;
-                    j = -1;
-                }
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        int i1 = 0, j1 = 0, i2 = 0, j2 = 0;
+        int n1 = word1.size(), n2 = word2.size();
+        while (i1 < n1 && i2 < n2) {
+            if (word1[i1][j1++] != word2[i2][j2++])
+                return false;
+            if (j1 == word1[i1].size()) {
+                ++i1;
+                j1 = 0;
+            }
+            if (j2 == word2[i2].size()) {
+                ++i2;
+                j2 = 0;
             }
         }
-        if (i != n2 - 1 && j != -1)
-            return false;
-        return true;
+        return i1 == n1 && i2 == n2;
     }
 };
