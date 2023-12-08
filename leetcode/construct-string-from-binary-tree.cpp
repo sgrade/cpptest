@@ -19,13 +19,7 @@ struct TreeNode {
 class Solution {
 public:
     string tree2str(TreeNode* root) {
-        if (root != nullptr)
-            ans += to_string(root->val);
-        if (root->left == nullptr && root->right != nullptr) {
-            ans += "()";
-        }
-        dfs(root->left);
-        dfs(root->right);
+        dfs(root);
         return ans;
     }
 private:
@@ -33,13 +27,16 @@ private:
     void dfs(TreeNode* node) {
         if (node == nullptr)
             return;
-        ans += '(';
         ans += to_string(node->val);
-        if (node->left == nullptr && node->right != nullptr) {
-            ans += "()";
-        }
+        if (node->left == nullptr && node->right == nullptr)
+            return;
+        ans += '(';
         dfs(node->left);
-        dfs(node->right);
         ans += ')';
+        if (node->right != nullptr) {
+            ans += '(';
+            dfs(node->right);
+            ans += ')';
+        }
     }
 };
