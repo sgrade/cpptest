@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -16,21 +17,18 @@ struct TreeNode {
 };
 
 class Solution {
-private:
-    vector<int> ans;
-    
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-        ans.clear();
         dfs(root);
         return ans;
     }
-    
-    void dfs(TreeNode* cur) {
-        if (cur != nullptr) {
-            dfs(cur->left);
-            ans.push_back(cur->val);
-            dfs(cur->right);
-        }
+private:
+    vector<int> ans;
+    void dfs(TreeNode* node) {
+        if (node == nullptr)
+            return;
+        dfs(node->left);
+        ans.emplace_back(node->val);
+        dfs(node->right);
     }
 };
