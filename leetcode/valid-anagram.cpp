@@ -9,23 +9,16 @@ using namespace std;
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if (s.size() != t.size()) {
+        if (s.size() != t.size())
             return false;
-        }
-        unordered_map<char, int> counter_s, counter_t;
-        for (char &c: s) {
-            ++counter_s[c];
-        }
-        for (char &c: t) {
-            ++counter_t[c];
-        }
-        bool ans = true;
-        for (auto const& [key, value]: counter_s) {
-            if (counter_t[key] != value) {
-                ans = false;
-                break;
-            }
-        }
-        return ans ? true : false;
+        vector<int> counter(26);
+        for (const char& ch: s)
+            ++counter[ch - 'a'];
+        for (const char& ch: t)
+            --counter[ch - 'a'];
+        for (const int& cnt: counter)
+            if (cnt != 0)
+                return false;
+        return true;
     }
 };
