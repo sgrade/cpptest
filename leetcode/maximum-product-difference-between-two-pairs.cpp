@@ -9,8 +9,22 @@ using namespace std;
 class Solution {
 public:
     int maxProductDifference(vector<int>& nums) {
-        int n = nums.size();
-        sort(nums.begin(), nums.end());
-        return (nums[n - 1] * nums[n - 2] - nums[1] * nums[0]);
+        // from smallest to largest
+        int mn1 = 1e4, mn2 = 1e4, mx1 = 0, mx2 = 0;
+        for (const int& num: nums) {
+            if (num > mx2) {
+                mx1 = mx2;
+                mx2 = num;
+            }
+            else
+                mx1 = max(mx1, num);
+            if (num < mn1) {
+                mn2 = mn1;
+                mn1 = num;
+            }
+            else
+                mn2 = min(mn2, num);
+        }
+        return mx2 * mx1 - mn1 * mn2;
     }
 };
