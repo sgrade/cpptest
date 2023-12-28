@@ -6,26 +6,27 @@
 using namespace std;
 
 
+// Optimized with ideas from sample 7ms solution
 class Solution {
 public:
     int lengthOfLongestSubstringTwoDistinct(string s) {
-        if (s.size() < 3) return s.size();
-        int ans = 2;
-        map<char, int> chars;
-        int left = 0, right = 0;
-        while (right < s.size()) {
-            chars[s[right]] = right;
-            ++right;
-            if (chars.size() == 3) {
-                int idx = s.size();
-                for (const auto &[key, value]: chars) {
-                    idx = min(idx, value);
-                }
-                chars.erase(s[idx]);
-                left = idx + 1;
+        int n = s.size(), ans = 1;
+        int left = 0, right = 0, cnt = 0;
+        vector<int> idxs(58);
+        while (right < n) {
+            if (cnt == 3) {
+                ans = max(ans, right - left - 1);
+                // If there are no such chars to the left
+                int idx = s[left] - 'A';
+                cnt -= --idxs[idx] == 0;
+                ++left;
             }
-            ans = max(ans, right - left);
+            else {
+                int idx = s[right] - 'A';
+                cnt += ++idxs[idx] == 1;
+                ++right;
+            }
         }
-        return ans;
+        return max(ans, right - left - (cnt == 3));
     }
 };
