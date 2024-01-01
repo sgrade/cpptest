@@ -9,15 +9,18 @@ using namespace std;
 class Solution {
 public:
     int findContentChildren(vector<int>& g, vector<int>& s) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         sort(g.begin(), g.end());
         sort(s.begin(), s.end());
-        int ans = 0;
         int len_s = s.size(), len_g = g.size();
-        for (int s_idx = 0, g_idx = 0; g_idx < len_g; ++g_idx, ++s_idx) {
-            while (s_idx < len_s && s[s_idx] < g[g_idx]) ++s_idx;
-            if (s_idx == len_s) break;
-            ++ans;
+        int s_idx = 0, g_idx = 0;
+        // Optimized with Editorial's solution
+        while (s_idx < len_s && g_idx < len_g) {
+            if (s[s_idx] >= g[g_idx])
+                ++g_idx;
+            ++s_idx;
         }
-        return ans;
+        return g_idx;
     }
 };
