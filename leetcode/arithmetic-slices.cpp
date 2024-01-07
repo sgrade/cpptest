@@ -9,23 +9,18 @@ using namespace std;
 class Solution {
 public:
     int numberOfArithmeticSlices(vector<int>& nums) {
-        n = nums.size();
+        int n = nums.size(), ans = 0;
         if (n < 3)
             return 0;
-        check(nums, 2, nums[1] - nums[0], 2);
+        int diff = nums[1] - nums[0], cur_len = 2;
+        for (int i = 2; i < n; ++i) {
+            int cur_diff = nums[i] - nums[i - 1];
+            if (cur_diff == diff)
+                ans += ++cur_len - 2;
+            else
+                cur_len = 2;
+            diff = cur_diff; 
+        }
         return ans;
-    }
-private:
-    int n;
-    int ans = 0;
-    void check(vector<int>& nums, int idx, int diff, int cur_len) {
-        if (idx == n)
-            return;
-        int cur_diff = nums[idx] - nums[idx - 1];
-        if (cur_diff == diff)
-            ans += ++cur_len - 2;
-        else
-            cur_len = 2;
-        check (nums, idx + 1, cur_diff, cur_len);
     }
 };
