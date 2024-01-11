@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// WRONG ANSWER
+// Improved with Editorial's Approach 2: One-Pass Depth-First Search
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -21,33 +21,30 @@ class Solution {
 public:
     int amountOfTime(TreeNode* root, int start) {
         this->start = start;
-        traverse(root, false, 0);
-        if (root_to_bottom != 0)
-            ans = root_to_bottom + root_to_infected;
-        else
-            ans = root_to_infected;
-        ans = max(ans, infected_to_bottom);
+        traverse(root);
         return ans;
     }
 private:
     int start;
     int ans = 0;
-    int root_to_infected = 0, infected_to_bottom = 0, root_to_bottom = 0;
-    void traverse (TreeNode* node, int depth, bool infected_in_subtree) {
+    int traverse (TreeNode* node) {
+        if (node == nullptr)
+            return 0;
+        int depth = 0;
+        int left_depth = traverse(node->left);
+        int right_depth = traverse(node->right);
+        
         if (node->val == start) {
-            infected_in_subtree = true;
-            root_to_infected = depth;
-            depth = 0;
+            ans = max(left_depth, right_depth);
+            depth -= 1;
         }
-        if (node->left)
-            traverse(node->left, depth + 1, infected_in_subtree);
-        if (node->right)
-            traverse(node->right, depth + 1, infected_in_subtree);
-        if (!node->left && !node->right) {
-            if (infected_in_subtree)
-                infected_to_bottom = max(infected_to_bottom, depth);
-            else
-                root_to_bottom = max(root_to_bottom, depth);
-        } 
+        else if (left_depth >= 0 && right_depth >= 0)
+            depth = max(left_depth, right_depth) + 1;
+        else {
+            int cur_ans = abs(left_depth) + abs(right_depth);
+            ans = max(cur_ans, ans);
+            depth = min(left_depth, right_depth) - 1;
+        }
+        return depth;
     }
 };
