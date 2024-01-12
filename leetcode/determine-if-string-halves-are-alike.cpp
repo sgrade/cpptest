@@ -10,19 +10,17 @@ class Solution {
 public:
     bool halvesAreAlike(string s) {
         int n = s.size();
-        unordered_map<char, int> h1, h2;
+        transform(s.begin(), s.end(), s.begin(), ::tolower); 
         int i = 0;
-        for (; i < n/2; ++i)
-            ++h1[s[i]];
-        for (; i < n; ++i)
-            ++h2[s[i]];
         int cnt1 = 0, cnt2 = 0;
-        for (const char& ch: vowels) {
-            cnt1 += h1[ch];
-            cnt2 += h2[ch];
+        for (; i < n/2; ++i) {
+            if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u')
+                ++cnt1;
+        }
+        for (; i < n; ++i) {
+            if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u')
+                ++cnt2;
         }
         return cnt1 == cnt2;
     }
-private:
-    unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
 };
