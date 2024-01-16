@@ -9,7 +9,8 @@ using namespace std;
 class RandomizedSet {
 public:
     RandomizedSet() {
-        
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
     }
     
     bool insert(int val) {
@@ -33,9 +34,7 @@ public:
     }
     
     int getRandom() {
-        uniform_int_distribution<> distrib(0, v.size() - 1);
-        int random_index = distrib(rd);
-        return v[random_index];
+        return v[rand()%v.size()];
     }
 private:
     vector<int> v;
