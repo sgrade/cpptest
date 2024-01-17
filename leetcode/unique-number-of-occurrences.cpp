@@ -12,12 +12,9 @@ public:
         unordered_map<int, int> counter;
         for (const int& el: arr)
             ++counter[el];
-        unordered_map<int, int> num_of_occurences;
-        for (auto& [_, cnt]: counter) {
-            ++num_of_occurences[cnt];
-            if (num_of_occurences[cnt] > 1)
-                return false;
-        }
-        return true;
+        unordered_set<int> num_of_occurences;
+        for (auto& [_, cnt]: counter)
+            num_of_occurences.emplace(cnt);
+        return counter.size() == num_of_occurences.size();
     }
 };
