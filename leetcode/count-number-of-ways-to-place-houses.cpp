@@ -9,24 +9,16 @@ using namespace std;
 class Solution {
 public:
     int countHousePlacements(int n) {
-        dp.resize(n + 1, vector<int>(2, - 1));
-        long long one_side_count = (count(n, false) + count(n, true)) % MOD;
-        return (one_side_count * one_side_count) % MOD;
+        vector<int> placed(n + 1), empty(n + 1);
+        placed[1] = 1;
+        empty[1] = 1;
+        for (int i = 2; i <= n; ++i) {
+            placed[i] = empty[i - 1];
+            empty[i] = (placed[i - 1] + empty[i - 1]) % MOD;
+        }
+        long long ans = (placed[n] + empty[n]) % MOD;
+        return ans * ans % MOD;
     }
-
 private:
     long long MOD = 1e9 + 7;
-    vector<vector<int>> dp;
-    long long count(int n, bool placed) {
-        if (n == 1)
-            return 1;
-        if (dp[n][placed] != -1)
-            return dp[n][placed];
-        // the adjacent cell should be empty
-        if (placed)
-            return dp[n][1] = count(n - 1, false);
-        // the adjacent cell can be left empty or house can be placed there
-        else
-            return dp[n][0] = (count(n - 1, false) + count(n - 1, true)) % MOD;
-    }
 };
