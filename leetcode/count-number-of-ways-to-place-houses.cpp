@@ -9,15 +9,14 @@ using namespace std;
 class Solution {
 public:
     int countHousePlacements(int n) {
-        vector<int> placed(n + 1), empty(n + 1);
-        placed[1] = 1;
-        empty[1] = 1;
+        long long prev_prev = 1LL, prev = 2LL, cur = 2LL;
         for (int i = 2; i <= n; ++i) {
-            placed[i] = empty[i - 1];
-            empty[i] = (placed[i - 1] + empty[i - 1]) % MOD;
+            cur = (prev_prev + prev) % MOD;
+            prev_prev = prev;
+            prev = cur;
         }
-        long long ans = (placed[n] + empty[n]) % MOD;
-        return ans * ans % MOD;
+        cur = 1LL * cur * cur % MOD;
+        return cur;
     }
 private:
     long long MOD = 1e9 + 7;
