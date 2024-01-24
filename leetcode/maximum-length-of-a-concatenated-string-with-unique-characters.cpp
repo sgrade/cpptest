@@ -9,28 +9,28 @@ using namespace std;
 class Solution {
 public:
     int maxLength(vector<string>& arr) {
-        vector<vector<bool>> seen(1, vector<bool>(26));
         int ans = 0;
-        for (const string& s: arr) {
-            for (int i = 0; i < seen.size(); ++i) {
-                vector<bool> current = seen[i];
-                bool duplicate_found = false;
-                for (const char& ch: s) {
-                    int idx = ch - 'a';
-                    if (current[idx]) {
-                        duplicate_found = true;
-                        break;
-                    }
-                    else
-                        current[idx] = true;
-                }
-                if (duplicate_found)
-                    continue;
-                seen.emplace_back(current);
-                int current_ans = count(current.begin(), current.end(), true);
-                ans = max(ans, current_ans);
+        for (int i = 0; i < arr.size(); ++i)
+            ans = max(ans, dfs(i, vector<bool>(26), arr));
+        return ans;
+    }
+private:
+    int dfs(int idx, vector<bool> current, vector<string>& arr) {
+        bool duplicate_found = false;
+        for (const char& ch: arr[idx]) {
+            int idx = ch - 'a';
+            if (current[idx]) {
+                duplicate_found = true;
+                break;
             }
+            else
+                current[idx] = true;
         }
+        if (duplicate_found)
+            return 0;
+        int ans = count(current.begin(), current.end(), true);
+        for (int i = idx + 1; i < arr.size(); ++i)
+            ans = max(ans, dfs(i, current, arr));
         return ans;
     }
 };
