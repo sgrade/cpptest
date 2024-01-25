@@ -26,8 +26,7 @@ private:
             pick1_pick2 = dfs(text1, text2, i1 + 1, i2 + 1, ans + 1);
         int pick1_skip2 = dfs(text1, text2, i1, i2 + 1, ans);
         int skip1_pick2 = dfs(text1, text2, i1 + 1, i2, ans);
-        int skip1_skip2 = dfs(text1, text2, i1 + 1, i2 + 1, ans);
-        ans = max({pick1_pick2, pick1_skip2, skip1_pick2, skip1_skip2});
+        ans = max({pick1_pick2, pick1_skip2, skip1_pick2});
         return ans;
     }
 };
