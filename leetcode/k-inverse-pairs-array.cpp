@@ -6,28 +6,22 @@
 using namespace std;
 
 
-// Time Limit Exceeded
-// Based on Editorial's Approach 2: Using Recursion with Memoization
+// Based on Editorial's Approach 3: Dynamic Programming
 class Solution {
 public:
     int kInversePairs(int n, int k) {
-        memo.resize(1001, vector<int>(1001));
-        return getPairs(n, k); 
-    }
-private:
-    vector<vector<int>> memo;
-    int MOD = 1e9 + 7;
-    int getPairs (int n, int k) {
-        if (n == 0)
-            return 0;
-        if (k == 0)
-            return 1;
-        if (memo[n][k] != 0)
-            return memo[n][k];
-        int ans = 0;
-        for (int i = 0; i <= min(k, n - 1); ++i)
-            ans = (ans + getPairs(n - 1, k - i)) % MOD;
-        memo[n][k] = ans;
-        return ans;
+        const int MOD = 1e9 + 7;
+        vector<vector<int>> dp(n + 1, vector<int>(k + 1));
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j <= k; ++j) {
+                if (j == 0)
+                    dp[i][j] = 1;
+                else {
+                    for (int p = 0; p <= min(j, i - 1); ++p)
+                        dp[i][j] = (dp[i][j] + dp[i - 1][j - p]) % MOD;
+                }
+            }
+        }
+        return dp[n][k];
     }
 };
