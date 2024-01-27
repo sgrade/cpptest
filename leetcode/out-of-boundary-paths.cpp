@@ -6,30 +6,34 @@
 using namespace std;
 
 
-// Based on sample 0 ms solution
+// Based on Approach 3: Dynamic Programming
 class Solution {
 public:
     int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        rows = m, cols = n;
-        vector dp(m + 1, vector(n + 1, vector<int>(maxMove + 1, -1)));
-        return getNumOfPaths (startRow, startColumn, maxMove, dp);
-    }
-private:
-    int rows, cols;
-    int MOD = 1e9 + 7;
-    vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-    int getNumOfPaths (int row, int col, int moves, vector<vector<vector<int>>>& dp) {
-        if (row < 0 || col < 0 || row >= rows || col >= cols) 
-            return 1;
-        if (moves == 0)
-            return 0;
-        if (dp[row][col][moves] != -1)
-            return dp[row][col][moves];
-        
+        const int MOD = 1e9 + 7;
+        vector<vector<int>> dp(m, vector<int>(n));
+        dp[startRow][startColumn] = 1;
         int ans = 0;
-        for (const auto& [row_diff, col_diff]: directions)
-            ans = (ans + getNumOfPaths(row + row_diff, col + col_diff, moves - 1, dp) % MOD) % MOD;
-        return dp[row][col][moves] = ans;
+        for (int moves = 1; moves <= maxMove; ++moves) {
+            vector<vector<int>> temp(m, vector<int>(n));
+            for (int row = 0; row < m; ++row) {
+                for (int col = 0; col < n; ++col) {
+                    if (row == 0)
+                        ans = (ans + dp[row][col]) % MOD;
+                    if (row == m - 1)
+                        ans = (ans + dp[row][col]) % MOD;
+                    if (col == 0)
+                        ans = (ans + dp[row][col]) % MOD;
+                    if (col == n - 1)
+                        ans = (ans + dp[row][col]) % MOD;
+                    temp[row][col] = (
+                        ((row > 0 ? dp[row - 1][col] : 0) + (row < m - 1 ? dp[row + 1][col] : 0)) % MOD + 
+                        ((col > 0 ? dp[row][col - 1] : 0) + (col < n - 1 ? dp[row][col + 1] : 0)) % MOD
+                    ) % MOD;
+                }
+            }
+            dp = temp;
+        }
+        return ans;
     }
 };
