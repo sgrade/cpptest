@@ -7,6 +7,7 @@ using namespace std;
 
 
 // Based on Editorial's Approach #2 (Two Stacks) Push - O(1)O(1)O(1) per operation, Pop - Amortized O(1)O(1)O(1) per operation.
+// Optimized with sample 0 ms solution
 class MyQueue {
 public:
     MyQueue() {
@@ -21,10 +22,8 @@ public:
     
     int pop() {
         if (st2.empty()) {
-            int tmp;
             while (!st1.empty()){
-                tmp = st1.top();
-                st2.emplace(tmp);
+                st2.emplace(st1.top());
                 st1.pop();
             }
         }
@@ -34,9 +33,13 @@ public:
     }
     
     int peek() {
-        if (!st2.empty())
-            return st2.top();
-        return frnt;
+        if (st2.empty()) {
+            while (!st1.empty()) {
+                st2.emplace(st1.top());
+                st1.pop();
+            }
+        }
+        return st2.top();
     }
     
     bool empty() {
