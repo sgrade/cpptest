@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// Based on Editorial's Approach #2 (Two Stacks) Push - O(1)O(1)O(1) per operation, Pop - Amortized O(1)O(1)O(1) per operation.
 class MyQueue {
 public:
     MyQueue() {
@@ -13,31 +14,28 @@ public:
     }
     
     void push(int x) {
-        st1.emplace(x);
-        if (st1.size() == 1) {
+        if (st1.empty())
             frnt = x;
-        }
+        st1.emplace(x);
     }
     
     int pop() {
-        while(st1.size() > 1) {
-            st2.emplace(st1.top());
-            st1.pop();
+        if (st2.empty()) {
+            int tmp;
+            while (!st1.empty()){
+                tmp = st1.top();
+                st2.emplace(tmp);
+                st1.pop();
+            }
         }
-        int former_front = st1.top();
-        st1.pop();
-
-        if (!st2.empty()) {
-            frnt = st2.top();
-        }
-        while(!st2.empty()) {
-            st1.emplace(st2.top());
-            st2.pop();
-        }
-        return former_front;
+        int prev_front = st2.top();
+        st2.pop();
+        return prev_front;
     }
     
     int peek() {
+        if (!st2.empty())
+            return st2.top();
         return frnt;
     }
     
