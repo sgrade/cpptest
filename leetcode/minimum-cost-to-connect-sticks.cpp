@@ -9,7 +9,9 @@ using namespace std;
 class Solution {
 public:
     int connectSticks(vector<int>& sticks) {
-        long long ans = 0;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        int ans = 0;
         priority_queue<int, vector<int>, greater<int>> min_heap(sticks.begin(), sticks.end());
         int nxt;
         while (min_heap.size() > 1) {
