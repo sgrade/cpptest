@@ -27,17 +27,17 @@ public:
                 nums.emplace(x);
             }
         }
-        return (int)nums.top();
+        return nums.top();
     }
     
-    long ops(const string &op, const int &num1, const int &num2) {
-        long output;
+    int ops(const string &op, const int &num1, const int &num2) {
+        int output;
         if (op == "+")
             output = num1 + num2;
         else if (op == "-")
             output = num1 - num2;
         else if (op == "*")
-            output = 1L * num1 * num2;
+            output = num1 * num2;
         else
             output = num1 / num2;
         return output;
