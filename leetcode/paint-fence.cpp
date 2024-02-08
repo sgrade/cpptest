@@ -10,18 +10,17 @@ using namespace std;
 class Solution {
 public:
     int numWays(int n, int k) {
+        dp.resize(n + 1, -1);
         return TotalWays(n, k);
     }
 
 private:
-    unordered_map<int, int> dp;
-
+    vector<int> dp;
     int TotalWays (int i, const int& k) {
         if (i == 1) return k;
         if (i == 2) return k * k;
-        if (dp.find(i) != dp.end()) {
+        if (dp[i] != -1)
             return dp[i];
-        }
         dp[i] = (k - 1) * (TotalWays(i - 1, k) + TotalWays(i - 2, k));
         return dp[i];
     }
