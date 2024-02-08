@@ -6,22 +6,14 @@
 using namespace std;
 
 
-// Based on Leetcode's Approach 1: Top-Down Dynamic Programming (Recursion + Memoization)
+// Based on Editorial's Approach 2: Bottom-Up Dynamic Programming (Tabulation)
 class Solution {
 public:
     int numWays(int n, int k) {
-        dp.resize(n + 1, -1);
-        return TotalWays(n, k);
-    }
-
-private:
-    vector<int> dp;
-    int TotalWays (int i, const int& k) {
-        if (i == 1) return k;
-        if (i == 2) return k * k;
-        if (dp[i] != -1)
-            return dp[i];
-        dp[i] = (k - 1) * (TotalWays(i - 1, k) + TotalWays(i - 2, k));
-        return dp[i];
+        vector<int> dp(max(n + 1, 3));
+        dp[1] = k, dp[2] = k * k;
+        for (int i = 3; i <= n; ++i)
+            dp[i] = (k - 1) * (dp[i - 1] + dp[i - 2]);
+        return dp[n];
     }
 };
