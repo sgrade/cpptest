@@ -6,24 +6,27 @@
 using namespace std;
 
 
-// Based on Editorial's Approach #2: Dynamic Programming
+// Based on Editorial's Approach #3: Expand Around Possible Centers
 class Solution {
 public:
     int countSubstrings(string s) {
-        int n = s.size(), ans = n;
-        vector<vector<bool>> dp(n, vector<bool>(n));
-        for (int i = 0; i < n; ++i)
-            dp[i][i] = true;
-        for (int i = 0; i < n - 1; ++i) {
-            dp[i][i + 1] = s[i] == s[i + 1];
-            ans += dp[i][i + 1];
-        }
-        for (int len = 3; len <= n; ++len) {
-            for (int i = 0, j = i + len - 1; j < n; ++i, ++j) {
-                dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j]);
-                ans += dp[i][j];
-            }
+        int n = s.size(), ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans += countAroundCenter(s, i, i);
+            ans += countAroundCenter(s, i, i + 1);
         }
         return ans;
+    }
+
+    int countAroundCenter(const string& s, int left, int right) {
+        int current_n = s.size(), current_ans = 0;
+        while (left >= 0 && right < current_n) {
+            if (s[left] != s[right])
+                break;
+            --left;
+            ++right;
+            ++current_ans;
+        }
+        return current_ans;
     }
 };
