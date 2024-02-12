@@ -11,18 +11,18 @@ using namespace std;
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int count = 0, candidate = -1;
         for (int i = 0; i < nums.size(); ++i) {
             if (count == 0) {
                 candidate = nums[i];
                 count = 1;
             }
-            else if (nums[i] == candidate) {
+            else if (nums[i] == candidate)
                 ++count;
-            }
-            else {
+            else
                 --count;
-            }
         }
         return candidate;
     }
