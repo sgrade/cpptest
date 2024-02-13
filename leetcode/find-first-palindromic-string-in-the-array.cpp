@@ -9,21 +9,11 @@ using namespace std;
 class Solution {
 public:
     string firstPalindrome(vector<string>& words) {
-        for (const string& s: words)
-            if (isPalindrome(s))
+        for (const string& s: words) {
+            // From https://en.cppreference.com/w/cpp/algorithm/equal
+            if (std::equal(s.cbegin(), s.cbegin() + s.size() / 2, s.crbegin()))
                 return s;
-        return "";
-    }
-private:
-    int n;
-    bool isPalindrome(const string& s) {
-        int left = 0, right = s.size() - 1;
-        while (left < right) {
-            if (s[left] != s[right])
-                return false;
-            ++left;
-            --right;
         }
-        return true;
+        return "";
     }
 };
