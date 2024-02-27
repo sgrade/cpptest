@@ -18,24 +18,18 @@ struct TreeNode {
 
 class Solution {
 public:
-    int maxD = 0;
-    
-    int diameterOfBinaryTree(TreeNode* root) {
+    int diameterOfBinaryTree(TreeNode* root) {;
         dfs(root);
-        return maxD;
+        return ans;
     }
-    
-    int dfs(TreeNode* curNode) {
-        
-        if (curNode == nullptr) return 0;
-        
-        int left = dfs(curNode->left);
-        int right = dfs(curNode->right);
-        
-        int curD = left + right;
-        
-        maxD = max(maxD, curD);
-        
-        return max(left, right) + 1;
+private:
+    int ans = 0;
+    int dfs(TreeNode* node) {
+        if (node == nullptr)
+            return 0;
+        int left = dfs(node->left);
+        int right = dfs(node->right);
+        ans = max(ans, left + right);
+        return 1 + max(left, right);
     }
 };
