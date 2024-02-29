@@ -26,8 +26,8 @@ public:
         bool even_level = true;
         while (!q.empty()) {
             int prev = even_level ? 0 : 1e6 + 1;
-            queue<TreeNode*> next_q;
-            while (!q.empty()) {
+            int nodes = q.size();
+            while (nodes--) {
                 TreeNode* node = q.front();
                 q.pop();
                 if (even_level) {
@@ -40,11 +40,10 @@ public:
                 }
                 prev = node->val;
                 if (node->left)
-                    next_q.emplace(node->left);
+                    q.emplace(node->left);
                 if (node->right)
-                    next_q.emplace(node->right);
+                    q.emplace(node->right);
             }
-            q = next_q;
             even_level = !even_level;
         }
         return true;
