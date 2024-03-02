@@ -9,6 +9,8 @@ using namespace std;
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int n = nums.size(), left = 0, right = n - 1;
         vector<int> ans(n);
         int ans_idx = n - 1;
