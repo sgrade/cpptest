@@ -19,19 +19,24 @@ struct ListNode {
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        unordered_map<int, pair<ListNode*, ListNode*>> lst;
-        ListNode *prev = new ListNode, *cur = head;
-        prev->next = head;
-        head = prev;
-        int i = 1;
-        while (cur) {
-            lst[i] = {prev, cur->next};
-            prev = cur;
-            cur = cur->next;
-            ++i;
+        int nodes = 0;
+        ListNode* node = head;
+        while (node) {
+            ++nodes;
+            node = node->next;
         }
-        n = i - n;
-        lst[n].first->next = lst[n].second;
-        return head->next;
+
+        nodes -= n;
+        if (nodes == 0)
+            return head->next;
+
+        --nodes;
+        node = head;
+        while (nodes--)
+            node = node->next;
+        node->next = node->next->next;
+        
+        return head;
     }
 };
+
