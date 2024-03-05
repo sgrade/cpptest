@@ -9,6 +9,8 @@ using namespace std;
 class Solution {
 public:
     int minimumLength(string s) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         if (s.size() == 1)
             return 1;
         int left = 0, right = s.size() - 1;
