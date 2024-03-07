@@ -18,14 +18,12 @@ struct ListNode {
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        ListNode* two_steps = head;
-        while (two_steps) {
-            two_steps = two_steps->next;
-            if (!two_steps) 
-                break;
-            head = head->next;
-            two_steps = two_steps->next;
+        ListNode* tortoise = head;
+        ListNode* hare = head;
+        while (hare->next && hare->next->next) {
+            tortoise = tortoise->next;
+            hare = hare->next->next;
         }
-        return head;
+        return hare->next ? tortoise->next : tortoise;
     }
 };
