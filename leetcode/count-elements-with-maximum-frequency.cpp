@@ -9,6 +9,8 @@ using namespace std;
 class Solution {
 public:
     int maxFrequencyElements(vector<int>& nums) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         unordered_map<int, int> counter;
         for (const int& num: nums)
             ++counter[num];
