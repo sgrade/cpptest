@@ -9,7 +9,9 @@ using namespace std;
 class Solution {
 public:
     int minMeetingRooms(vector<vector<int>>& intervals) {
-        
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         int n = intervals.size();
         vector<int> start(n), end(n);
         for (int i = 0; i < n; ++i) {
@@ -18,16 +20,16 @@ public:
         }
         sort(start.begin(), start.end());
         sort(end.begin(), end.end());
-        
+
         int ans = 0;
-        
+
         int idx_s = 0, idx_e = 0;
-        
+
         for (idx_s = 0; idx_s < n; ++idx_s) {
             if (end[idx_e] <= start[idx_s]) ++idx_e;
             else ++ans;
         }
-        
+
         return ans;
     }
 };
