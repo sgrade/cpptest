@@ -6,29 +6,22 @@
 using namespace std;
 
 
-// WRONG ANSWER
+// Based on Editorial's 525. Contiguous Array
 class Solution {
 public:
     int findMaxLength(vector<int>& nums) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
-        int zeroes = 0, ones = 0, ans = 0, left = 0;
-        for (int right = 0; right < nums.size(); ++right) {
-            if (nums[right] == 1)
-                ++ones;
+        int cnt = 0, ans = 0;
+        // <cnt, index>
+        unordered_map<int, int> counter;
+        counter.emplace(0, -1);
+        for (int i = 0; i < nums.size(); ++i) {
+            cnt += nums[i] == 0 ? -1 : 1;
+            if (counter.find(cnt) != counter.end())
+                ans = max(ans, i - counter[cnt]);
             else
-                ++zeroes;
-            if (zeroes == ones)
-                ans = max(ans, right - left + 1);
-            else {
-                if (right % 2 != 0) {
-                    if (nums[left] == 1)
-                        --ones;
-                    else
-                        --zeroes;
-                    ++left;
-                }
-            }
+                counter[cnt] = i;
         }
         return ans;
     }
