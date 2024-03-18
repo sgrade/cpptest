@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Binary Search
+// Based on Editorial's Approach 2: Binary Search. Modified with iterators (slow runtime, but memory efficient).
 class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
@@ -25,14 +25,17 @@ public:
         }
         intervals.insert(intervals.begin() + left, newInterval);
 
-        vector<vector<int>> ans;
-        ans.emplace_back(intervals[0]);
-        for (int i = 1; i < n + 1; ++i) {
-            if (ans.back()[1] < intervals[i][0])
-                ans.emplace_back(intervals[i]);
-            else
-                ans.back()[1] = max(ans.back()[1], intervals[i][1]);
+        vector<vector<int>>::iterator prev = intervals.begin(), cur = intervals.begin() + 1;
+        while (cur != intervals.end()) {
+            if ((*prev)[1] < (*cur)[0]) {
+                ++prev;
+                ++cur;
+            }
+            else {
+                (*prev)[1] = max((*prev)[1], (*cur)[1]);
+                intervals.erase(cur);
+            }
         }
-        return ans;
+        return intervals;
     }
 };
