@@ -18,23 +18,17 @@ struct ListNode {
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         ListNode* prev = nullptr;
         ListNode* cur = head;
-        ListNode* next;
-        
+        ListNode* nxt;
         while (cur) {
-            next = cur->next;
+            nxt = cur->next;
             cur->next = prev;
             prev = cur;
-            cur = next;
+            cur = nxt;
         }
-        
         return prev;
     }
 };
-
-
-int main() {
-    return 0;
-}
