@@ -15,38 +15,37 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+// Based on Editorial's Approach 1: Reverse the Second Part of the List and Merge Two Sorted Lists
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        if (head == nullptr || head->next == nullptr) {
-            return;
+        ListNode* tortoise = head;
+        ListNode* hare = head;
+
+        while (hare && hare->next) {
+            tortoise = tortoise->next;
+            hare = hare->next->next;
         }
-        
-        vector<ListNode*> temp;
-        ListNode *current = head, *nxt;
-        while (current) {
-            nxt = current->next;
-            current->next = nullptr;
-            temp.emplace_back(current);
-            current = nxt;
+
+        ListNode* prev = nullptr;
+        ListNode* cur = tortoise;
+        ListNode* tmp;
+        while (cur) {
+            tmp = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = tmp;
         }
-        
-        int left = 0, right = temp.size() - 1;
-        ListNode *pre_ans = new ListNode(0);
-        nxt = pre_ans;
-        while (left < right) {
-            current = temp[left];
-            nxt->next = temp[left];
-            nxt = temp[right];
-            current->next = nxt;
-            ++left;
-            --right;
+
+        ListNode* first = head;
+        ListNode* second = prev;
+        while (second->next) {
+            tmp = first->next;
+            first->next = second;
+            first = tmp;
+            tmp = second->next;
+            second->next = first;
+            second = tmp;
         }
-        if (left == right) {
-            nxt->next = temp[left];
-        }
-        
-        head = pre_ans->next;
-        return;
     }
 };
