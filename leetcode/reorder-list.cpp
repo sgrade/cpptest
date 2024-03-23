@@ -19,6 +19,9 @@ struct ListNode {
 class Solution {
 public:
     void reorderList(ListNode* head) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         ListNode* tortoise = head;
         ListNode* hare = head;
 
