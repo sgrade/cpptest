@@ -19,6 +19,9 @@ struct ListNode {
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         if (head == nullptr) return nullptr;
         ListNode* intersect = GetIntersect(head);
         if (intersect == nullptr) return nullptr;
