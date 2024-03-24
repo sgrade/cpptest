@@ -10,6 +10,9 @@ using namespace std;
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         int tortoise = nums[0], hare = nums[0];
         do {
             tortoise = nums[tortoise];
