@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         vector<int> ans;
         for (int& num: nums) {
             if (nums[abs(num) - 1] < 0)
