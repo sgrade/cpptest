@@ -9,14 +9,14 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLastWord(string s) {
-        int end_pos = s.size() - 1;
-        while (end_pos >= 0 && s[end_pos] == ' ') {
-            --end_pos;
-        }
-        int start_pos = end_pos;
-        while (start_pos >= 0 && s[start_pos] != ' ') {
-            --start_pos;
-        }
-        return end_pos - start_pos;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        int pos = s.size() - 1;
+        while (s[pos] == ' ')
+            --pos;
+        int ans = 0;
+        while (pos >= 0 && s[pos--] != ' ')
+            ++ans;
+        return ans;
     }
 };
