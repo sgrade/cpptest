@@ -15,14 +15,12 @@ public:
         for (int i = 0; i < s.size(); ++i) {
             idx_s = s[i] - 0;
             idx_t = t[i] - 0;
-            if (chars[idx_s] == t[i]) {
+            if (chars[idx_s] == t[i])
                 continue;
-            }
-
             else {
                 if (chars[idx_s] != 0)
                     return false;
-                if (mapped[idx_t] != 0) 
+                if (mapped[idx_t])
                     return false;
                 chars[idx_s] = t[i];
                 mapped[idx_t] = true;
