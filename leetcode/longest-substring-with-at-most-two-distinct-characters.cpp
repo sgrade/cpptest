@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstringTwoDistinct(string s) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int n = s.size(), ans = 1;
         int left = 0, right = 0, cnt = 0;
         vector<int> idxs(58);
