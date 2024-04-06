@@ -6,41 +6,39 @@
 using namespace std;
 
 
-// Memory Limit Exceeded
+// Based on Editorial's Approach 3: Shortened Two Pass String Builder
 class Solution {
 public:
     string minRemoveToMakeValid(string s) {
         // '(' adds 1, ')' removes 1)
-        int parentheses = 0;
-        Check (s, 0, "", parentheses);
+        int balance = 0, open = 0;
+        string first_pass = "";
+        for (int i = 0; i < s.size(); ++i) {
+            if (s[i] == '(') {
+                ++open;
+                ++balance;
+            }
+            else if (s[i] == ')') {
+                if (balance == 0)
+                    continue;
+                --balance;
+            }
+            first_pass += s[i];
+        }
+
+        if (balance == 0)
+            return first_pass;
+
+        string ans = "";
+        int open_to_keep = open - balance;
+        for (int i = 0; i < first_pass.size(); ++i) {
+            if (first_pass[i] == '(') {
+                --open_to_keep;
+                if (open_to_keep < 0)
+                    continue;
+            }
+            ans += first_pass[i];
+        }
         return ans;
-    }
-private:
-    string ans;
-    void Check (const string& s, int i, string current, int parentheses) {
-        if (i >= s.size()) {
-            if (parentheses == 0)
-                if (current.size() > ans.size())
-                    ans = current;
-            return;
-        }
-        char ch = s[i];
-        if (ch != '(' && ch != ')')
-            Check (s, i + 1, current + ch, parentheses);
-        else {
-            if (ch == '(') {
-                // We can keep or remove
-                Check (s, i + 1, current + ch, parentheses + 1);
-                Check (s, i + 1, current, parentheses);
-            }
-            else { // ch == ')'
-                if (parentheses == 0) // We can only remove it
-                    Check (s, i + 1, current, parentheses);
-                else {  // parentheses should be positive
-                    --parentheses;
-                    Check (s, i + 1, current + ch, parentheses);
-                }
-            }
-        }
     }
 };
