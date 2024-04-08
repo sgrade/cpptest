@@ -6,40 +6,22 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: Counting
 class Solution {
 public:
     int countStudents(vector<int>& students, vector<int>& sandwiches) {
         int zero_students = count(students.begin(), students.end(), 0);
-        int zero_sandwiches = count(sandwiches.begin(), sandwiches.end(), 0);
-        if (zero_sandwiches - zero_students == 0)
-            return 0;
-
-        // which type of sandwiches exceed number of students which want it?
-        // Note: nobody will want this type of sandwich after all students,
-        // who want it, get it, so the queue stops
-        int sandwich_type = 1;
-        if (zero_sandwiches > zero_students)
-            sandwich_type = 0;
-
-        int student_count = sandwich_type == 0 ? zero_students : students.size() - zero_students;
-        queue<int> q;
-        for (const int& student: students)
-            q.emplace(student);
-        int i = 0;
-        while (i < sandwiches.size()) {
-            int current_student = q.front();
-            q.pop();
-            if (current_student == sandwiches[i]) {
-                ++i;
-                if (current_student == sandwich_type)
-                    --student_count;
-            }
+        int one_students = students.size() - zero_students;
+        for (const int& sandwich: sandwiches) {
+            if (sandwich == 0 && zero_students == 0)
+                return one_students;
+            if (sandwich == 1 && one_students == 0)
+                return zero_students;
+            if (sandwich == 0)
+                --zero_students;
             else
-                q.emplace(current_student);
-
-            if (sandwich_type == sandwiches[i] && student_count == 0)
-                break;
+                --one_students;
         }
-        return q.size();
+        return 0;
     }
 };
