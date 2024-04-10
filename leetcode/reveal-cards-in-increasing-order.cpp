@@ -9,16 +9,15 @@ using namespace std;
 class Solution {
 public:
     vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        int n = deck.size();
         sort(deck.begin(), deck.end());
         queue<int> q;
-        for (int i = 0; i < deck.size(); ++i)
+        for (int i = 0; i < n; ++i)
             q.emplace(i);
 
-        int idx_deck = 0;
         vector<int> ans(deck.size());
-        while (!q.empty()) {
-            int idx_q = q.front();
-            ans[idx_q] = deck[idx_deck++];
+        for (int i = 0; i < n; ++i) {
+            ans[q.front()] = deck[i];
             q.pop();
             if (!q.empty()) {
                 q.emplace(q.front());
