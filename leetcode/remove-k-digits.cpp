@@ -6,31 +6,21 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Greedy with Stack
+// Optimized with ideas from a sample solution
 class Solution {
 public:
     string removeKdigits(string num, int k) {
-        deque<char> dq;
+        string ans = "";
         for (const char& ch: num) {
-            while (!dq.empty() && k > 0 && dq.back() > ch) {
-                dq.pop_back();
+            while (!ans.empty() && ans.back() > ch && k > 0) {
+                ans.pop_back();
                 --k;
             }
-            dq.emplace(dq.end(), ch);
+            if (ch != '0' || !ans.empty())
+                ans.push_back(ch);
         }
-
-        for (int i = 0; i < k; ++i)
-            dq.pop_back();
-
-        string ans = "";
-        while (!dq.empty() && dq.front() == '0')
-            dq.pop_front();
-
-        while (!dq.empty()) {
-            ans += dq.front();
-            dq.pop_front();
-        }
-
+        for (int i = 0; !ans.empty() && i < k; ++i)
+            ans.pop_back();
         if (ans.size() == 0)
             return "0";
         return ans;
