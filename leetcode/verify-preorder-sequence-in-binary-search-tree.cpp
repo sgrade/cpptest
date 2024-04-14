@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     bool verifyPreorder(vector<int>& preorder) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         vector<int>::iterator current_it = preorder.begin();
         Traverse(current_it, preorder.end(), numeric_limits<int>::min(), numeric_limits<int>::max());
         return (current_it == preorder.end());
