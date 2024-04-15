@@ -19,26 +19,20 @@ struct TreeNode {
 class Solution {
 public:
     int sumNumbers(TreeNode* root) {
-        int ans = 0;
-        dfs(root, ans, 0);
+        dfs(root, root->val);
         return ans;
     }
-    
 private:
-    void dfs(TreeNode* node, int &ans, int current_sum) {
-        if (node == nullptr) {
-            return;
-        }
-        
-        current_sum *= 10;
-        current_sum += node->val;
-        
+    int ans = 0;
+    void dfs (TreeNode* node, int num) {
         if (node->left == nullptr && node->right == nullptr) {
-            ans += current_sum;
+            ans += num;
             return;
         }
-        
-        dfs(node->left, ans, current_sum);
-        dfs(node->right, ans, current_sum);
+        num *= 10;
+        if (node->left)
+            dfs(node->left, num + node->left->val);
+        if (node->right)
+            dfs(node->right, num + node->right->val);
     }
 };
