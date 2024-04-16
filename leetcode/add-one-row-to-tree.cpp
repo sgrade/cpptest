@@ -48,12 +48,10 @@ public:
             q.pop();
             TreeNode* old_left = node->left;
             TreeNode* old_right = node->right;
-            TreeNode* new_left = new TreeNode(val);
-            TreeNode* new_right = new TreeNode(val);
-            node->left = new_left;
-            node->right = new_right;
-            new_left->left = old_left;
-            new_right->right = old_right;
+            node->left = new TreeNode(val);
+            node->right = new TreeNode(val);
+            node->left->left = old_left;
+            node->right->right = old_right;
         }
 
         return root;
