@@ -10,6 +10,8 @@ using namespace std;
 class Solution {
 public:
     string removeDuplicates(string s) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         string ans = "";
         for (const char& ch: s) {
             if (!ans.empty() && ch == ans.back())
