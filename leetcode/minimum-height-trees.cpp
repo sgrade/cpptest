@@ -11,6 +11,8 @@ using namespace std;
 class Solution {
 public:
     vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         vector<int> ans;
         if (n < 2) {
             for (int i = 0; i < n; ++i)
