@@ -6,16 +6,21 @@
 using namespace std;
 
 
+// Based on a sample solution
 class Solution {
 public:
     int findMaxK(vector<int>& nums) {
-        int ans = -1;
-        unordered_set<int> seen;
-        for (const int& num: nums) {
-            if (seen.find(-num) != seen.end())
-                ans = max(ans, abs(num));
-            seen.emplace(num);
+        sort(nums.begin(), nums.end());
+        int left = 0, right = nums.size() - 1;
+        while (left < right && nums[left] < 0 && nums[right] > 0) {
+            int candidate = abs(nums[left]);
+            if (candidate == nums[right])
+                return candidate;
+            if (candidate > nums[right])
+                ++left;
+            else
+                --right;
         }
-        return ans;
+        return -1;
     }
 };
