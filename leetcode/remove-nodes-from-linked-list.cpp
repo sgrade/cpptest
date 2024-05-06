@@ -21,38 +21,41 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        // <val, index>
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        set<int> to_remove;
-
-        ListNode* node = head;
-        int i = 0;
-        while (node) {
-            while (!pq.empty() && pq.top().first < node->val) {
-                to_remove.emplace(pq.top().second);
-                pq.pop();
-            }
-            pq.emplace(node->val, i++);
-            node = node->next;
-        }
-
-        i = 0;
-        ListNode* pre_head = new ListNode(0);
-        pre_head->next = head;
-        node = pre_head;
-        set<int>::iterator it = to_remove.begin();
-        while (it != to_remove.end()) {
-            int current_idx = *it;
-            if (i == current_idx) {
-                if (node->next->next)
-                    node->next = node->next->next;
-                ++it;
+        ListNode* prev = nullptr;
+        ListNode* current = head;
+        ListNode* nxt = head->next;
+        while (current) {
+            current->next = prev;
+            prev = current;
+            if (nxt) {
+                current = nxt;
+                nxt = current->next;
             }
             else
-                node = node->next;
-            ++i;
+                break;
         }
 
-        return pre_head->next;
+        int current_max = 0;
+        prev = nullptr;
+        nxt = current->next;
+        while (current) {
+            if (current->val >= current_max) {
+                current_max = current->val;
+                current->next = prev;
+                prev = current;
+                if (nxt) {
+                    current = nxt;
+                    nxt = current->next;
+                }
+                else
+                    break;
+            }
+            else {
+                current = current->next;
+                nxt = current ? current->next : nullptr;
+            }
+        }
+
+        return prev;
     }
 };
