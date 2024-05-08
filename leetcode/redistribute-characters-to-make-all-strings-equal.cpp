@@ -9,13 +9,13 @@ using namespace std;
 class Solution {
 public:
     bool makeEqual(vector<string>& words) {
-        unordered_map<int, int> counter;
+        vector<int> counter(26);
         for (const string& word: words) {
             for (const char& ch: word)
-                ++counter[ch];
+                ++counter[ch - 'a'];
         }
         int n = words.size();
-        for (const auto& [_, cnt]: counter) {
+        for (const int& cnt: counter) {
             if (cnt % n != 0)
                 return false;
         }
