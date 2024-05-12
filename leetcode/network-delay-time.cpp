@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 2: Breadth-First Search (BFS)
+// Based on Editorial's Approach 3: Dijkstra's Algorithm
 class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
@@ -20,7 +20,7 @@ public:
         }
 
         vector<int> signal_received_at(n + 1, INT_MAX);
-        Bfs(signal_received_at, k);
+        Dijkstra(signal_received_at, k, n);
 
         int ans = INT_MIN;
         for (int node = 1; node <= n; ++node)
@@ -30,18 +30,20 @@ public:
     }
 private:
     vector<vector<pair<int, int>>> adj;
-    void Bfs(vector<int>& signal_received_at, const int& k) {
-        queue<int> q;
-        q.emplace(k);
+    void Dijkstra(vector<int>& signal_received_at, const int& k, const int& n) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.emplace(0, k);
         signal_received_at[k] = 0;
-        while (!q.empty()) {
-            int node = q.front();
-            q.pop();
+        while (!pq.empty()) {
+            const auto [current_time, node] = pq.top();
+            pq.pop();
+            if (current_time > signal_received_at[node])
+                continue;
             for (const auto& [time, neighbor]: adj[node]) {
-                int arrival_time = signal_received_at[node] + time;
-                if (signal_received_at[neighbor] > arrival_time) {
-                    signal_received_at[neighbor] = arrival_time;
-                    q.emplace(neighbor);
+                int time_through_current_node = current_time + time;
+                if (signal_received_at[neighbor] > time_through_current_node) {
+                    signal_received_at[neighbor] = time_through_current_node;
+                    pq.emplace(time_through_current_node, neighbor);
                 }
             }
         }
