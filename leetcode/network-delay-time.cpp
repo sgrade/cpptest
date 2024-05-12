@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 1: Depth-First Search (DFS)
+// Based on Editorial's Approach 2: Breadth-First Search (BFS)
 class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
@@ -18,11 +18,9 @@ public:
             int source = time[0], dest = time[1], travel_time = time[2];
             adj[source].emplace_back(travel_time, dest);
         }
-        for (vector<pair<int, int>>& v: adj)
-            sort(v.begin(), v.end());
 
         vector<int> signal_received_at(n + 1, INT_MAX);
-        dfs(signal_received_at, k, 0);
+        Bfs(signal_received_at, k);
 
         int ans = INT_MIN;
         for (int node = 1; node <= n; ++node)
@@ -32,11 +30,20 @@ public:
     }
 private:
     vector<vector<pair<int, int>>> adj;
-    void dfs(vector<int>& signal_received_at, int current_node, int current_time) {
-        if (current_time >= signal_received_at[current_node])
-            return;
-        signal_received_at[current_node] = current_time;
-        for (auto& [travel_time, neighbor_node]: adj[current_node])
-            dfs(signal_received_at, neighbor_node, current_time + travel_time);
+    void Bfs(vector<int>& signal_received_at, const int& k) {
+        queue<int> q;
+        q.emplace(k);
+        signal_received_at[k] = 0;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            for (const auto& [time, neighbor]: adj[node]) {
+                int arrival_time = signal_received_at[node] + time;
+                if (signal_received_at[neighbor] > arrival_time) {
+                    signal_received_at[neighbor] = arrival_time;
+                    q.emplace(neighbor);
+                }
+            }
+        }
     }
 };
