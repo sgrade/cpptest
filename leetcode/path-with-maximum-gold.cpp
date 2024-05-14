@@ -6,7 +6,6 @@
 using namespace std;
 
 
-// TLE
 class Solution {
 public:
     int getMaximumGold(vector<vector<int>>& grid) {
@@ -27,7 +26,7 @@ public:
 private:
     int rows, cols;
     vector<pair<int, int>> directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-    int dfs (int row, int col, vector<vector<int>> grid) {
+    int dfs (int row, int col, vector<vector<int>>& grid) {
         int current_cell = grid[row][col];
         grid[row][col] = 0;
         int current_ans = 0;
@@ -39,6 +38,7 @@ private:
                 continue;
             current_ans = max(current_ans, dfs(new_row, new_col, grid));
         }
+        grid[row][col] = current_cell;
         return current_ans + current_cell;
     }
 };
