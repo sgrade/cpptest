@@ -6,8 +6,7 @@
 using namespace std;
 
 
-// Wrong answer
-// 1034 / 1036 testcases passed
+// Used Dijkstra-like algorithm to find the shortest path from the source to the destination.
 class Solution {
 public:
     int maximumSafenessFactor(vector<vector<int>>& grid) {
@@ -22,11 +21,11 @@ public:
         for (int row = 0; row < rows; ++row) {
             for (int col = 0; col < cols; ++col) {
                 if (grid[row][col] == 1) {
-                    grid[row][col] = 401;
+                    grid[row][col] = 500;
                     q.emplace(row, col);
                 }
                 else
-                    grid[row][col] = 400;
+                    grid[row][col] = 410;
             }
         }
 
@@ -36,10 +35,10 @@ public:
             while (n--) {
                 const auto [row, col] = q.front();
                 q.pop();
-                moves = grid[row][col] == 401 ? 0 : grid[row][col];
+                moves = grid[row][col] == 500 ? 0 : grid[row][col];
                 for (const auto& [diff_r, diff_c]: directions) {
                     int new_row = row + diff_r, new_col = col + diff_c;
-                    if (IsValid(new_row, new_col) && grid[new_row][new_col] == 400) {
+                    if (IsValid(new_row, new_col) && grid[new_row][new_col] == 410) {
                         grid[new_row][new_col] = moves + 1;
                         q.emplace(new_row, new_col);
                     }
@@ -47,11 +46,11 @@ public:
             }
         }
 
-        int min_distance = 401;
+        int min_distance = 500;
         // priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
         priority_queue<pair<int, pair<int, int>>> pq;
         pq.emplace(grid[0][0], pair<int, int>(0, 0));
-        grid[0][0] = 401;
+        grid[0][0] = 500;
         while (!pq.empty()) {
             const auto [current_distance, coordinates] = pq.top();
             pq.pop();
@@ -61,11 +60,11 @@ public:
                 return min_distance;
             for (const auto& [diff_r, diff_c]: directions) {
                 int new_row = row + diff_r, new_col = col + diff_c;
-                if (!IsValid(new_row, new_col) || grid[new_row][new_col] == 401)
+                if (!IsValid(new_row, new_col) || grid[new_row][new_col] == 500)
                     continue;
                 pq.emplace(grid[new_row][new_col], pair<int, int>(new_row, new_col));
                 // Mark visited
-                grid[new_row][new_col] = 401;
+                grid[new_row][new_col] = 500;
             }
         }
         return 0;
