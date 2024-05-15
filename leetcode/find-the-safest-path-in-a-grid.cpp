@@ -6,8 +6,8 @@
 using namespace std;
 
 
-// Runtime Error
-// 528 / 1036 testcases passed
+// Wrong answer
+// 1034 / 1036 testcases passed
 class Solution {
 public:
     int maximumSafenessFactor(vector<vector<int>>& grid) {
@@ -32,17 +32,17 @@ public:
 
         int moves = 0;
         while (!q.empty()) {
-            const auto& [row, col] = q.front();
-            moves = grid[row][col] == 401 ? 0 : grid[row][col];
             int n = q.size();
-            q.pop();
             while (n--) {
+                const auto [row, col] = q.front();
+                q.pop();
+                moves = grid[row][col] == 401 ? 0 : grid[row][col];
                 for (const auto& [diff_r, diff_c]: directions) {
                     int new_row = row + diff_r, new_col = col + diff_c;
-                    if (!IsValid(new_row, new_col) || grid[new_row][new_col] == 401 || grid[new_row][new_col] <= moves + 1)
-                        continue;
-                    grid[new_row][new_col] = moves + 1;
-                    q.emplace(new_row, new_col);
+                    if (IsValid(new_row, new_col) && grid[new_row][new_col] == 400) {
+                        grid[new_row][new_col] = moves + 1;
+                        q.emplace(new_row, new_col);
+                    }
                 }
             }
         }
