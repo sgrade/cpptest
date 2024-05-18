@@ -7,7 +7,7 @@ using namespace std;
 
 
 // Time Limit Exceeded
-// 28 / 54 testcases passed
+// 47 / 54 testcases passed
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
@@ -17,30 +17,26 @@ public:
             adj[from_city].emplace_back(to_city, price);
         }
 
-        // <price, {stops_left, total_price, to_city}>
+        // {total_price, stops_left, to_city}
         priority_queue<
-            pair<int, vector<int>>,
-            vector<pair<int, vector<int>>>,
-            greater<pair<int, vector<int>>>
+            vector<int>, vector<vector<int>>, greater<vector<int>>
             > pq;
 
-        int ans = numeric_limits<int>::max();
         for (const auto& [to_city, price]: adj[src])
-            pq.emplace(price, vector<int>{k, 0, to_city});
+            pq.emplace(vector<int>{price, k, to_city});
 
         while (!pq.empty()) {
-            const auto [price, v] = pq.top();
-            int stops_left = v[0], total_price = v[1], current_city = v[2];
+            auto& v = pq.top();
+            int total_price = v[0], stops_left = v[1], current_city = v[2];
             pq.pop();
-            total_price += price;
             if (current_city == dst)
-                ans = min(ans, total_price);
+                return total_price;
             if (stops_left > 0) {
                 for (const auto& [to_city, price]: adj[current_city])
-                    pq.emplace(price, vector<int>{stops_left - 1, total_price, to_city});
+                    pq.emplace(vector<int>{total_price + price, stops_left - 1, to_city});
             }
         }
 
-        return ans == numeric_limits<int>::max() ? -1 : ans;
+        return -1;
     }
 };
