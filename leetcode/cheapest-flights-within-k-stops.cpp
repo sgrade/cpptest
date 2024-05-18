@@ -6,8 +6,6 @@
 using namespace std;
 
 
-// Time Limit Exceeded
-// 47 / 54 testcases passed
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
@@ -17,24 +15,26 @@ public:
             adj[from_city].emplace_back(to_city, price);
         }
 
-        // {total_price, stops_left, to_city}
+        // {total_price, stops, to_city}
         priority_queue<
             vector<int>, vector<vector<int>>, greater<vector<int>>
             > pq;
+        pq.emplace(vector<int>{0, 0, src});
 
-        for (const auto& [to_city, price]: adj[src])
-            pq.emplace(vector<int>{price, k, to_city});
+        // Visited with steps - the idea is from Editorial's Approach 3: Dijkstra
+        vector<int> visited(n, numeric_limits<int>::max());
 
         while (!pq.empty()) {
-            auto& v = pq.top();
-            int total_price = v[0], stops_left = v[1], current_city = v[2];
+            const vector<int>& v = pq.top();
+            int total_price = v[0], stops = v[1], current_city = v[2];
             pq.pop();
+            if (stops > visited[current_city] || stops > k + 1)
+                continue;
+            visited[current_city] = stops;
             if (current_city == dst)
                 return total_price;
-            if (stops_left > 0) {
-                for (const auto& [to_city, price]: adj[current_city])
-                    pq.emplace(vector<int>{total_price + price, stops_left - 1, to_city});
-            }
+            for (const auto& [to_city, price]: adj[current_city])
+                pq.emplace(vector<int>{total_price + price, stops + 1, to_city});
         }
 
         return -1;
