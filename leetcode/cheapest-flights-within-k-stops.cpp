@@ -6,37 +6,37 @@
 using namespace std;
 
 
+// BFS
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         vector<vector<pair<int, int>>> adj(n);
         for (const vector<int>& f: flights) {
-            int from_city = f[0], to_city = f[1], price = f[2];
-            adj[from_city].emplace_back(to_city, price);
+            int from_city = f[0], to_city = f[1], flight_price = f[2];
+            adj[from_city].emplace_back(to_city, flight_price);
         }
 
-        // {total_price, stops, to_city}
-        priority_queue<
-            vector<int>, vector<vector<int>>, greater<vector<int>>
-            > pq;
-        pq.emplace(vector<int>{0, 0, src});
-
-        // Visited with steps - the idea is from Editorial's Approach 3: Dijkstra
+        // {total_price, to_city}
+        queue<pair<int, int>> q;
+        q.emplace(0, src);
         vector<int> visited(n, numeric_limits<int>::max());
-
-        while (!pq.empty()) {
-            const vector<int>& v = pq.top();
-            int total_price = v[0], stops = v[1], current_city = v[2];
-            pq.pop();
-            if (stops > visited[current_city] || stops > k + 1)
-                continue;
-            visited[current_city] = stops;
-            if (current_city == dst)
-                return total_price;
-            for (const auto& [to_city, price]: adj[current_city])
-                pq.emplace(vector<int>{total_price + price, stops + 1, to_city});
+        int stops = 0;
+        while (stops <= k && !q.empty()) {
+            int sz = q.size();
+            while (sz--) {
+                const auto [total_price, from_city] = q.front();
+                q.pop();
+                for (const auto& [to_city, flight_price]: adj[from_city]) {
+                    int current_price = total_price + flight_price;
+                    if (current_price >= visited[to_city])
+                        continue;
+                    visited[to_city] = current_price;
+                    q.emplace(current_price, to_city);
+                }
+            }
+            ++stops;
         }
 
-        return -1;
+        return visited[dst] == numeric_limits<int>::max() ? -1 : visited [dst];
     }
 };
