@@ -6,36 +6,27 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 1: Generate All Subsets Using Backtracking
 class Solution {
 public:
     int subsetXORSum(vector<int>& nums) {
         n = nums.size();
-        GetSubsets(nums, 0, {});
-
-        int ans = 0;
-        for (const vector<int>& subset: subsets) {
-            int current_ans = 0;
-            for (const int& num: subset)
-                current_ans ^= num;
-            ans += current_ans;
-        }
+        GetSubsetXOR(nums, 0, 0);
         return ans;
     }
 
 private:
     int n;
-    vector<vector<int>> subsets;
-    void GetSubsets(const vector<int>& nums, int idx, vector<int> subset) {
+    int ans = 0;
+    void GetSubsetXOR(const vector<int>& nums, int idx, int current_ans) {
         if (idx == n) {
-            subsets.emplace_back(subset);
+            ans += current_ans;
             return;
         }
 
-        subset.emplace_back(nums[idx]);
-        GetSubsets(nums, idx + 1, subset);
+        current_ans ^= nums[idx];
+        GetSubsetXOR(nums, idx + 1, current_ans);
 
-        subset.pop_back();
-        GetSubsets(nums, idx + 1, subset);
+        current_ans ^= nums[idx];
+        GetSubsetXOR(nums, idx + 1, current_ans);
     }
 };
