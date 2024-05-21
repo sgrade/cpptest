@@ -11,15 +11,15 @@ public:
     vector<vector<int>> subsets(vector<int>& nums) {
         n = nums.size();
         GetSubset(nums, 0, {});
-        return vector<vector<int>>(st.begin(), st.end());
+        return ans;
     }
 
 private:
     int n;
-    set<vector<int>> st;
+    vector<vector<int>> ans;
     void GetSubset (vector<int>& nums, int idx, vector<int> current) {
         if (idx == n) {
-            st.emplace(current);
+            ans.emplace_back(current);
             return;
         }
         current.emplace_back(nums[idx]);
