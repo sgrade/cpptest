@@ -6,37 +6,30 @@
 using namespace std;
 
 
-// Based on Leetcode's Approach #2 Fisher-Yates Algorithm
-
+// Based on Editorial's Approach #2 Fisher-Yates Algorithm
+// Modified with ideas from a sample fast solution
 class Solution {
 public:
     Solution(vector<int>& nums) {
-        srand (time(NULL));
-        original = nums;
-        v = nums;
+        this->nums = nums;
     }
-    
+
     vector<int> reset() {
-        v = original;
-        return original;
+        return nums;
     }
-    
+
     vector<int> shuffle() {
-        int j;
-        for (int i = 0; i < v.size(); ++i) {
-            j = RandRange(i, v.size());
-            swap(v[i], v[j]);
+        vector<int> tmp(nums);
+        int n = tmp.size();
+        for (int i = n - 1; i > 0; --i) {
+            int j = rand() % (i + 1);
+            swap (tmp[i], tmp[j]);
         }
-        return v;
+        return tmp;
     }
 
 private:
-    vector<int> v;
-    vector<int> original;
-    
-    int RandRange(const int &mn, const int &mx) {
-        return rand() % (mx - mn) + mn;
-    }
+    vector<int> nums;
 };
 
 /**
