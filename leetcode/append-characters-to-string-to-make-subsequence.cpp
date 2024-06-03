@@ -9,6 +9,8 @@ using namespace std;
 class Solution {
 public:
     int appendCharacters(string s, string t) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
         int size_s = s.size(), size_t = t.size();
         int idx_s = 0, idx_t = 0;
         while (idx_s < size_s && idx_t < size_t) {
