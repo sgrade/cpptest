@@ -10,7 +10,7 @@ int main() {
     int ascii_value;
 
     ascii_value = 65;
-    cout << char(ascii_value) << endl;  // a
+    cout << char(ascii_value) << endl;  // A
     ascii_value = 97;
     cout << char(ascii_value) << endl;  // a
 
