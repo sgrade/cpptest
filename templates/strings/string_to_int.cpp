@@ -14,8 +14,8 @@ int fast_atoi( const char * str )
 }
 
 int main() {
-    
-    cout << fast_atoi("222") << endl;
+
+    cout << fast_atoi("222") << endl;   // 222
 
     return 0;
 }
