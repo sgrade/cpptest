@@ -6,23 +6,28 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 1: Prefix Sum and Hashing
 class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
-        // Explanation - https://www.youtube.com/watch?v=OKcrLfR-8mE
-        map<int, int> rems;
-        rems[0] = -1;
-        int sum = 0;
-        int rem;
-        for (int i = 0; i < nums.size(); ++i) {
-            sum += nums[i];
-            rem = sum % k;
-            if (rems.find(rem) == rems.end()) {
-                rems[rem] = i;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        int n = nums.size();
+        // <prefix_sum_modulo, idx>
+        unordered_map<int, int> seen;
+        seen[0] = -1;
+
+        int prefix_mod = 0;
+        for (int i = 0; i < n; ++i) {
+            prefix_mod += nums[i];
+            prefix_mod %= k;
+            if (seen.find(prefix_mod) != seen.end()) {
+                if  (i - seen[prefix_mod] > 1)
+                    return true;
             }
-            else if (i - rems[rem] > 1) {
-                return true;
-            }
+            else
+                seen[prefix_mod] = i;
         }
         return false;
     }
