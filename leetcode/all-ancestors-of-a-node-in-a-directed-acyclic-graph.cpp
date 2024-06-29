@@ -6,30 +6,52 @@
 using namespace std;
 
 
-// Approach 2: Depth First Search (Optimized)
+// Based on Editorial's Approach 3: Topological Sort (BFS)
 class Solution {
 public:
     vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        ans.resize(n);
-        adj.resize(n);
-        for (const vector<int>& edge: edges)
-            adj[edge[0]].emplace_back(edge[1]);
-        for (int i = 0; i < n; ++i)
-            dfs(i, i);
-        return ans;
-    }
-private:
-    vector<vector<int>> ans;
-    vector<vector<int>> adj;
-    void dfs(int ancestor, int node) {
-        for (const int& child: adj[node]) {
-            if (ans[child].empty() || ans[child].back() != ancestor) {
-                ans[child].emplace_back(ancestor);
-                dfs(ancestor, child);
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n);
+        for (const vector<int>& edge: edges) {
+            const int& from = edge[0];
+            const int& to = edge[1];
+            adj[from].emplace_back(to);
+            ++indegree[to];
+        }
+
+        // Nodes with zero indegree
+        queue<int> q;
+        for (int i = 0; i < n; ++i) {
+            if (indegree[i] == 0)
+                q.emplace(i);
+        }
+
+        vector<int> topological_order;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            topological_order.emplace_back(node);
+            for (const int& neighbor: adj[node]) {
+                --indegree[neighbor];
+                if (indegree[neighbor] == 0)
+                    q.emplace(neighbor);
             }
         }
+
+        vector<set<int>> ancestors(n);
+        for (const int& node: topological_order) {
+            for (const int& neighbor: adj[node]) {
+                ancestors[neighbor].emplace(node);
+                ancestors[neighbor].insert(ancestors[node].begin(), ancestors[node].end());
+            }
+        }
+
+        vector<vector<int>> ans(n);
+        for (int i = 0; i < n; ++i)
+            ans[i] = vector<int> (ancestors[i].begin(), ancestors[i].end());
+        return ans;
     }
 };
