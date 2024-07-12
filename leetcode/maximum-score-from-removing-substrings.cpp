@@ -6,7 +6,6 @@
 using namespace std;
 
 
-// TLE
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
@@ -25,23 +24,24 @@ public:
             swap (x, y);
         }
 
-        while (true) {
-            int pos = 0;
-            while (pos != string::npos) {
-                pos = s.find(pattern, pos);
-                if (pos != string::npos) {
-                    s.erase(pos, 2);
-                    ans += x;
-                    pos = max (0, pos - 1);
-                }
-            }
-            pos = s.find(anti_pattern);
-            if (pos != string::npos) {
-                s.erase(pos, 2);
-                ans += y;
-            }
-            else
+        int pos = 0;
+        while (pos != string::npos) {
+            pos = s.find(pattern, pos);
+            if (pos == string::npos)
                 break;
+            s.erase(pos, 2);
+            ans += x;
+            pos = max(0, pos - 1);
+        }
+
+        pos = 0;
+        while (pos != string::npos) {
+            pos = s.find(anti_pattern, pos);
+            if (pos == string::npos)
+                break;
+            s.erase(pos, 2);
+            ans += y;
+            pos = max(0, pos - 1);
         }
 
         return ans;
