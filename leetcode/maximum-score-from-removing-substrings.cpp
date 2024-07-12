@@ -25,22 +25,23 @@ public:
             swap (x, y);
         }
 
-        size_t pos = 0;
-        while (pos != string::npos) {
-            pos = s.find(pattern);
-            if (pos != string::npos) {
-                s.erase(pos, 2);
-                ans += x;
-            }
-            else {
-                pos = s.find(anti_pattern);
+        while (true) {
+            int pos = 0;
+            while (pos != string::npos) {
+                pos = s.find(pattern, pos);
                 if (pos != string::npos) {
                     s.erase(pos, 2);
-                    ans += y;
+                    ans += x;
+                    pos = max (0, pos - 1);
                 }
-                else
-                    break;
             }
+            pos = s.find(anti_pattern);
+            if (pos != string::npos) {
+                s.erase(pos, 2);
+                ans += y;
+            }
+            else
+                break;
         }
 
         return ans;
