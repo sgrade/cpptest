@@ -6,9 +6,6 @@
 using namespace std;
 
 
-// Memory Limit Exceeded
-// 287 / 332 testcases passed
-
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -25,14 +22,16 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
+        this->start = startValue;
         this->dest = destValue;
         adj[root->val] = {-1, -1, -1};
         bfs_get_adj (root);
-        return bfs_find_path (startValue);
+        bfs_find_path (start);
+        return trace_path(dest);
     }
 
 private:
-    int dest;
+    int start, dest;
 
     // <node_val, {parent, left, right}>
     unordered_map<int, vector<int>> adj;
@@ -55,14 +54,16 @@ private:
         }
     }
 
-    string bfs_find_path (int start) {
+    // Idea of path_tracker is from Editorial's Approach 1: BFS + DFS
+    unordered_map<int, pair<int, char>> path_tracker;
+    void bfs_find_path (int start) {
         int n = adj.size();
         vector<bool> visited (n + 1);
         vector<char> directions = {'U', 'L', 'R'};
-        queue<pair<int, string>> q;
-        q.emplace (start, "");
-        while (q.front().first != dest) {
-            auto [node, path] = q.front();
+        queue<int> q;
+        q.emplace (start);
+        while (q.front() != dest) {
+            int node = q.front();
             q.pop();
             visited[node] = true;
             for (int i = 0; i < 3; ++i) {
@@ -71,9 +72,20 @@ private:
                     continue;
                 if (visited[neighbor])
                     continue;
-                q.emplace (neighbor, path + directions[i]);
+                q.emplace (neighbor);
+                path_tracker.emplace(neighbor, pair<int, char>(node, directions[i]));
             }
         }
-        return q.front().second;
+    }
+
+    string trace_path (int& node) {
+        string ans = "";
+        while (node != start) {
+            auto& [prev_node, direction] = path_tracker[node];
+            ans += direction;
+            node = prev_node;
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
     }
 };
