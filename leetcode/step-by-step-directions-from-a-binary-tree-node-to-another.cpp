@@ -6,7 +6,9 @@
 using namespace std;
 
 
-// Time Limit Exceeded
+// Memory Limit Exceeded
+// 287 / 332 testcases passed
+
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -54,15 +56,20 @@ private:
     }
 
     string bfs_find_path (int start) {
+        int n = adj.size();
+        vector<bool> visited (n + 1);
         vector<char> directions = {'U', 'L', 'R'};
         queue<pair<int, string>> q;
         q.emplace (start, "");
         while (q.front().first != dest) {
             auto [node, path] = q.front();
             q.pop();
+            visited[node] = true;
             for (int i = 0; i < 3; ++i) {
                 int neighbor = adj[node][i];
                 if (neighbor == -1)
+                    continue;
+                if (visited[neighbor])
                     continue;
                 q.emplace (neighbor, path + directions[i]);
             }
