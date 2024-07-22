@@ -44,7 +44,7 @@ private:
         int right = getDistance (node->right, depth + 1);
         int ans = left + right;
         if (left != 0 && right != 0)
-            ans -= 2depth;
+            ans -= depth;
         return ans;
     }
 };
