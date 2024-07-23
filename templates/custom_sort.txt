@@ -1,5 +1,6 @@
 Check:
 Custom sort syntax - https://en.cppreference.com/w/cpp/algorithm/sort
+sort-array-by-increasing-frequency.cpp - Sort ints asc by frequency; if frequency is the same - desc.
 1536B.cpp - Sort set by size and lexicographically
 1575A.cpp - Sort vector of strings: different checks for odd-indexed and even-indexed chars in the compared strings
 leetcode/design-a-food-rating-system.cpp
