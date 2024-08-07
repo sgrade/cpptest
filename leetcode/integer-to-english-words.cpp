@@ -1,99 +1,59 @@
+// 273. Integer to English Words
 // https://leetcode.com/problems/integer-to-english-words/
-
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
 
+// Based on Editorial's Approach 3: Pair-Based Approach
 class Solution {
-    
 public:
-    
-    vector<string> ans;
-    
-    map<int, string> m1 = {{0, "zero"}, {1, "One"}, {2, "Two"}, {3, "Three"}, {4, "Four"}, {5, "Five"}, {6, "Six"}, {7, "Seven"}, {8, "Eight"}, {9, "Nine"}, {100, "Hundred"}, {1000, "Thousand"}, {1000000, "Million"}, {1000000000, "Billion"}};
-
-    map<int, string> m10 = {{10, "Ten"}, {11, "Eleven"}, {12, "Twelve"}, {13, "Thirteen"}, {14, "Fourteen"}, {15, "Fifteen"}, {16, "Sixteen"}, {17, "Seventeen"}, {18, "Eighteen"}, {19, "Nineteen"}};
-
-    map<int, string> m100 = {{20, "Twenty"}, {30, "Thirty"}, {40, "Forty"}, {50, "Fifty"}, {60, "Sixty"}, {70, "Seventy"}, {80, "Eighty"}, {90, "Ninety"}};
-    
-    string numberToWords(int num) { 
-                               
-        if (num == 0) return "Zero";
-
-        int x = num;
-        
-        if (x / 1000000000 > 0) {
-            parseTriple(x / 1000000000);
-            ans.push_back("Billion");
+    string numberToWords(int num) {
+        if (num == 0)
+            return "Zero";
+        for (const auto& [x, s]: pairs) {
+            if (num < x)
+                continue;
+            string prefix = num >= 100 ? numberToWords (num / x) + " " : "";
+            string unit = s;
+            string suffix = num % x == 0 ? "" : " " + numberToWords (num % x);
+            return prefix + unit + suffix;
         }
-        x %= 1000000000;
-               
-        if (x / 1000000 > 0) {
-            parseTriple(x / 1000000);
-            ans.push_back("Million");
-        }
-        x %= 1000000;
-        
-        if (x / 1000 > 0) {
-            parseTriple(x / 1000);
-            ans.push_back("Thousand");
-        }
-        x %= 1000;
-        
-        parseTriple(x);
-        
-        string output;
-        for (int i = 0; i < ans.size() - 1; ++i) {
-            output += ans[i] + ' ';
-        }
-        output += *ans.rbegin();
-        return output;
+        return "";
     }
-    
-    void parseTriple(int x) {
-        
-        if (x / 100 > 0) {
-            pushNumber(x / 100);
-            ans.push_back("Hundred");
-        }
-        x %= 100;
-        
-        if (x > 19) {
-            pushNumber(x - x % 10);
-            x %= 10;
-        }
-        
-        pushNumber(x);
-        
-    }
-    
-    void pushNumber(const int &rem) {
-        
-        if (0 < rem && rem < 10) {
-            ans.push_back(m1[rem]);
-        }
-        else if (9 < rem && rem < 20) {
-            ans.push_back(m10[rem]);
-        }
-        else if (19 < rem && rem < 100) {
-            ans.push_back(m100[rem]);
-        }
-        return;
-    }
+private:
+    vector<pair<int, string>> pairs = {
+        {1000000000, "Billion"},
+        {1000000, "Million"},
+        {1000, "Thousand"},
+        {100, "Hundred"},
+        {90, "Ninety"},
+        {80, "Eighty"},
+        {70, "Seventy"},
+        {60, "Sixty"},
+        {50, "Fifty"},
+        {40, "Forty"},
+        {30, "Thirty"},
+        {20, "Twenty"},
+        {19, "Nineteen"},
+        {18, "Eighteen"},
+        {17, "Seventeen"},
+        {16, "Sixteen"},
+        {15, "Fifteen"},
+        {14, "Fourteen"},
+        {13, "Thirteen"},
+        {12, "Twelve"},
+        {11, "Eleven"},
+        {10, "Ten"},
+        {9, "Nine"},
+        {8, "Eight"},
+        {7, "Seven"},
+        {6, "Six"},
+        {5, "Five"},
+        {4, "Four"},
+        {3, "Three"},
+        {2, "Two"},
+        {1, "One"}
+    };
 };
-
-
-int main() {
-
-  Solution sol;
-  
-  int n;
-  cin >> n;
-
-  string s = sol.numberToWords(n);
-
-  cout << s << endl;
-
-}
