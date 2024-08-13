@@ -6,48 +6,33 @@
 using namespace std;
 
 
-// Based on Leetcode's Approach 1: Backtracking with Counters
+// Based on Editorial's Approach: Backtracking
 class Solution {
 public:
-    map<int, int> counter;
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int> comb;
-        
-        for (const int &el: candidates) {
-            ++counter[el];
-        }
-        
-        vector<int> counter_list;
-        for (const auto[key, value]: counter) {
-            counter_list.emplace_back(key);
-        }
-        
-        backtrack(comb, target, 0, counter_list, ans);
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        n = candidates.size();
+        sort (candidates.begin(), candidates.end());
+        vector<int> combination;
+        Backtrack (combination, candidates, target, 0);
         return ans;
     }
-    
-    void backtrack(vector<int> comb, const int target, const int current, vector<int> &counter_list, vector<vector<int>> &ans) {
+private:
+    int n;
+    vector<vector<int>> ans;
+    void Backtrack (vector<int>& combination, vector<int>& candidates, int target, int idx) {
         if (target == 0) {
-            ans.emplace_back(comb);
+            ans.emplace_back (combination);
             return;
         }
-        else if (target < 0) {
-            return;
-        }
-        
-        for (int i = current; i < counter_list.size(); ++i) {
-            int candidate = counter_list[i];
-            if (counter[candidate] <= 0) {
-                continue;
+        for (int i = idx; i < n && target >= candidates[i]; ++i) {
+            if (i == idx || candidates[i] != candidates[i - 1]) {
+                combination.emplace_back(candidates[i]);
+                Backtrack (combination, candidates, target - candidates[i], i + 1);
+                combination.pop_back();
             }
-
-            comb.emplace_back(candidate);
-            --counter[candidate];
-            backtrack(comb, target-candidate, i, counter_list, ans);
-            comb.pop_back();
-            ++counter[candidate];
         }
-        
     }
 };
