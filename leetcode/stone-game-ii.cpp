@@ -6,31 +6,26 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 1: Memoization
+// Based on Editorial's Approach 2: Dynamic Programming (Tabulation)
 class Solution {
 public:
     int stoneGameII(vector<int>& piles) {
-        n = piles.size();
-        vector dp(2, vector(n + 1, vector<int>(n + 1, -1)));
-        return f(0, 0, 1, piles, dp);
-    }
-
-private:
-    int n;
-    int f(int p, int i, int m, vector<int>& piles, vector<vector<vector<int>>>& dp) {
-        if (i == n)
-            return 0;
-        if (dp[p][i][m] != -1)
-            return dp[p][i][m];
-        int ans = p == 1 ? 1e7 : -1;
-        int s = 0;
-        for (int x = 1; x <= min(2 * m, n - i); ++x) {
-            s += piles[i + x - 1];
-            if (p == 0)
-                ans = max(ans, s + f(1, i + x, max(m, x), piles, dp));
-            else
-                ans = min(ans, f(0, i + x, max(m, x), piles, dp));
+        int n = piles.size();
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+        vector<int> suffix_sum(n + 1);
+        for (int i = n - 1; i >= 0; --i)
+            suffix_sum[i] = suffix_sum[i + 1] + piles[i];
+        for (int i = 0; i <= n; ++i)
+            dp[i][n] = suffix_sum[i];
+        for (int i = n - 1; i >= 0; --i) {
+            for (int current_max = n - 1; current_max >= 1; --current_max) {
+                for (int x = 1; x <= 2 * current_max && i + x <= n; ++x) {
+                    dp[i][current_max] = max (
+                        dp[i][current_max], 
+                        suffix_sum[i] - dp[i + x][max(current_max, x)]);
+                }
+            }
         }
-        return dp[p][i][m] = ans;
+        return dp[0][1];
     }
 };
