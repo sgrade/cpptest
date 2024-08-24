@@ -12,17 +12,17 @@ public:
     string nearestPalindromic(string n) {
         len = n.size();
         long long num = stoll(n);
-        long long prev = GetPrevousPalindrome (num);
-        long long nxt = GetNextPalindrome (num);
-        if (abs(nxt - num) <= abs(prev - num))
-            return to_string(nxt);
-        return to_string(prev);
+        long long small = GetSmallerPalindrome (num);
+        long long large = GetLargerPalindrome (num);
+        if (abs(small - num) <= abs(large - num))
+            return to_string(small);
+        return to_string(large);
     }
 
 private:
     int len;
     
-    long long GetPrevousPalindrome (long long& num) {
+    long long GetLargerPalindrome (long long& num) {
         long long left = num, right = 1e18;
         long long ans = INT_MIN;
         while (left <= right) {
@@ -38,7 +38,7 @@ private:
         return ans;
     }
 
-    long long GetNextPalindrome (long long& num) {
+    long long GetSmallerPalindrome (long long& num) {
         long long left = 0, right = num;
         long long ans = INT_MIN;
         while (left <= right) {
