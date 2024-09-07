@@ -27,43 +27,30 @@ struct TreeNode {
 };
 
 
-// Wrong Answer: 65 / 67 testcases passed
+// Based On Editorial's Approach 1: DFS
 class Solution {
 public:
     bool isSubPath(ListNode* head, TreeNode* root) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        this->head = head;
-        this->root = root;
-        return dfs(head, root);
+        return dfs1(root, head);
     }
 private:
-    ListNode* head;
-    TreeNode* root;
-    bool dfs(ListNode* list_node, TreeNode* tree_node) {
+    bool dfs1(TreeNode* tree_node, ListNode* head) {
         if (tree_node == nullptr)
             return false;
-        bool found = false;
-        if (tree_node->val == list_node->val) {
-            if (list_node->next == nullptr)
-                return true;
-            else {
-                found =
-                dfs(list_node->next, tree_node->left) ||
-                dfs(list_node->next, tree_node->right);
-            }
-        }
-        else if (tree_node->val == head->val) {
-            found =
-            dfs(head->next, tree_node->left) ||
-            dfs(head->next, tree_node->right);
-        }
-        else {
-            found =
-            dfs(head, tree_node->left) ||
-            dfs(head, tree_node->right);
-        }
-        return found;
+        if (dfs2(tree_node, head))
+            return true;
+        return dfs1(tree_node->left, head) || dfs1(tree_node->right, head);
+    }
+    bool dfs2(TreeNode* tree_node, ListNode* list_node) {
+        if (list_node == nullptr)
+            return true;
+        if (tree_node == nullptr)
+            return false;
+        if (tree_node->val != list_node->val)
+            return false;
+        return dfs2(tree_node->left, list_node->next) || dfs2(tree_node->right, list_node->next);
     }
 };
