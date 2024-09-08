@@ -6,7 +6,6 @@
 using namespace std;
 
 
-// Time Limit Exceeded: 18 / 25 testcases passed
 class Solution {
 public:
     vector<int> minAvailableDuration(vector<vector<int>>& slots1, vector<vector<int>>& slots2, int duration) {
@@ -29,10 +28,14 @@ private:
             return;
         int s1 = slots1[i1][0], e1 = slots1[i1][1];
         int s2 = slots2[i2][0], e2 = slots2[i2][1];
-        if (s1 >= e2)
+        if (s1 >= e2) {
             check (i1, i2 + 1, slots1, slots2);
-        if (s2 >= e1)
+            return;
+        }
+        if (s2 >= e1) {
             check (i1 + 1, i2, slots1, slots2);
+            return;
+        }
 
         int max_s = max(s1, s2), min_e = min(e1, e2);
         if (min_e - max_s >= duration) {
@@ -41,8 +44,11 @@ private:
             return;
         }
         else {
-            check (i1 + 1, i2, slots1, slots2);
-            check (i1, i2 + 1, slots1, slots2);
+            // Move the slot, which ends earlier
+            if (e1 < e2)
+                check (i1 + 1, i2, slots1, slots2);
+            else
+                check (i1, i2 + 1, slots1, slots2);
         }
     }
 };
