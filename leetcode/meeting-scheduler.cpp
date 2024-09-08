@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// Time Limit Exceeded: 18 / 25 testcases passed
 class Solution {
 public:
     vector<int> minAvailableDuration(vector<vector<int>>& slots1, vector<vector<int>>& slots2, int duration) {
