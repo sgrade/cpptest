@@ -9,16 +9,14 @@ using namespace std;
 class Solution {
 public:
     bool canAttendMeetings(vector<vector<int>>& intervals) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         if (intervals.size() > 1) {
-            sort(intervals.begin(), intervals.end(), [](const vector<int>& v1, const vector<int>& v2){
-                return v1[0] < v2[0];
-            });
-            int mx = intervals[0][1];
+            sort(intervals.begin(), intervals.end());
             for (int i = 1; i < intervals.size(); ++i) {
-                if (intervals[i][0] < mx) {
+                if (intervals[i][0] < intervals[i - 1][1])
                     return false;
-                }
-                mx = intervals[i][1];
             }
         }
         return true;
