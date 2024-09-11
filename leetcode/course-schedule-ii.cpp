@@ -6,57 +6,49 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: Using Node Indegree
+// Topological sort
 class Solution {
 public:
-    bool ans = true;
-    vector<int> output;
-
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        vector<vector<int>> adj(numCourses);
-        // 0 - not visited, 1 - checking prerequisites, 2 - all prerequisites are met
-        vector<int> visited(numCourses);
-        for (const vector<int>& v: prerequisites)
-            adj[v[1]].emplace_back(v[0]);
+        indegree.resize(numCourses);
+        vector<int> topological_order;
 
+        for (int i = 0; i < prerequisites.size(); ++i) {
+            int dest = prerequisites[i][0], src = prerequisites[i][1];
+            adj[src].emplace_back(dest);
+            ++indegree[dest];
+        }
+
+        queue<int> q;
         for (int i = 0; i < numCourses; ++i) {
-            if (!ans)
-                break;
-            if (visited[i] == 0)
-                dfs(i, adj, visited);
+            if (indegree[i] == 0)
+                q.emplace(i);
         }
 
-        if (!ans)
-            output.clear();
-        else {
-            for (int i = 0; i < numCourses; ++i) {
-                if (visited[i] == 0)
-                    output.emplace_back(i);
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            topological_order.emplace_back(node);
+            for (const int& neighbor: adj[node]) {
+                --indegree[neighbor];
+                if (indegree[neighbor] == 0)
+                    q.emplace(neighbor);
             }
-            reverse(output.begin(), output.end());
         }
 
-        return output;
+        if (topological_order.size() == numCourses)
+            return topological_order;
+        return {};
     }
 
-    void dfs(int i, const vector<vector<int>> &adj, vector<int> &visited) {
-        if (!ans)
-            return;
-        visited[i] = 1;
-        int prereq;
-        for (int j = 0; j < adj[i].size(); ++j) {
-            prereq = adj[i][j];
-            if (visited[prereq] == 1) {
-                ans = false;
-                return;
-            }
-            else if (visited[prereq] == 0)
-                dfs(prereq, adj, visited);
-        }
-
-        visited[i] = 2;
-        output.emplace_back(i);
-    }
+private:
+    int n;
+    bool ans = true;
+    vector<int> output;
+    map<int, list<int>> adj;
+    vector<int> indegree;
 };
