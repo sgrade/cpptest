@@ -14,9 +14,8 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        indegree.resize(numCourses);
-        vector<int> topological_order;
-
+        map<int, list<int>> adj;
+        vector<int> indegree(numCourses);
         for (int i = 0; i < prerequisites.size(); ++i) {
             int dest = prerequisites[i][0], src = prerequisites[i][1];
             adj[src].emplace_back(dest);
@@ -29,6 +28,7 @@ public:
                 q.emplace(i);
         }
 
+        vector<int> topological_order;
         while (!q.empty()) {
             int node = q.front();
             q.pop();
@@ -44,11 +44,4 @@ public:
             return topological_order;
         return {};
     }
-
-private:
-    int n;
-    bool ans = true;
-    vector<int> output;
-    map<int, list<int>> adj;
-    vector<int> indegree;
 };
