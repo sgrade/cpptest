@@ -6,6 +6,8 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 1: Recursive Approach
+
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -14,33 +16,27 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+
 class Solution {
 public:
-    TreeNode* lca;
-    
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        dfs(root, p, q);
-        return lca;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        Recurse(root, p, q);
+        return ans;
     }
-    
-    bool dfs(TreeNode* curNode, TreeNode* p, TreeNode* q) {
-        
-        if (curNode == nullptr) return false;
-        
-        bool mid = (curNode->val == p->val || curNode->val == q->val) ? true : false;
-        bool left = dfs(curNode->left, p, q);
-        bool right = dfs(curNode->right, p, q);
-        
-        if ((left && mid) || (right && mid) || (left && right)) {
-            lca = curNode;
-            return true;
-        }
-        
-        return left || right || mid;
+private:
+    TreeNode* ans = nullptr;
+    bool Recurse(TreeNode* node, TreeNode* p, TreeNode* q) {
+        if (node == nullptr)
+            return false;
+        int left = Recurse(node->left, p, q);
+        int right = Recurse(node->right, p, q);
+        int self = node == p || node == q;
+        int score = left + right + self;
+        if (score >= 2)
+            ans = node;
+        return score > 0;
     }
 };
-
-
-int main() {
-    return 0;
-}
