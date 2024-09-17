@@ -6,20 +6,20 @@
 using namespace std;
 
 
+// Based on the Editorial's Approach 3: Iterative Binary Search
 class Solution {
 public:
     int findPeakElement(vector<int>& nums) {
-        if (nums.size() == 1) return 0;
-        int ans = -1;
-        int left = 0, right = nums.size() - 1, mid;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        int left = 0, right = nums.size() - 1;
         while (left < right) {
-            mid = left + (right - left) / 2;
-            if (nums[mid] > nums[mid + 1]) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[mid + 1])
                 right = mid;
-            }
-            else {
+            else
                 left = mid + 1;
-            }
         }
         return left;
     }
