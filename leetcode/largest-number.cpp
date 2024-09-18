@@ -9,21 +9,22 @@ using namespace std;
 class Solution {
 public:
     string largestNumber(vector<int>& nums) {
-        vector<string> temp;
-        string ans, s;
-        for (const int &num: nums) {
-            s = to_string(num);
-            temp.emplace_back(s);
-        }
-        sort(temp.begin(), temp.end(), [](const string &s1, const string &s2){
-            return (s1 + s2 > s2 + s1);
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        int n = nums.size();
+        vector<string> strings(n);
+        for (int i = 0; i < n; ++i)
+            strings[i] = to_string(nums[i]);
+        // Used ides from the editorial's overview
+        sort (strings.begin(), strings.end(), [](const string& s1, const string& s2){
+            return s1 + s2 > s2 + s1;
         });
-        if (temp[0] == "0") {
+        if (strings[0] == "0")
             return "0";
-        }
-        for (const string &s: temp) {
+        string ans;
+        for (const string& s: strings)
             ans += s;
-        }
         return ans;
     }
 };
