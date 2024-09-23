@@ -38,8 +38,8 @@
 # !*.*
 # !*/
 
-# input.txt - file with inputs for coding problems. 
-# Not required in source control, because stores info temporarily for 
+# input.txt - file with inputs for coding problems.
+# Not required in source control, because stores info temporarily for
 # the case I currently work on. Overwritten when I move to another case
 input.txt
 
@@ -63,3 +63,5 @@ a.out
 *.gcno
 
 *.log
+
+uber
