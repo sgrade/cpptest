@@ -14,6 +14,13 @@ public:
 };
 
 
+class TrieNode {
+public:
+    vector<TrieNode*> children;
+    TrieNode() : children(10) {}
+};
+
+
 class Trie {
 public:
     TrieNode* root;
@@ -22,40 +29,28 @@ public:
     }
 
     void Insert(int num) {
-        stack<int> digits = NumToDigits(num);
         TrieNode* node = root;
-        while (!digits.empty()) {
-            int current = digits.top();
-            digits.pop();
+        string digits = to_string(num);
+        for (const char& ch: digits) {
+            int current = ch - '0';
             if (!node->children[current])
                 node->children[current] = new TrieNode();
             node = node->children[current];
         }
-        node->end_of_word = true;
     }
 
     int GetCommonPrefixLen(int num) {
         int len = 0;
-        stack<int> digits = NumToDigits(num);
         TrieNode* node = root;
-        while (!digits.empty()) {
-            int current = digits.top();
-            digits.pop();
+        string digits = to_string(num);
+        for (const char& ch: digits) {
+            int current = ch - '0';
             if (!node->children[current])
                 break;
             ++len;
             node = node->children[current];
         }
         return len;
-    }
-
-    stack<int> NumToDigits(int& num) {
-        stack<int> digits;
-        while (num) {
-            digits.emplace(num % 10);
-            num /= 10;
-        }
-        return digits;
     }
 };
 
