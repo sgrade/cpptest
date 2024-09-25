@@ -6,13 +6,9 @@
 using namespace std;
 
 
-// Memory Limit Exceeded
-// 38 / 38 testcases passed
-
 struct TrieNode {
-    vector<TrieNode*> children;
+    TrieNode* children[26] = {};
     int prefix_score = 0;
-    TrieNode() : children(26) {};
 };
 
 class Trie {
@@ -21,24 +17,22 @@ public:
 
     Trie() {root = new TrieNode;}
 
-    void Insert (const string& word) {
+    void Insert (string& word) {
         TrieNode* node = root;
-        for (const char& ch: word) {
-            int i = ch - 'a';
-            if (node->children[i] == nullptr)
-                node->children[i] = new TrieNode();
-            ++node->children[i]->prefix_score;
-            node = node->children[i];
+        for (char& ch: word) {
+            if (node->children[ch - 'a'] == nullptr)
+                node->children[ch - 'a'] = new TrieNode();
+            ++node->children[ch - 'a']->prefix_score;
+            node = node->children[ch - 'a'];
         }
     }
 
-    int GetPrefixScore (const string& word) {
+    int GetPrefixScore (string& word) {
         int ans = 0;
         TrieNode* node = root;
-        for (const char& ch: word) {
-            int i = ch - 'a';
-            ans += node->children[i]->prefix_score;
-            node = node->children[i];
+        for (char& ch: word) {
+            ans += node->children[ch - 'a']->prefix_score;
+            node = node->children[ch - 'a'];
         }
         return ans;
     }
