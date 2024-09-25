@@ -7,12 +7,12 @@ using namespace std;
 
 
 // Memory Limit Exceeded
-// 36 / 38 testcases passed
+// 38 / 38 testcases passed
 
 struct TrieNode {
     vector<TrieNode*> children;
-    vector<int> prefix_score;
-    TrieNode() : children(26), prefix_score(26) {};
+    int prefix_score = 0;
+    TrieNode() : children(26) {};
 };
 
 class Trie {
@@ -25,9 +25,9 @@ public:
         TrieNode* node = root;
         for (const char& ch: word) {
             int i = ch - 'a';
-            ++node->prefix_score[i];
             if (node->children[i] == nullptr)
                 node->children[i] = new TrieNode();
+            ++node->children[i]->prefix_score;
             node = node->children[i];
         }
     }
@@ -37,7 +37,7 @@ public:
         TrieNode* node = root;
         for (const char& ch: word) {
             int i = ch - 'a';
-            ans += node->prefix_score[i];
+            ans += node->children[i]->prefix_score;
             node = node->children[i];
         }
         return ans;
@@ -47,17 +47,12 @@ public:
 class Solution {
 public:
     vector<int> sumPrefixScores(vector<string>& words) {
-        ios::sync_with_stdio(false);
-        cin.tie(nullptr);
-
         Trie* trie = new Trie();
-        for (const string& word: words)
-            trie->Insert(word);
-        vector<int> prefix_scores;
-        for (const string& word: words) {
-            int score = trie->GetPrefixScore(word);
-            prefix_scores.emplace_back(score);
-        }
+        for (int i = 0; i < words.size(); ++i)
+            trie->Insert(words[i]);
+        vector<int> prefix_scores(words.size());
+        for (int i = 0; i < words.size(); ++i)
+            prefix_scores[i] = trie->GetPrefixScore(words[i]);
         return prefix_scores;
     }
 };
