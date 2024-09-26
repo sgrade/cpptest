@@ -10,6 +10,9 @@ using namespace std;
 class MyCalendar {
 public:
     bool book(int start, int end) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         const pair<int, int> event(start, end);
         const set<pair<int, int>>::iterator next_event = calendar.lower_bound(event);
         if (next_event != calendar.end() && next_event->first < end)
