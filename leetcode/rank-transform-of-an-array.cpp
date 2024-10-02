@@ -12,17 +12,15 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        map<int, int> counter;
-        unordered_map<int, vector<int>> indexes;
-        for (int i = 0; i < arr.size(); ++i) {
-            ++counter[arr[i]];
-            indexes[arr[i]].emplace_back(i);
-        }
-        int rank = 1;
-        for (const auto& [num, cnt]: counter) {
-            for (const int& i: indexes[num])
-                arr[i] = rank;
-            ++rank;
+        set<pair<int, int>> st;
+        for (int i = 0; i < arr.size(); ++i)
+            st.emplace(arr[i], i);
+        int rank = 0, prev = -1;
+        for (const auto& [num, idx]: st) {
+            if (num != prev)
+                ++rank;
+            arr[idx] = rank;
+            prev = num;
         }
         return arr;
     }
