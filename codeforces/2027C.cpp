@@ -43,7 +43,7 @@ int main() {
 
         set<ll> seen;
         dfs(n, adj, seen);
-        int ans = *seen.rbegin();
+        ll ans = *seen.rbegin();
         cout << ans << endl;
     }
 
