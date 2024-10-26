@@ -26,9 +26,9 @@ public:
 
         max_heights.resize(1e5 + 1);
 
-        traverse_left (root, 0);
+        traverse_left_to_right (root, 0);
         cur_max = 0;
-        traverse_right (root, 0);
+        traverse_right_to_left (root, 0);
 
         int q = queries.size();
         vector<int> ans(q);
@@ -41,22 +41,22 @@ private:
     vector<int> max_heights;
     int cur_max = 0;
 
-    void traverse_left (TreeNode* node, int cur_height) {
+    void traverse_left_to_right (TreeNode* node, int cur_height) {
         if (node == nullptr)
             return;
         max_heights[node->val] = cur_max;
         cur_max = max (cur_max, cur_height);
-        traverse_left (node->left, cur_height + 1);
-        traverse_left (node->right, cur_height + 1);
+        traverse_left_to_right (node->left, cur_height + 1);
+        traverse_left_to_right (node->right, cur_height + 1);
     }
 
-    void traverse_right (TreeNode* node, int cur_height) {
+    void traverse_right_to_left (TreeNode* node, int cur_height) {
         if (node == nullptr)
             return;
         max_heights[node->val] = 
             max(max_heights[node->val], cur_max);
         cur_max = max(cur_max, cur_height);
-        traverse_right (node->right, cur_height + 1);
-        traverse_right (node->left, cur_height + 1);
+        traverse_right_to_left (node->right, cur_height + 1);
+        traverse_right_to_left (node->left, cur_height + 1);
     }
 };
