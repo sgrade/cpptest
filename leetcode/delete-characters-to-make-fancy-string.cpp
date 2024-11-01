@@ -11,12 +11,13 @@ public:
     string makeFancyString(string s) {
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
-
-        string ans;
-        for (const char& ch: s) {
-            if (ans.size() > 1 && ch == ans[ans.size() - 2] && ch == ans[ans.size() - 1]) continue;
-            ans += ch;
+        // Optimized with an idea from the fastest solutions
+        if (s.size() > 2){
+            int j = 2;
+            for (int i = 2; i < s.size(); ++i)
+                if (s[i] != s[j - 1] || s[i] != s[j - 2]) s[j++] = s[i];
+            s.resize(j);
         }
-        return ans;
+        return s;
     }
 };
