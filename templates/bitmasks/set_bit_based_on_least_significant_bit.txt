@@ -1,0 +1,2 @@
+// Set the bit in ans based on the least significant bit of n
+ans |= (n & 1) * mask;
