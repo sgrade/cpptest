@@ -12,15 +12,16 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
+        if (k == 1) return nums;
         vector<int> ans;
-        queue<int> q;
-        int i = 0;
+        int cnt = 1, prev = nums[0], i = 1;
         while (i < nums.size()) {
-            if (!q.empty() && nums[i] - 1 != q.back())
-                q = queue<int>();
-            q.emplace(nums[i]);
+            if (nums[i] - 1 != prev)
+                cnt = 0;
+            prev = nums[i];
+            ++cnt;
             if (i >= k - 1) {
-                int current_ans = q.size() >= k ? q.back() : -1;
+                int current_ans = cnt >= k ? prev : -1;
                 ans.emplace_back(current_ans);
             }
             ++i;
