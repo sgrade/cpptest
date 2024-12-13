@@ -21,10 +21,10 @@ public:
         long long score = 0;
         vector<bool> visited(n);
         for (int i = 0; i < n; ++i) {
-            int idx = sorted[i].second;
+            auto& [value, idx] = sorted[i];
             if (visited[idx])
                 continue;
-            score += sorted[i].first;
+            score += value;
             visited[idx] = true;
             int prev = idx - 1;
             if (prev >= 0)
