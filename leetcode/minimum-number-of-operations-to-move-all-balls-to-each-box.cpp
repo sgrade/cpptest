@@ -6,6 +6,7 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: Sum of Left and Right Moves
 class Solution {
 public:
     vector<int> minOperations(string boxes) {
@@ -14,12 +15,16 @@ public:
 
         int n = boxes.size();
         vector<int> ans(n);
+        int balls_left = 0, moves_left = 0, balls_right = 0, moves_right = 0;
         for (int i = 0; i < n; ++i) {
-            if (boxes[i] == '1'){
-                for (int j = 0; j < n; ++j) {
-                    ans[j] += abs(i - j);
-                }
-            }
+            ans[i] += moves_left;
+            balls_left += boxes[i] == '1';
+            moves_left += balls_left;
+
+            int j = n - 1 - i;
+            ans[j] += moves_right;
+            balls_right += boxes[j] == '1';
+            moves_right += balls_right;
         }
         return ans;
     }
