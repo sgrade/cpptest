@@ -6,7 +6,7 @@
 using namespace std;
 
 
-// TLE
+// Optimized with Editorial's Approach 1: Breadth-First Search (BFS)
 class Solution {
 public:
     int getFood(vector<vector<char>>& grid) {
@@ -23,22 +23,22 @@ public:
             }
         }
 
-        visited.resize(rows, vector<bool>(cols));
         queue<pair<int, int>> q;
         q.emplace(start.first, start.second);
-        int moves = 0;
+        int moves = 1;
         while (!q.empty()) {
             int n = q.size();
             while(n--) {
                 auto [row, col] = q.front();
                 q.pop();
-                if (grid[row][col] == '#')
-                    return moves;
-                visited[row][col] = true;
                 for (auto& [r_diff, c_diff]: directions) {
                     int r = row + r_diff, c = col + c_diff;
-                    if (IsValid(r, c, grid))
-                        q.emplace(r, c);
+                    if (!IsValid(r, c, grid))
+                        continue;
+                    if (grid[r][c] == '#')
+                        return moves;
+                    grid[r][c] = 'X';
+                    q.emplace(r, c);
                 }
             }
             ++moves;
@@ -56,8 +56,7 @@ private:
         {1, 0}, 
         {-1, 0}
     };
-    vector<vector<bool>> visited;
     bool IsValid(int r, int c, vector<vector<char>>& grid) {
-        return r < rows && c < cols && r >= 0 && c >= 0 && !(grid[r][c] == 'X') && !visited[r][c];
+        return r < rows && c < cols && r >= 0 && c >= 0 && grid[r][c] != 'X';
     }
 };
