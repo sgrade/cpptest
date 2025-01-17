@@ -1,12 +1,21 @@
 # XOR
 
-Bitwise XOR operation is commutative and associative. That means:
+Commutativity: aXORb=bXORa
+The order in which you XOR two numbers doesn’t matter.
 
-- aXORbXORb=a
-- aXORb=bXORa
+Associativity: (aXORb)XORc=aXOR(bXORc)
+Grouping of XOR operations doesn’t affect the result.
 
-Hence, the order of applying XOR operations doesn't matter.
+Identity: aXOR0=a
+XOR with 0 leaves the number unchanged.
 
-XORing a number with itself (aXORa) results in 000.
+Self-inverse: aXORa=0
+XORing a number with itself results in 0.
 
-Therefore, performing the XOR operation twice on the same number yields the original number.
+Inversion:
+If aXORb=c, then:
+
+a=bXORc
+b=aXORc
+
+Source - https://leetcode.com/problems/neighboring-bitwise-xor/editorial/
