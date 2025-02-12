@@ -12,21 +12,24 @@ public:
         ios::sync_with_stdio(false);
         cin.tie(nullptr);
 
-        unordered_map<int, vector<int>> counter;
+        unordered_map<int, pair<int, int>> counter;
         for (const int& num: nums) {
             int x = num, sum = 0;
             while (x) {
                 sum += x % 10;
                 x /= 10;
             }
-            counter[sum].emplace_back(num);
+            if (num > counter[sum].first) {
+                counter[sum].first = num;
+                if (counter[sum].first > counter[sum].second)
+                    swap(counter[sum].first, counter[sum].second);
+            }
         }
 
         int ans = -1;
-        for (auto& [_, v]: counter) {
-            if (v.size() > 1) {
-                sort(v.begin(), v.end());
-                int current_ans = v[v.size() - 1] + v[v.size() - 2];
+        for (auto& [_, p]: counter) {
+            if (p.first > 0) {
+                int current_ans = p.first + p.second;
                 ans = max(ans, current_ans);
             }
         }
