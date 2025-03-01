@@ -9,21 +9,19 @@ using namespace std;
 class Solution {
 public:
     vector<int> applyOperations(vector<int>& nums) {
-        int n = nums.size();
-        for (int i = 0; i < n - 1; ++i) {
-            if (nums[i] == 0)
-                continue;
-            if (nums[i] == nums[i + 1]) {
-                nums[i] *= 2;
-                nums[i + 1] = 0;
+        int n = nums.size(), i = 0;
+        for (int j = 0; j < n - 1; ++j) {
+            if (nums[j] != 0 && nums[j] == nums[j + 1]) {
+                nums[j] *= 2;
+                nums[j + 1] = 0;
+            }
+            if (nums[j] != 0) {
+                swap(nums[i], nums[j]);
+                ++i;
             }
         }
-        vector<int> ans(n);
-        int i = 0;
-        for (int j = 0; j < n; ++j) {
-            if (nums[j] != 0)
-                ans[i++] = nums[j];
-        }
-        return ans;
+        if (nums[i] == 0 && nums[n - 1] != 0)
+            swap(nums[i], nums[n - 1]);
+        return nums;
     }
 };
