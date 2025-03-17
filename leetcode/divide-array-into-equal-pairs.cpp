@@ -12,13 +12,13 @@ class Solution {
             ios::sync_with_stdio(false);
             cin.tie(nullptr);
 
-            unordered_set<int> seen;
-            for (const int& num: nums) {
-                if (seen.find(num) == seen.end())
-                    seen.emplace(num);
-                else
-                    seen.erase(num);
+            if (nums.size() % 2 != 0)
+                return false;
+            sort(nums.begin(), nums.end());
+            for (int i = 1; i < nums.size(); i += 2) {
+                if (nums[i] != nums[i - 1])
+                    return false;
             }
-            return seen.size() == 0;
+            return true;
         }
     };
