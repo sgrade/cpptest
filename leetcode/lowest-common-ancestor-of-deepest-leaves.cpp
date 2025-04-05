@@ -32,7 +32,7 @@ struct TreeNode {
             pair<TreeNode*, int> left = dfs(root->left), right = dfs(root->right);
             if (left.second > right.second)
                 return {left.first, left.second + 1};
-            if (left.second < right.second)
+            if (right.second > left.second)
                 return {right.first, right.second + 1};
             return {root, left.second + 1};
         }
