@@ -6,34 +6,45 @@
 using namespace std;
 
 
-// Based on Editorial's Approach 1: Dynamic Programming
+// Based on Editorial's Approach 3: Recursion with Memoization
 class Solution {
-public:
-    vector<int> largestDivisibleSubset(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        int n = nums.size();
-        
-        vector<vector<int>> arrays(n);
+    public:
+        vector<int> largestDivisibleSubset(vector<int>& nums) {
+            ios::sync_with_stdio(false);
+            cin.tie(nullptr);
 
-        for (int i = 0; i < n; ++i) {
-            vector<int> current;
-            for (int j = 0; j < i; ++j) {
-                if (nums[i] % nums[j] == 0 && current.size() < arrays[j].size())
-                    current = arrays[j];
+            n = nums.size();
+            if (n == 0)
+                return {};
+
+            sort(nums.begin(), nums.end());
+
+            vector<int> max_subset;
+            for (int i = 0; i < n; ++i) {
+                vector<int> subset = check(i, nums);
+                if (max_subset.size() < subset.size())
+                    max_subset = subset;
             }
-            arrays[i] = current;
-            arrays[i].emplace_back(nums[i]);
+
+            return max_subset;
         }
 
-        // best size, best index
-        pair<size_t, size_t> best_so_far;
-        for (int i = 0; i < n; ++i) {
-            if (arrays[i].size() > best_so_far.first) {
-                best_so_far.first = arrays[i].size();
-                best_so_far.second = i;
+    private:
+        int n;
+        unordered_map<int, vector<int>> memo;
+        vector<int> check (int i, vector<int>& nums) {
+            if (memo.find(i) != memo.end())
+                return memo[i];
+            vector<int> max_subset;
+            for (int k = 0; k < i; ++k) {
+                if (nums[i] % nums[k] == 0) {
+                    vector<int> subset = check(k, nums);
+                    if (max_subset.size() < subset.size())
+                        max_subset = subset;
+                }
             }
+            max_subset.emplace_back(nums[i]);
+            memo[i] = max_subset;
+            return max_subset;
         }
-
-        return arrays[best_so_far.second];
-    }
-};
+    };
