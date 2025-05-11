@@ -9,11 +9,12 @@ using namespace std;
 class Logger {
 public:
     unordered_map<string, int> messages;
-    Logger() {
-        
-    }
-    
+    Logger() {}
+
     bool shouldPrintMessage(int timestamp, string message) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         if (messages.find(message) == messages.end()) {
             messages[message] = timestamp + 9;
             return true;
