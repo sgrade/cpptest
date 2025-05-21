@@ -6,31 +6,39 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 2: O(1) Space, Efficient Solution
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
         int rows = matrix.size(), cols = matrix[0].size();
-        vector<int> cols_with_zero;
-        bool zero_in_row;
-        for (int i = 0; i < rows; ++i) {
-            zero_in_row = false;
-            for (int j = 0; j < cols; ++j) {
-                if (matrix[i][j] == 0) {
-                    zero_in_row = true;
-                    cols_with_zero.emplace_back(j);
+        bool first_col = false;
+        for (int r = 0; r < rows; ++r) {
+            if (matrix[r][0] == 0)
+                first_col = true;
+            for (int c = 1; c < cols; ++c) {
+                if (matrix[r][c] == 0) {
+                    matrix[0][c] = 0;
+                    matrix[r][0] = 0;
                 }
-            }
-            if (zero_in_row) {
-                for (int j = 0; j < cols; ++j) {
-                    matrix[i][j] = 0;
-                }
-                zero_in_row = false;
             }
         }
-        for (int &col: cols_with_zero) {
-            for (int i = 0; i < rows; ++i) {
-                matrix[i][col] = 0;
+
+        for (int r = 1; r < rows; ++r) {
+            for (int c = 1; c < cols; ++c) {
+                if (matrix[r][0] == 0 || matrix[0][c] == 0)
+                    matrix[r][c] = 0;
             }
+        }
+        if (matrix[0][0] == 0) {
+            for (int c = 0; c < cols; ++c)
+                matrix[0][c] = 0;
+        }
+        if (first_col) {
+            for (int r = 0; r < rows; ++r)
+                matrix[r][0] = 0;
         }
     }
 };
