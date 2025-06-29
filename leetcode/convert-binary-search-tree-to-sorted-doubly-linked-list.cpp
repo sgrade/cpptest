@@ -6,6 +6,9 @@
 using namespace std;
 
 
+// Based on Editorial's Approach 1: Recursion
+
+/*
 // Definition for a Node.
 class Node {
 public:
@@ -27,36 +30,38 @@ public:
         right = _right;
     }
 };
+*/
 
 class Solution {
 public:
     Node* first = nullptr;
     Node* last = nullptr;
-        
+
     Node* treeToDoublyList(Node* root) {
-        if (root == nullptr) return nullptr;
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+
+        if (root == nullptr)
+            return nullptr;
         dfs(root);
         first->left = last;
         last->right = first;
         return first;
     }
-    
-    void dfs(Node* current) {
-        if (current == nullptr) {
+
+private:
+    void dfs(Node* node) {
+        if (node == nullptr)
             return;
-        }
-        dfs(current -> left);
-        
-        // DFS Inorder
-        if (last) {
-            current->left = last;
-            last->right = current;
+        dfs(node->left);
+        if (last != nullptr) {
+            last->right = node;
+            node->left = last;
         }
         else {
-            first = current;
+            first = node;
         }
-        last = current;
-        
-        dfs(current -> right);
+        last = node;
+        dfs(node->right);
     }
 };
