@@ -9,17 +9,20 @@ using namespace std;
 class Solution {
 public:
     int maximumUniqueSubarray(vector<int>& nums) {
-        unordered_set<int> uniq;
-        int left = 0, right = 0, sum = 0, ans = nums[0];
-        for (; right < nums.size(); ++right) {
-            while(uniq.find(nums[right]) != uniq.end()) {
-                uniq.erase(nums[left]);
-                sum -= nums[left];
-                ++left;
-            }
-            uniq.insert(nums[right]);
-            sum += nums[right];
-            ans = max(ans, sum);
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        
+        int n = nums.size(), ans = 0, left = 0;
+        vector<int> prefix_sum(n + 1);
+        unordered_map<int, int> indexes;
+        for (int right = 0; right < n; ++right) {
+            int current = nums[right];
+            prefix_sum[right + 1] = prefix_sum[right] + current;
+            if (indexes.find(current) != indexes.end())
+                left = max(left, indexes[current] + 1);
+            int current_ans = prefix_sum[right + 1] - prefix_sum[left];
+            ans = max(ans, current_ans);
+            indexes[current] = right;
         }
         return ans;
     }
