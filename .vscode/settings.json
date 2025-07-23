@@ -3,5 +3,7 @@
         "*.cpp": "cpp",
         "*.hpp": "cpp",
         "*.h": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp"
     }
 }
