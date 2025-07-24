@@ -43,7 +43,7 @@ private:
             num ^= dfs1(neighbor, child, nums);
         }
 
-        for (const int& neighbor: adj[child]) {
+        for (int neighbor: adj[child]) {
             if (neighbor != parent)
                 continue;
             dfs2(neighbor, child, num, child, nums);
