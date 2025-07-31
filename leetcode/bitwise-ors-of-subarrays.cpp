@@ -10,14 +10,12 @@ using namespace std;
 class Solution {
 public:
     int subarrayBitwiseORs(vector<int>& arr) {
-        set<int> ans, cur;
-        cur.emplace(0);
-        for (const int num: arr) {
-            set<int> cur2;
-            for (const int cur_num: cur)
-                cur2.emplace(num | cur_num);
-            cur2.emplace(num);
-            cur = cur2;
+        unordered_set<int> ans, cur;
+        for (int num : arr) {
+            unordered_set<int> cur2 = {num};
+            for (int x : cur)
+                cur2.insert(num | x);
+            cur = move(cur2);
             ans.insert(cur.begin(), cur.end());
         }
         return ans.size();
