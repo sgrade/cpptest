@@ -10,11 +10,10 @@ using namespace std;
 class Solution {
 public:
     int maxTotalFruits(vector<vector<int>>& fruits, int startPos, int k) {
-        this->startPos = startPos;
         int left = 0, right = 0, n = fruits.size(), current_ans = 0, ans = 0;
         while (right < n) {
             current_ans += fruits[right][1];
-            while (left <= right && calculateSteps(left, right, fruits) > k)
+            while (left <= right && calculateSteps(left, right, fruits, startPos) > k)
                 current_ans -= fruits[left++][1];
             ans = max(ans, current_ans);
             ++right;
@@ -23,8 +22,7 @@ public:
     }
 
 private:
-    int startPos;
-    int calculateSteps (int left, int right, vector<vector<int>>& fruits) {
+    int calculateSteps(int left, int right, const vector<vector<int>>& fruits, int startPos) {
         if (fruits[right][0] <= startPos)
             return startPos - fruits[left][0];
         else if (fruits[left][0] >= startPos)
