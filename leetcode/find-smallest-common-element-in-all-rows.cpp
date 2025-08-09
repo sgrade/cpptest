@@ -1,31 +1,40 @@
 // 1198. Find Smallest Common Element in All Rows
 // https://leetcode.com/problems/find-smallest-common-element-in-all-rows/
 
-#include <bits/stdc++.h>
 
-using namespace std;
+#include <vector>
+#include <algorithm>
 
 
 // Based on Editorial's Approach 3: Row Positions
 class Solution {
-public:
-    int smallestCommonElement(vector<vector<int>>& mat) {
-        int rows = mat.size(), cols = mat[0].size();
-        int mx = 0, cnt = 0;
-        vector<int> col_in(rows);
+ public:
+    int smallestCommonElement(std::vector<std::vector<int>>& mat) {
+        const int rows = mat.size();
+        const int cols = mat[0].size();
+        std::vector<int> idx(rows, 0);
         while (true) {
-            for (int row = 0; row < rows; ++row) {
-                while (col_in[row] < cols && mat[row][col_in[row]] < mx) {
-                    ++col_in[row];
+            int candidate = mat[0][idx[0]];
+            bool all_match = true;
+            for (int r = 1; r < rows; ++r) {
+                while (idx[r] < cols && mat[r][idx[r]] < candidate) {
+                    ++idx[r];
                 }
-                if (col_in[row] >= cols) {
+                if (idx[r] == cols) {
                     return -1;
                 }
-                if (mx != mat[row][col_in[row]]) {
-                    cnt = 1;
-                    mx = mat[row][col_in[row]];
-                } else if (++cnt == rows) {
-                    return mx;
+                if (mat[r][idx[r]] != candidate) {
+                    candidate = std::max(candidate, mat[r][idx[r]]);
+                    all_match = false;
+                }
+            }
+            if (all_match) return candidate;
+            for (int r = 0; r < rows; ++r) {
+                while (idx[r] < cols && mat[r][idx[r]] < candidate) {
+                    ++idx[r];
+                }
+                if (idx[r] == cols) {
+                    return -1;
                 }
             }
         }
