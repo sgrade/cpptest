@@ -2,37 +2,26 @@
 // https://leetcode.com/problems/maximum-69-number/
 
 #include <vector>
-#include <algorithm>
+#include <cmath>
 
 
 class Solution {
-public:
-    int maximum69Number (int num) {
-        int temp = num;
-        std::vector<int> nums;
-        while (temp) {
-            nums.emplace_back(temp % 10);
-            temp /= 10;
-        }
-        reverse(nums.begin(), nums.end());
-        bool changed = false;
-        for (int i = 0; i < nums.size(); ++i) {
-            if (nums[i] == 6) {
-                nums[i] = 9;
-                changed = true;
-                break;
+ public:
+    int maximum69Number(int num) {
+        int n = num, pos = -1, i = 0;
+        int temp = n;
+        // Find the leftmost 6
+        while (temp > 0) {
+            if (temp % 10 == 6) {
+                pos = i;
             }
+            temp /= 10;
+            ++i;
         }
-
-        if (!changed) {
+        if (pos == -1) {
             return num;
         }
-
-        int ans = 0;
-        for (const int num: nums) {
-            ans *= 10;
-            ans += num;
-        }
-        return ans;
+        // Change the leftmost 6 to 9
+        return num + 3 * static_cast<int>(pow(10, pos));
     }
 };
