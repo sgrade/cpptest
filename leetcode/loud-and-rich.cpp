@@ -2,41 +2,40 @@
 // https://leetcode.com/problems/loud-and-rich/
 
 #include <vector>
-#include <queue>
 #include <algorithm>
 
-using namespace std;
-
-
 class Solution {
-public:
-    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
-        int n = quiet.size();
-        vector<vector<int>> adj(n);
-        for (const vector<int>& r: richer) {
-            adj[r[1]].emplace_back(r[0]);
-        }
-        vector<int> ans(n);
-        iota(ans.begin(), ans.end(), 0);
-        for (int person = 0; person < n; ++person) {
-            vector<bool> visited(n, false);
-            queue<int> q;
-            q.emplace(person);
-            while (!q.empty()) {
-                int current = q.front();
-                q.pop();
-                visited[current] = true;
-                if (quiet[current] <= quiet[ans[person]]) {
-                    ans[person] = current;
-                }
-                for (const int neighbor: adj[current]) {
-                    if (visited[neighbor]) {
-                        continue;
-                    }
-                    q.emplace(neighbor);
-                }
-            }
-        }
-        return ans;
+ public:
+  std::vector<int> loudAndRich(const std::vector<std::vector<int>>& richer,
+                               const std::vector<int>& quiet) {
+    int n = quiet.size();
+    adj_.assign(n, {});
+    for (const auto& r : richer) {
+      adj_[r[1]].emplace_back(r[0]);
     }
+    ans_.assign(n, -1);
+    for (int person = 0; person < n; ++person) {
+      Dfs(person, quiet);
+    }
+    return ans_;
+  }
+
+ private:
+  std::vector<int> ans_;
+  std::vector<std::vector<int>> adj_;
+
+  int Dfs(int person, const std::vector<int>& quiet) {
+    if (ans_[person] != -1) {
+      return ans_[person];
+    }
+    int quietest_person = person;
+    for (int richer_person : adj_[person]) {
+      int candidate = Dfs(richer_person, quiet);
+      if (quiet[candidate] < quiet[quietest_person]) {
+        quietest_person = candidate;
+      }
+    }
+    ans_[person] = quietest_person;
+    return quietest_person;
+  }
 };
