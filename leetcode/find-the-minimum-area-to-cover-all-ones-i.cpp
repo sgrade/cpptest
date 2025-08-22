@@ -11,20 +11,18 @@ class Solution {
 public:
     int minimumArea(vector<vector<int>>& grid) {
         int rows = grid.size(), cols = grid[0].size();
-        int top_r = rows, bot_r = 0;
-        int left_c = cols, right_c = 0;
+        int top_r = rows, bot_r = -1;
+        int left_c = cols, right_c = -1;
         for (int r = 0; r < rows; ++r) {
             for (int c = 0; c < cols; ++c) {
-                if (grid[r][c] == 0) {
-                    continue;
-                }
+                if (grid[r][c] == 0) continue;
                 top_r = min(top_r, r);
                 bot_r = max(bot_r, r);
                 left_c = min(left_c, c);
                 right_c = max(right_c, c);
             }
         }
-        int ans = (bot_r - top_r + 1) * (right_c - left_c + 1);
-        return ans;
+        if (bot_r == -1) return 0; // No ones found
+        return (bot_r - top_r + 1) * (right_c - left_c + 1);
     }
 };
