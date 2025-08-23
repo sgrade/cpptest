@@ -11,7 +11,7 @@ using namespace std;
 // Based on Editorial's Approach: Enumerate
 class Solution {
 public:
-    int minimumSum(vector<vector<int>>& grid) {
+    int minimumSum(const vector<vector<int>>& grid) {
         int original = divideAndCalculate(grid);
         vector<vector<int>> rotatedGrid = rotate(grid);
         int rotated = divideAndCalculate(rotatedGrid);
@@ -30,39 +30,42 @@ private:
         return rotated;
     }
 
-    int divideAndCalculate(vector<vector<int>>& grid) {
+    int divideAndCalculate(const vector<vector<int>>& grid) {
         int rows = grid.size(), cols = grid[0].size();
         int ans = rows * cols;
         for (int r = 0; r < rows - 1; ++r) {
             for (int c = 0; c < cols - 1; ++c) {
-                ans = min(ans,
-                    getMinSum(grid, 0, r, 0, cols - 1) + 
-                    getMinSum(grid, r + 1, rows - 1, 0, c) +
-                    getMinSum(grid, r + 1, rows - 1, c + 1, cols - 1)
-                );
-                ans = min(ans, 
-                    getMinSum(grid, 0, r, 0, c) +
-                    getMinSum(grid, 0, r, c + 1, cols - 1) +
-                    getMinSum(grid, r + 1, rows - 1, 0, cols - 1)
-                );
+                int a = getMinSum(grid, 0, r, 0, cols - 1);
+                int b = getMinSum(grid, r + 1, rows - 1, 0, c);
+                int c1 = getMinSum(grid, r + 1, rows - 1, c + 1, cols - 1);
+                if (a != std::numeric_limits<int>::max() && b != std::numeric_limits<int>::max() && c1 != std::numeric_limits<int>::max()) {
+                    ans = min(ans, a + b + c1);
+                }
+                int a2 = getMinSum(grid, 0, r, 0, c);
+                int b2 = getMinSum(grid, 0, r, c + 1, cols - 1);
+                int c2 = getMinSum(grid, r + 1, rows - 1, 0, cols - 1);
+                if (a2 != std::numeric_limits<int>::max() && b2 != std::numeric_limits<int>::max() && c2 != std::numeric_limits<int>::max()) {
+                    ans = min(ans, a2 + b2 + c2);
+                }
             }
         }
         for (int r = 0; r < rows - 2; ++r) {
             for (int c = r + 1; c < rows - 1; ++c) {
-                ans = min(ans,
-                    getMinSum(grid, 0, r, 0, cols - 1) +
-                    getMinSum(grid, r + 1, c, 0, cols - 1) +
-                    getMinSum(grid, c + 1, rows - 1, 0, cols - 1)
-                );
+                int a = getMinSum(grid, 0, r, 0, cols - 1);
+                int b = getMinSum(grid, r + 1, c, 0, cols - 1);
+                int c1 = getMinSum(grid, c + 1, rows - 1, 0, cols - 1);
+                if (a != std::numeric_limits<int>::max() && b != std::numeric_limits<int>::max() && c1 != std::numeric_limits<int>::max()) {
+                    ans = min(ans, a + b + c1);
+                }
             }
         }
         return ans;
     }
 
-    int getMinSum(vector<vector<int>>& grid, int up, int down, int left, int right) {
+    int getMinSum(const vector<vector<int>>& grid, int up, int down, int left, int right) {
         int rows = grid.size(), cols = grid[0].size();
-        int min_r = rows, max_r = 0;
-        int min_c = cols, max_c = 0;
+        int min_r = rows, max_r = -1;
+        int min_c = cols, max_c = -1;
         for (int r = up; r <= down; ++r) {
             for (int c = left; c <= right; ++c) {
                 if (grid[r][c] == 1) {
@@ -73,6 +76,7 @@ private:
                 }
             }
         }
-        return min_r <= max_r ? (max_r - min_r + 1) * (max_c - min_c + 1) : numeric_limits<int>::max() / 3;
+        if (max_r == -1) return std::numeric_limits<int>::max();
+        return (max_r - min_r + 1) * (max_c - min_c + 1);
     }
 };
