@@ -1,58 +1,74 @@
 // 36. Valid Sudoku
 // https://leetcode.com/problems/valid-sudoku/
 
-#include <unordered_map>
-#include  <vector>
+#include <vector>
 
-using namespace std;
+using std::vector;
 
 
 class Solution {
 public:
-    bool isValidSudoku(vector<vector<char>>& board) {       
-        // Checking rows and columns
-        unordered_map<int, vector<bool>> rows;
-        unordered_map<int, vector<bool>> columns;
-        for (int i = 0; i < 9; ++i) 
-            rows[i] = vector<bool>(10);
-        for (int j = 0; j < 9; ++j)
-            columns[j] = vector<bool>(10);
-        int x;
-        for (int i = 0; i < 9; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                if (board[i][j] == '.') 
-                    continue;
-                x = board[i][j] - '0';
-                if (rows[i][x] || columns[j][x]) {
+    bool isValidSudoku(vector<vector<char>>& board) {
+        rows = board.size(), cols = board[0].size();
+        if (!isValid9x9(board, 0, 0, 9)) {
+            return false;
+        }
+        for (int r_start = 0; r_start < 9; r_start += 3) {
+            for (int c_start = 0; c_start < 9; c_start += 3) {
+                if (!isValid3x3(board, r_start, c_start, 3)) {
                     return false;
                 }
-                rows[i][x] = true;
-                columns[j][x] = true;
             }
         }
-               
-        // Checking 3x3
-        for (int k = 0; k < 9; k +=3) {
-            for (int l = 0; l < 9; l +=3) {
-                if (!check_3x3(board, k, l)) 
-                    return false;
-            }
-        }
-        
         return true;
     }
-    
-    bool check_3x3 (vector<vector<char>> &board, int &k, int &l) {
-        int x;
-        vector<bool> sub_box(10);
-        for (int i = k; i < k + 3; ++i) {
-            for (int j = l; j < l + 3; ++j) {
-                if (board[i][j] == '.') 
+
+private:
+    int rows, cols;
+    vector<bool> visited;
+
+    bool isValid9x9 (vector<vector<char>>& board, int r_start, int c_start, int len) {
+        for (int r = r_start; r < r_start + len; ++r) {
+            visited.assign(10, false);
+            for (int c = c_start; c < c_start + len; ++c) {
+                if (board[r][c] == '.') {
                     continue;
-                x = board[i][j] - '0';
-                if (sub_box[x]) 
+                }
+                int num = board[r][c] - '0';
+                if (visited[num]) {
                     return false;
-                sub_box[x] = true;
+                }
+                visited[num] = true;
+            }
+        }
+        for (int c = c_start; c < c_start + len; ++c) {
+            visited.assign(len + 1, false);
+            for (int r = r_start; r < r_start + len; ++r) {
+                if (board[r][c] == '.') {
+                    continue;
+                }
+                int num = board[r][c] - '0';
+                if (visited[num]) {
+                    return false;
+                }
+                visited[num] = true;
+            }
+        }
+        return true;
+    }
+
+    bool isValid3x3 (vector<vector<char>>& board, int r_start, int c_start, int len) {
+        visited.assign(10, false);
+        for (int r = r_start; r < r_start + len; ++r) {
+            for (int c = c_start; c < c_start + len; ++c) {
+                if (board[r][c] == '.') {
+                    continue;
+                }
+                int num = board[r][c] - '0';
+                if (visited[num]) {
+                    return false;
+                }
+                visited[num] = true;
             }
         }
         return true;
