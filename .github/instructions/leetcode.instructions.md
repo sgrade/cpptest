@@ -2,10 +2,10 @@
 applyTo: "leetcode/*.cpp"
 ---
 
-# Formatting instructions for files in `leetcode` directory
+# nstructions for formatting files in the `leetcode` directory
 
-- Format the solution code in accordance with Google C++ Style Guide.
-- Make sure that curly braces are used in all control structures.
+- Format the solution code according to the Google C++ Style Guide.
+- Make sure that curly brackets are used in all control structures.
 
 Exceptions:
 - Do not use `std::` prefix for standard library components. Use `using namespace std;` instead.
