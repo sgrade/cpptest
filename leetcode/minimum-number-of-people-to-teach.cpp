@@ -3,46 +3,56 @@
 
 #include <vector>
 #include <unordered_set>
-#include <algorithm>
+#include <climits>
 
 using std::vector;
 using std::unordered_set;
-using std::set_intersection;
-using std::back_inserter;
-using std::max;
+using std::min;
 
 
-// Based on Editorial's Approach: Greedy
 class Solution {
 public:
     int minimumTeachings(int n, vector<vector<int>>& languages, vector<vector<int>>& friendships) {
         int users = languages.size();
-        for (vector<int>& user: languages) {
-            sort(user.begin(), user.end());
-        }
-
-        // Can communicate already
-        unordered_set<int> cannot_communicate;
-        for (const vector<int>& f: friendships) {
-            int user1 = f[0] - 1, user2 = f[1] - 1;
-            const vector<int>& l1 = languages[user1], l2 = languages[user2];
-            vector<int> v_intersection; 
-            set_intersection(l1.begin(), l1.end(), l2.begin(), l2.end(), back_inserter(v_intersection));
-            if (v_intersection.size() == 0) {
-                cannot_communicate.emplace(user2);
-                cannot_communicate.emplace(user1);
+        // Convert each user's language list to unordered_set for O(1) lookup
+        vector<unordered_set<int>> user_lang(users);
+        for (int i = 0; i < users; ++i) {
+            for (int lang : languages[i]) {
+                user_lang[i].insert(lang);
             }
         }
 
-        int max_friends_know_language = 0;
-        vector<int> friends_know(n + 1);
-        for (const int user: cannot_communicate) {
-            for (const int language: languages[user]) {
-                ++friends_know[language];
-                max_friends_know_language = max(friends_know[language], max_friends_know_language);
+        // Find users who cannot communicate in any friendship
+        unordered_set<int> need_teach;
+        for (const auto& f : friendships) {
+            int u1 = f[0] - 1, u2 = f[1] - 1;
+            bool can_communicate = false;
+            for (int lang : user_lang[u1]) {
+                if (user_lang[u2].count(lang)) {
+                    can_communicate = true;
+                    break;
+                }
+            }
+            if (!can_communicate) {
+                need_teach.insert(u1);
+                need_teach.insert(u2);
             }
         }
-        int ans = cannot_communicate.size() - max_friends_know_language;
-        return ans;
+
+        // For each language, count how many need_teach users do not know it
+        int min_teach = INT_MAX;
+        for (int lang = 1; lang <= n; ++lang) {
+            int cur_teach = 0;
+            for (int user : need_teach) {
+                if (!user_lang[user].count(lang)) {
+                    ++cur_teach;
+                }
+            }
+            min_teach = min(min_teach, cur_teach);
+            if (min_teach == 0) {
+                break; // Early exit
+            }
+        }
+        return min_teach == INT_MAX ? 0 : min_teach;
     }
 };
