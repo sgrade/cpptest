@@ -2,7 +2,7 @@
 applyTo: "leetcode/*.cpp"
 ---
 
-# nstructions for formatting files in the `leetcode` directory
+# Instructions for formatting files in the `leetcode` directory
 
 - Format the solution code according to the Google C++ Style Guide.
 - Make sure that curly brackets are used in all control structures.
