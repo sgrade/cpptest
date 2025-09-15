@@ -24,6 +24,7 @@ int main() {
     5
     */
 
+    // an alternative which uses operator >> (default delimiter is whitespace)
     cout << "Reuse the stringstream: " << endl;
     string s2 = "1 2 3";
     iss.clear();
