@@ -2,15 +2,24 @@
 // https://leetcode.com/problems/implement-router/
 
 #include <bits/stdc++.h>
-
-using namespace std;
+// use only the specific std symbols we need (avoid using namespace std)
+using std::vector;
+using std::unordered_set;
+using std::unordered_map;
+using std::deque;
+using std::pair;
+using std::size_t;
+using std::lower_bound;
+using std::upper_bound;
+using std::distance;
+using std::hash;
 
 
 // Custom hash function object std::pair
 struct PairHash {
-    std::size_t operator()(const pair<int, int>& p) const noexcept {
-        auto hash1 = std::hash<int>{}(p.first);
-        auto hash2 = std::hash<int>{}(p.second);
+    size_t operator()(const pair<int, int>& p) const noexcept {
+        auto hash1 = hash<int>{}(p.first);
+        auto hash2 = hash<int>{}(p.second);
         // A common technique Inspired by boost::hash_combine
         return hash1 ^ (hash2 << 1);
     }
@@ -19,7 +28,9 @@ struct PairHash {
 class Router {
 public:
     Router(int memoryLimit) {
-        this->memoryLimit = memoryLimit; 
+        this->memoryLimit = memoryLimit;
+        current_time = INT_MIN;
+        nextPacketId = 0;
     }
     
     bool addPacket(int source, int destination, int timestamp) {
@@ -27,49 +38,59 @@ public:
             current_time = timestamp;
             packets_for_current_timestamp.clear();
         }
-        if (q.size() == memoryLimit) {
-            auto _ = forwardPacket();
-        }
         if (packets_for_current_timestamp.count({source, destination})) {
             return false;
         }
+        if (q.size() == memoryLimit) {
+            auto _ = forwardPacket();
+        }
         packets_for_current_timestamp.emplace(source, destination);
-        dst_to_timestamp[destination].emplace(timestamp);
-        q.emplace(vector<int>{source, destination, timestamp});
+        // insert timestamp into sorted vector for destination
+        auto &vec = dst_to_timestamp[destination];
+        auto pos = lower_bound(vec.begin(), vec.end(), timestamp);
+        vec.insert(pos, timestamp);
+        q.emplace_back(Packet{source, destination, timestamp, 0});
         return true;
     }
     
     vector<int> forwardPacket() {
-        if (q.empty()) {
-            return {};
-        }
-        vector<int>& front = q.front();
-        int src = front[0], dst = front[1], timestamp = front[2];
-        packets_for_current_timestamp.erase({src, dst});
+        if (q.empty()) return {};
+        Packet front = q.front();
+        q.pop_front();
+        int src = front.src, dst = front.dst, timestamp = front.timestamp, id = front.id;
         vector<int> packet{src, dst, timestamp};
-        auto it = dst_to_timestamp[dst].find(timestamp);
-        if (it != dst_to_timestamp[dst].end()) dst_to_timestamp[dst].erase(it);
-        q.pop();
+        auto mapIt = dst_to_timestamp.find(dst);
+        if (mapIt != dst_to_timestamp.end()) {
+            auto &vec = mapIt->second;
+            auto it = lower_bound(vec.begin(), vec.end(), timestamp);
+            if (it != vec.end() && *it == timestamp) vec.erase(it);
+            if (vec.empty()) dst_to_timestamp.erase(mapIt);
+        }
+        if (timestamp == current_time) {
+            packets_for_current_timestamp.erase({src, dst});
+        }
         return packet;
     }
     
     int getCount(int destination, int startTime, int endTime) {
-        if (dst_to_timestamp.find(destination) == dst_to_timestamp.end()) {
-            return 0;
-        }
-        multiset<int>& st = dst_to_timestamp[destination];
-        auto left = st.lower_bound(startTime);
-        auto right = st.upper_bound(endTime);
-        int cnt = distance(left, right);
-        return cnt;
+        auto it = dst_to_timestamp.find(destination);
+        if (it == dst_to_timestamp.end()) return 0;
+        auto &vec = it->second;
+        // vec is maintained sorted; use lower_bound/upper_bound
+        auto l = lower_bound(vec.begin(), vec.end(), startTime);
+        auto r = upper_bound(vec.begin(), vec.end(), endTime);
+        return int(distance(l, r));
     }
 
 private:
     size_t memoryLimit;
-    queue<vector<int>> q;
+    struct Packet { int src, dst, timestamp, id; };
+    deque<Packet> q;
     int current_time;
+    int nextPacketId;
     unordered_set<pair<int, int>, PairHash> packets_for_current_timestamp;
-    map<int, multiset<int>> dst_to_timestamp;
+    // For LeetCode compatibility: per-destination sorted vector of timestamps
+    unordered_map<int, vector<int>> dst_to_timestamp;
 };
 
 /**
