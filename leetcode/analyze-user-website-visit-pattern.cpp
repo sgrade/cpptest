@@ -6,19 +6,54 @@
 #include <unordered_map>
 #include <sstream>
 #include <algorithm>
+#include <unordered_set>
 
 using namespace std;
 
 
-// Wrong answer
+struct Node {
+    string user;
+    int timestamp;
+    string website;
+};
+
+bool cmp(const Node& node1, const Node& node2) {
+    return node1.timestamp < node2.timestamp;
+}
+
 class Solution {
 public:
     vector<string> mostVisitedPattern(vector<string>& username, vector<int>& timestamp, vector<string>& website) {
-        for (int i = 0; i < username.size(); ++i) {
+        int n = username.size();
+
+        vector<Node> nodes;
+        for (int i = 0; i < n; ++i) {
             string u = username[i], w = website[i];
             int t = timestamp[i];
-            updatePattern(u, w);
+            nodes.emplace_back(u, t, w);
         }
+
+        sort(nodes.begin(), nodes.end(), cmp);
+
+        for (const auto& [u, _, w]: nodes) {
+            all_user_visits[u].emplace_back(w);
+        }
+
+        for (const auto& [u, v]: all_user_visits) {
+            unordered_set<string> patterns;
+            for (int i = 0; i < v.size(); ++i) {
+                for (int j = i + 1; j < v.size(); ++j) {
+                    for (int k = j + 1; k < v.size(); ++k) {
+                        string pattern = v[i] + ' ' + v[j] + ' ' + v[k];
+                        patterns.emplace(pattern);
+                    }
+                }
+            }
+            for (const string& p: patterns) {
+                ++counter[p];
+            }
+        }
+
         int mx = 0;
         string pattern;
         for (auto& [p, cnt]: counter) {
@@ -28,6 +63,7 @@ public:
             mx = cnt;
             pattern = p;
         }
+
         vector<string> ans;
         string tmp;
         istringstream iss(pattern);
@@ -38,19 +74,6 @@ public:
     }
 
 private:
-    unordered_map<string, vector<string>> user_to_pattern;
+    unordered_map<string, vector<string>> all_user_visits;
     unordered_map<string, int> counter;
-
-    void updatePattern(string u, string w) {
-        if (user_to_pattern.find(u) == user_to_pattern.end()) {
-            user_to_pattern[u] = vector<string>(3);
-        }
-        vector<string>& p = user_to_pattern[u];
-        rotate(p.begin(), p.begin() + 2, p.end());
-        p[2] = w;
-        if (p[0] != "") {
-            string pattern = p[0] + ' ' + p[1] + ' ' + p[2];
-            ++counter[pattern];
-        }
-    }
 };
