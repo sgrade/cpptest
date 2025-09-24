@@ -1,60 +1,50 @@
 // 166. Fraction to Recurring Decimal
 // https://leetcode.com/problems/fraction-to-recurring-decimal/
 
-#include <bits/stdc++.h>
+#include <string>
+#include <unordered_map>
 
-using namespace std;
-
-
-// 166. Fraction to Recurring Decimal
-// https://leetcode.com/problems/fraction-to-recurring-decimal/
-
-#include <bits/stdc++.h>
-
-using namespace std;
+using std::string;
+using std::unordered_map;
+using std::to_string;
 
 
+// Based on Editorial's Fraction to Recurring Decimal
 class Solution {
 public:
     string fractionToDecimal(int numerator, int denominator) {
         if (numerator == 0) {
             return "0";
         }
-        
-        string ans;
-        
-        if ((numerator < 0) ^ (denominator < 0)) {
-            ans += '-';
+
+        string fraction;
+
+        // One of the numbers is negative
+        if (numerator < 0 ^ denominator < 0) {
+            fraction += '-';
         }
-        long num = abs(numerator);
-        long denom = abs(denominator);
+
+        long long num = labs(1LL * numerator), denom = labs(1LL * denominator);
+        fraction += to_string(num / denom);
         
-        long x = num / denom;
-        ans += to_string(x);
-        
-        long reminder = num % denom;
+        long long reminder = num % denom;
         if (reminder == 0) {
-            return ans;
+            return fraction;
         }
-        
-        ans += '.';
-        
-        map<int, int> reminders;
-        int pos = ans.size() + 1;
-        
-        while (reminder) {
-            reminder *= 10;
-            x = reminder / denom;
-            reminder = reminder % denom;
-            ans += to_string(x);
-            if (reminders.find(reminder) != reminders.end()) {
-                ans.insert(reminders[reminder], 1, '(');
-                ans += ')';
-                return ans;
+        fraction += '.';
+        unordered_map<long long, int> counter;
+        while (reminder != 0) {
+            if (counter.count(reminder)) {
+                fraction.insert(counter[reminder], "(");
+                fraction += ')';
+                break;
             }
-            reminders[reminder] = pos++;
+            counter[reminder] = fraction.size();
+            reminder *= 10;
+            fraction += to_string(reminder / denom);
+            reminder %= denom;
         }
-        
-        return ans;
+
+        return fraction;
     }
 };
