@@ -1,30 +1,27 @@
 // 120. Triangle
 // https://leetcode.com/problems/triangle/
 
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <climits>
 
-using namespace std;
+using std::vector;
+using std::min;
+using std::min_element;
 
 
 class Solution {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
-        int n = triangle.size();
-        int ans = triangle[0][0];
-        int smallest_above;
-        for (int row = 1; row < n; ++row) {
-            for (int col = 0; col < row + 1; ++col) {
-                smallest_above = numeric_limits<int>::max();
-                if (col > 0) {
-                    smallest_above = triangle[row - 1][col - 1];
-                }
-                if (col < row) {
-                    smallest_above = min(smallest_above, triangle[row - 1][col]);
-                }
-                triangle[row][col] += smallest_above;
+        for (int level = 1; level < triangle.size(); ++level) {
+            for (int i = 0; i <= level; ++i) {
+                int prev_i_minus_one = i == 0 ? INT_MAX : triangle[level - 1][i - 1];
+                int prev_i = i == level ? INT_MAX : triangle[level - 1][i];
+                triangle[level][i] += min(prev_i_minus_one, prev_i);
             }
         }
-        ans = *min_element(triangle[n-1].begin(), triangle[n-1].end());
-        return ans;
+        vector<int>& last_row = *triangle.rbegin();
+        int min_path_sum = *min_element(last_row.begin(), last_row.end());
+        return min_path_sum;
     }
 };
