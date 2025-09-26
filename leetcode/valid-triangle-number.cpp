@@ -8,20 +8,37 @@ using std::vector;
 using std::sort;
 
 
-// Based on Editorial's Approach 3: Linear Scan
+// Optimized two-pointer approach (O(n^2) time, O(1) extra space)
+// Use a fixed largest side and two pointers to count valid pairs efficiently.
 class Solution {
 public:
     int triangleNumber(vector<int>& nums) {
-        int triplets = 0;
-        sort(nums.begin(), nums.end());
         int n = nums.size();
-        for (int i = 0; i < n - 2; ++i) {
-            int k = i + 2;
-            for (int j = i + 1; j < n - 1 && nums[i] != 0; ++j) {
-                while (k < n && nums[i] + nums[j] > nums[k]) {
-                    ++k;
+        if (n < 3) {
+            return 0;
+        }
+
+        sort(nums.begin(), nums.end());
+
+        int triplets = 0;
+        // If the smallest value is 0 then any triangle including it can't be valid
+        // when that 0 is one of the two smaller sides. We still need to check
+        // combinations where all sides > 0, so we don't early return here unless
+        // all numbers are zero.
+        int right = n - 1;
+        for (; right >= 2; --right) {
+            if (nums[right] == 0) {
+                break; // all remaining are zero
+            }
+            int left = 0, mid = right - 1;
+            while (left < mid) {
+                // nums[left] + nums[mid] > nums[right] => all between l..mid-1 paired with mid are valid
+                if (nums[left] + nums[mid] > nums[right]) {
+                    triplets += (mid - left);
+                    --mid;
+                } else {
+                    ++left;
                 }
-                triplets += k - j - 1;
             }
         }
         return triplets;
