@@ -9,78 +9,90 @@ using std::queue;
 using std::pair;
 
 
-// TLE
 class Solution {
 public:
     vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
-        rows = heights.size(), cols = heights[0].size();
-        can_flow.resize(rows, vector<vector<bool>>(cols, vector<bool>(2)));
-               
-        int row, col, ocean;
-        
-        // Can flow to Pacific
-        ocean = 0;
-        row = 0;
-        for (col = 0; col < cols; ++col) {
-            can_flow[row][col][ocean] = true;
-            bfs(row, col, ocean, heights);
-        }
-        col = 0;
-        for (row = 0; row < rows; ++row) {
-            can_flow[row][col][ocean] = true;
-            bfs(row, col, ocean, heights);
+        rows = heights.size();
+        cols = heights[0].size();
+        can_flow.assign(rows, vector<vector<bool>>(cols, vector<bool>(2, false)));
+
+        // multi-source BFS for Pacific (ocean = 0)
+        {
+            int ocean = 0;
+            queue<pair<int, int>> q;
+            for (int c = 0; c < cols; ++c) {
+                if (!can_flow[0][c][ocean]) {
+                    can_flow[0][c][ocean] = true;
+                    q.emplace(0, c);
+                }
+            }
+            for (int r = 0; r < rows; ++r) {
+                if (!can_flow[r][0][ocean]) {
+                    can_flow[r][0][ocean] = true;
+                    q.emplace(r, 0);
+                }
+            }
+            bfs(q, ocean, heights);
         }
 
-        // Can flow to Atlantic
-        ocean = 1;
-        row = rows - 1;
-        for (col = 0; col < cols; ++col) {
-            can_flow[row][col][ocean] = true;
-            bfs(row, col, ocean, heights);
-        }
-        col = cols - 1;
-        for (int row = 0; row < rows; ++row) {
-            can_flow[row][col][ocean] = true;
-            bfs(row, col, ocean, heights);
+        // multi-source BFS for Atlantic (ocean = 1)
+        {
+            int ocean = 1;
+            queue<pair<int, int>> q;
+            for (int c = 0; c < cols; ++c) {
+                if (!can_flow[rows - 1][c][ocean]) {
+                    can_flow[rows - 1][c][ocean] = true;
+                    q.emplace(rows - 1, c);
+                }
+            }
+            for (int r = 0; r < rows; ++r) {
+                if (!can_flow[r][cols - 1][ocean]) {
+                    can_flow[r][cols - 1][ocean] = true;
+                    q.emplace(r, cols - 1);
+                }
+            }
+            bfs(q, ocean, heights);
         }
 
         vector<vector<int>> ans;
         for (int r = 0; r < rows; ++r) {
             for (int c = 0; c < cols; ++c) {
-                if (can_flow[r][c][1] && can_flow[r][c][2]) {
+                if (can_flow[r][c][0] && can_flow[r][c][1]) {
                     ans.emplace_back(vector<int>{r, c});
                 }
             }
         }
         return ans;
     }
+
 private:
-    int rows, cols;
+    int rows;
+    int cols;
     vector<pair<int, int>> directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-    // keys: 0 - Pacific, 2 Atlantic; 
-    // values: false - not visited or cannot flow, true - can flow
+    // can_flow[r][c][0] -> Pacific, can_flow[r][c][1] -> Atlantic
     vector<vector<vector<bool>>> can_flow;
-    void bfs(const int row, const int col, const int ocean, const vector<vector<int>>& heights) {
-        queue<pair<int, int>> q;
-        q.emplace(row, col);
+
+    void bfs(queue<pair<int, int>>& q, const int ocean, const vector<vector<int>>& heights) {
         while (!q.empty()) {
-            int n = q.size();
-            while (n--) {
-                auto [cur_r, cur_c] = q.front();
-                q.pop();
-                int cur_h = heights[cur_r][cur_c];
-                for (const auto& [r_diff, c_diff]: directions) {
-                    int r = cur_r + r_diff, c = cur_c + c_diff;
-                    if (r < 0 || c < 0 || r == rows || r == cols) {
-                        continue;
-                    }
-                    int h = heights[r][c];
-                    if (h >= cur_h) {
-                        can_flow[r][c][ocean] = true;
-                        q.emplace(r, c);
-                    }
+            auto cur = q.front();
+            q.pop();
+            auto [cur_r, cur_c] = cur;
+            int cur_h = heights[cur_r][cur_c];
+            for (const auto& [r_diff, c_diff] : directions) {
+                int r = cur_r + r_diff;
+                int c = cur_c + c_diff;
+                if (r < 0 || c < 0 || r >= rows || c >= cols) {
+                    continue;
                 }
+                if (can_flow[r][c][ocean]) {
+                    continue;
+                }
+                if (heights[r][c] < cur_h) {
+                    continue;
+                }
+                can_flow[r][c][ocean] = true;
+                q.emplace(r, c);
             }
         }
     }
