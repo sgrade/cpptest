@@ -9,32 +9,21 @@ using std::vector;
 class Solution {
 public:
     bool hasIncreasingSubarrays(vector<int>& nums, int k) {
-        int i = 0, n = nums.size();
-        while (i < n - k) {
-            bool down = false;
-            int j = i + 1;
-            while (j < n && nums[j - 1] < nums[j]) {
-                ++j;
+        int n = nums.size(), prev = 0, cur = 1;
+        for (int i = 1; i < n; ++i) {
+            if (nums[i - 1] < nums[i]) {
+                ++cur;
+                if (cur >= 2 * k) {
+                    return true;
+                }
             }
-            if (j - i >= 2 * k) {
+            else {
+                prev = cur;
+                cur = 1;
+            }
+            if (prev >= k && cur >= k) {
                 return true;
             }
-            if (j - i < k) {
-                i = j;
-                continue;
-            }
-            
-            int x = j + 1;
-            while (x < n && nums[x - 1] < nums[x]) {
-                ++x;
-            }
-            if (x - j >= 2 * k)  {
-                return true;
-            }
-            if (x - j >= k) {
-                return true;
-            }
-            i = x;
         }
         return false;
     }
