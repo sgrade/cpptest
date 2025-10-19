@@ -3,45 +3,56 @@
 
 #include <string>
 #include <numeric>
+#include <algorithm>
 
 using std::string;
-using std::min;
 using std::gcd;
 
 
-// Based on Editorial's Lexicographically Smallest String After Applying Operations
+// Explicit try-all implementation
 class Solution {
 public:
     string findLexSmallestString(string s, int a, int b) {
-        this-> a = a, n = s.size();
+        int n = s.size();
         string ans = s;
-        s = s + s;
 
+        // Concatenate to allow easy rotation substrings
+        string ss = s + s;
         int g = gcd(b, n);
-        for (int i = 0; i < n; i += g) {
-            string t = s.substr(i, n);
-            add(t, 1);
-            if (b % 2) {
-                add(t, 0);
+
+        for (int start = 0; start < n; start += g) {
+            string base = ss.substr(start, n);
+
+            // Try 0..9 additions for odd positions
+            for (int addOdd = 0; addOdd < 10; ++addOdd) {
+                string cur_ans_even = base;
+                applyAddToParity(cur_ans_even, a, addOdd, 1);
+
+                if (b % 2 == 1) {
+                    // If b is odd, even positions can be changed independently -> try 0..9
+                    for (int addEven = 0; addEven < 10; ++addEven) {
+                        string cur_ans_odd = cur_ans_even;
+                        applyAddToParity(cur_ans_odd, a, addEven, 0);
+                        ans = min(ans, cur_ans_odd);
+                    }
+                } else {
+                    // b even: parity of indices doesn't change by rotation, only odd additions matter
+                    ans = min(ans, cur_ans_even );
+                }
             }
-            ans = min(ans, t);
         }
+
         return ans;
     }
 
 private:
-    int a, n;
-    void add (string& t, int start) {
-        int mn = 10, times = 0;
-        for (int i = 0; i < 10; ++i) {
-            int added = ((t[start] - '0') + i * a) % 10;
-            if (added < mn) {
-                mn = added;
-                times = i;
-            }
-        }
-        for (int i = start; i < n; i += 2) {
-            t[i] = '0' + ((t[i] - '0') + times * a) % 10;
+    // Apply (count * a) modulo 10 to all positions with given parity (0 or 1)
+    void applyAddToParity(string &t, int a, int count, int parity) {
+        int n = t.size();
+        int delta = (count * a) % 10;
+        for (int i = parity; i < n; i += 2) {
+            int d = (t[i] - '0' + delta) % 10;
+            t[i] = char('0' + d);
         }
     }
 };
