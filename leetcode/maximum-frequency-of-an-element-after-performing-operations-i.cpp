@@ -1,9 +1,17 @@
 // 3346. Maximum Frequency of an Element After Performing Operations I
 // https://leetcode.com/problems/maximum-frequency-of-an-element-after-performing-operations-i/
 
-#include <bits/stdc++.h>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
 
-using namespace std;
+using std::vector;
+using std::unordered_map;
+using std::sort;
+using std::lower_bound;
+using std::upper_bound;
+using std::min;
+using std::max;
 
 
 // Based on Editorial's Approach: Sort + Enumerate + Binary Search
