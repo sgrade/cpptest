@@ -1,0 +1,1 @@
+Two numbers are coprime if and only if their GCD is 1
