@@ -6,23 +6,6 @@
 using namespace std;
 
 
-int GetClosestDistance(vector<int> &a, int current) {
-    int idx = lower_bound(a.begin(), a.end(), current) - a.begin();
-    int min_dist = INT_MAX;
-    
-    // Check element at or after current
-    if (idx < a.size()) {
-        min_dist = min(min_dist, abs(a[idx] - current));
-    }
-    
-    // Check element before current
-    if (idx > 0) {
-        min_dist = min(min_dist, abs(a[idx-1] - current));
-    }
-    
-    return min_dist;
-}
-
 // Count how many positions in [0, x] have distance >= min_dist from all elements in a
 long long CountPositionsWithMinDistance(vector<int> &a, int x, int min_dist) {
     if (min_dist == 0) {
@@ -134,9 +117,9 @@ int main() {
         }
         
         // Get k positions with distance >= best_dist
-        vector<int> result = GetPositionsWithMinDistance(a, x, best_dist, k);
+        vector<int> ans = GetPositionsWithMinDistance(a, x, best_dist, k);
         
-        for (int pos : result) {
+        for (int pos : ans) {
             cout << pos << ' ';
         }
         cout << '\n';
