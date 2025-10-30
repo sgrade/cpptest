@@ -1,10 +1,13 @@
-ARG VARIANT=debian-12
+ARG VARIANT=debian-13
 FROM mcr.microsoft.com/devcontainers/base:${VARIANT}
 USER root
 
 # Install needed packages. Use a separate RUN statement to add your own dependencies.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install build-essential cmake cppcheck valgrind clang lldb llvm gdb \
+    # [Optional] Additional packages required for using vcpkg package manager in manifest mode.
+    # [Optional] Please uncommment if the below line in needed.
+    # && apt-get -y install autoconf automake libtool m4 autoconf-archive \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Setup ENV vars for vcpkg
@@ -23,3 +26,8 @@ RUN chmod +x /tmp/install-vcpkg.sh \
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+
+# For Cursor's (Anysphere) C/C++ extension to work.
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install clangd clang-format \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*

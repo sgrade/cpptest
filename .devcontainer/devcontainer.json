@@ -3,33 +3,44 @@
 		"dockerfile": "./Dockerfile",
 		"context": "."
 	},
-
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {
-            "version": "latest",
-            "ppa": "false"
-        }
-    },
-
-	"capAdd": ["SYS_PTRACE"],
-	"securityOpt": ["seccomp=unconfined"],
+			"version": "latest",
+			"ppa": "false"
+		}
+	},
+	"capAdd": [
+		"SYS_PTRACE"
+	],
+	"securityOpt": [
+		"seccomp=unconfined"
+	],
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
+			// // Set *default* container specific settings.json values on container create.
+			// "settings": {
+			// 	"github.copilot.chat.codeGeneration.instructions": [
+			// 		{
+			// 			"text": "This dev container includes `gcc`, `g++`, `make`, `cmake`, `cppcheck`, `valgrind`, `clang`, `lldb`, `llvm`, `gdb` and `vcpkg` pre-installed and available on the `PATH`, along with the C/C++ language and CMake tools extensions for C/C++ development."
+			// 		}
+			// 	]
+			// },
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"ms-vscode.cpptools",
-				"ms-azuretools.vscode-containers"
+				// "ms-vscode.cpptools", // C/C++ for Visual Studio Code (powered by Microsoft). Disabled because it conflicts with Anysphere's cpptools.
+				// "ms-vscode.cmake-tools",	// Will be installed automatically by Anysphere's cpptools.
+				"anysphere.cpptools", // C/C++ for Cursor (powered by Anysphere). Requires clangd to be installed. clangd uses .clang-format file in the root of the repository.
+				"ms-azuretools.vscode-containers",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "gcc -v",
-
 	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }

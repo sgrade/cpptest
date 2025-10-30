@@ -1,4 +1,9 @@
 {
+    // Automatically format code when saving files
+    "editor.formatOnSave": true,
+    // Disable CMake prompts (not needed for competitive programming)
+    "cmake.configureOnOpen": false,
+    // File associations for C++ standard library headers and files
     "files.associations": {
         "*.cpp": "cpp",
         "*.hpp": "cpp",

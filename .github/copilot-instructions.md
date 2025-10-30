@@ -8,11 +8,14 @@ This repository is a collection of small, standalone C++ solutions and templates
   - `templates/` — canonical helper snippets and idioms (IO, common algorithms, number theory, string helpers). Use these for code style and patterns.
   - `codeforces/`, `atcoder/`, `leetcode/` — collections of single-file solutions. Each file is intended to compile standalone with a modern g++ (use the current stable -std flag; see guidance below).
   - `misc/` — small utilities and experiments (e.g., `misc/http_log_parser/` has a CMake-based build).
+  - `.clang-format` — Google C++ style configuration for automatic code formatting.
+  - `.clangd` — clangd language server configuration (C++23 standard, compiler warnings enabled).
 
 - Build & run conventions
   - Default compile: use a modern g++ invocation like `/usr/bin/g++ -std=<LATEST_STABLE> -g <file.cpp> -o <fileDir>/a.out` as the fast local compile step (the workspace has a VS Code task `g++ build active file` that follows this pattern). Replace `<LATEST_STABLE>` with the desired standard (for example `c++20`, `c++23`, etc.).
   - Most solution files read from stdin and write to stdout. Preserve this pattern when adding new problems.
   - Avoid adding multi-file builds unless placed under `misc/` with CMake (see `misc/http_log_parser/README.md` for example).
+  - Code formatting: The repository uses clang-format with Google C++ style (see `.clang-format` in the root). Code is automatically formatted on save via clangd integration. When adding or editing files, the formatter will handle indentation and style automatically.
 
 - Code patterns and expectations
   - Solutions are single-file, minimal, and prioritized for clarity and speed. Keep includes tight (no heavy project scaffolding). Example: `leetcode/fraction-to-recurring-decimal.cpp` uses only `<string>` and `<unordered_map>`.
