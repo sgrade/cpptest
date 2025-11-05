@@ -7,6 +7,18 @@
     ],
     // Disable CMake prompts (not needed for competitive programming)
     "cmake.configureOnOpen": false,
+    // C++ editor indentation
+    "[cpp]": {
+        "editor.tabSize": 2, // Sets the visual width of one indent level; 2 keeps indentation tight to match the formatter.
+        "editor.insertSpaces": true, // Ensures the editor inserts spaces instead of hard tabs, so saved files stay consistent with the formatter.
+        "editor.detectIndentation": false // Turns off automatic guessing of indentation so the editor always honors the explicit two-space configuration.
+    },
+    // C editor indentation
+    "[c]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false
+    },
     // File associations for C++ standard library headers and files
     "files.associations": {
         "*.cpp": "cpp",
