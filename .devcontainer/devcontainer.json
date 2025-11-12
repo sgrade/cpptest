@@ -1,4 +1,5 @@
 {
+	"name": "Cpptest",
 	"build": {
 		"dockerfile": "./Dockerfile",
 		"context": "."
