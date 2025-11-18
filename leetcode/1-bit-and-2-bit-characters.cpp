@@ -1,19 +1,22 @@
 // 717. 1-bit and 2-bit Characters
 // https://leetcode.com/problems/1-bit-and-2-bit-characters/
 
-#include <bits/stdc++.h>
+#include <vector>
 
-using namespace std;
+using std::vector;
 
-
-// The idea is from https://leetcode.com/problems/1-bit-and-2-bit-characters/solutions/3424317/solution-in-c/
+// Based on Editorial's Approach 2: Greedy
 class Solution {
-public:
-    bool isOneBitCharacter(vector<int>& bits) {
-        if (bits.size() == 1)
-            return true;
-        if (bits[bits.size() - 2] == 0)
-            return true;
-        return distance(find(bits.rbegin() + 1, bits.rend(), 0), bits.rbegin()) % 2;
+ public:
+  bool isOneBitCharacter(vector<int>& bits) {
+    int ones = 0;
+    for (int i = bits.size() - 2; i >= 0; --i) {
+      if (bits[i] == 1) {
+        ++ones;
+      } else {
+        break;
+      }
     }
+    return ones % 2 == 0;
+  }
 };
