@@ -13,7 +13,7 @@ class Solution {
     for (int i = 0; i < n; ++i) {
       sm *= 2;
       sm = (sm + nums[i]) % 5;
-      ans[i] = sm % 5 == 0;
+      ans[i] = sm == 0;
     }
     return ans;
   }
