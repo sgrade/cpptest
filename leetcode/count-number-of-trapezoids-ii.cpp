@@ -14,7 +14,7 @@ class Solution {
   int countTrapezoids(vector<vector<int>>& points) {
     int n = points.size();
     unordered_map<float, vector<float>> slope_to_intercept;
-    unordered_map<int, vector<float>> mid_to_slope;
+    unordered_map<long long, vector<float>> mid_to_slope;
     int ans = 0;
     for (int i = 0; i < n; ++i) {
       int x1 = points[i][0], y1 = points[i][1];
