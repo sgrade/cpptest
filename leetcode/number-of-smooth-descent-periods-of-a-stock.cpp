@@ -8,15 +8,15 @@ using std::vector;
 class Solution {
  public:
   long long getDescentPeriods(vector<int>& prices) {
-    int n = prices.size(), left = 0;
+    int len = 1;
     long long ans = 1;
-    for (int right = 1; right < n; ++right) {
+    for (size_t right = 1; right < prices.size(); ++right) {
       if (prices[right - 1] - prices[right] == 1) {
-        ans += right - left + 1;
+        len++;
       } else {
-        ans++;
-        left = right;
+        len = 1;
       }
+      ans += len;
     }
     return ans;
   }
