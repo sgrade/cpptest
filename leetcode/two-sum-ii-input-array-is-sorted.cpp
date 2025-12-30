@@ -1,45 +1,24 @@
 // 167. Two Sum II - Input Array Is Sorted
 // https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
 
+#include <vector>
 
-#include <bits/stdc++.h>
-
-using namespace std;
-
+using std::vector;
 
 class Solution {
-public:
-    vector<int> twoSum(vector<int>& numbers, int target) {
-        vector<int> ans(2);
-        int x;
-        int left = 0, right = numbers.size() - 1;
-        while (left < right) {
-            x = numbers[left] + numbers[right];
-            if (x == target) {
-                ans = {left + 1, right + 1};
-                break;
-            }
-            else if (x < target) ++ left;
-            else --right;
-        }
-        return ans;
+ public:
+  vector<int> twoSum(vector<int>& numbers, int target) {
+    int lo = 0, hi = numbers.size() - 1;
+    while (lo < hi) {
+      int total = numbers[lo] + numbers[hi];
+      if (total == target) {
+        return vector<int>{lo + 1, hi + 1};
+      } else if (total < target) {
+        lo++;
+      } else {
+        hi--;
+      }
     }
+    return {};
+  }
 };
-
-
-int main() {
-
-    vector<int> nums = {2,7,11,15};
-    int target = 9;
-
-    Solution sol;
-
-    vector<int> ans = sol.twoSum(nums, target);
-
-    for (auto &el: ans) {
-        cout << el << ' ';
-    }
-    cout << '\n';
-
-    return 0;
-}
