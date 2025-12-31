@@ -40,21 +40,22 @@ class Solution {
  public:
   int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
     UnionFind dsu(row * col + 2);
-    vector<vector<int>> grid(row, vector<int>(col));
+    vector<vector<int>> grid(
+        row, vector<int>(col, 1));  // Initialize to all water (1)
     const vector<pair<int, int>> directions = {
         {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
     for (int day = cells.size() - 1; day >= 0; --day) {
       int r = cells[day][0] - 1;
       int c = cells[day][1] - 1;
-      grid[r][c] = 1;
+      grid[r][c] = 0;  // Convert water (1) to land (0)
       int idx1 = r * col + c + 1;
       for (const auto& [r_diff, c_diff] : directions) {
         int new_r = r + r_diff;
         int new_c = c + c_diff;
         int idx2 = new_r * col + new_c + 1;
         if (new_r >= 0 && new_r < row && new_c >= 0 && new_c < col &&
-            grid[new_r][new_c] == 1) {
+            grid[new_r][new_c] == 0) {  // Check if neighbor is land (0)
           dsu.UnionSet(idx1, idx2);
         }
       }
