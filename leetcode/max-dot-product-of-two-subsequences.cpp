@@ -8,7 +8,6 @@
 using namespace std;
 
 // Based on Editorial's Approach 1: Top-Down Dynamic Programming
-// Time Limit Exceeded: 67 / 69 testcases passed
 class Solution {
  public:
   int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
