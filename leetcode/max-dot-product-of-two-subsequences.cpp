@@ -2,6 +2,7 @@
 // https://leetcode.com/problems/max-dot-product-of-two-subsequences/
 
 #include <algorithm>
+#include <climits>
 #include <vector>
 
 using namespace std;
@@ -20,7 +21,7 @@ class Solution {
       return *max2 * *min1;
     }
 
-    vector<vector<int>> memo(nums1.size(), vector<int>(nums2.size()));
+    vector<vector<int>> memo(nums1.size(), vector<int>(nums2.size(), INT_MIN));
     return GetDotProduct(0, 0, nums1, nums2, memo);
   }
 
@@ -28,15 +29,18 @@ class Solution {
   int GetDotProduct(size_t idx1, size_t idx2, vector<int>& nums1,
                     vector<int>& nums2, vector<vector<int>>& memo) {
     if (idx1 == nums1.size() || idx2 == nums2.size()) {
-      return 0;
+      return INT_MIN;
     }
 
-    if (memo[idx1][idx2] != 0) {
+    if (memo[idx1][idx2] != INT_MIN) {
       return memo[idx1][idx2];
     }
 
-    int move_both = nums1[idx1] * nums2[idx2] +
-                    GetDotProduct(idx1 + 1, idx2 + 1, nums1, nums2, memo);
+    int take_both = nums1[idx1] * nums2[idx2];
+    // max below is to not pick at all instead of returning INT_MIN (the default
+    // in the memo)
+    int move_both = take_both + max(0, GetDotProduct(idx1 + 1, idx2 + 1, nums1,
+                                                     nums2, memo));
     int move_idx1 = GetDotProduct(idx1 + 1, idx2, nums1, nums2, memo);
     int move_idx2 = GetDotProduct(idx1, idx2 + 1, nums1, nums2, memo);
     memo[idx1][idx2] = max({move_both, move_idx1, move_idx2});
