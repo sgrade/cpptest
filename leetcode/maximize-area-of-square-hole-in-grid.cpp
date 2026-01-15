@@ -14,30 +14,29 @@ class Solution {
                              vector<int>& vBars) {
     sort(hBars.begin(), hBars.end());
     sort(vBars.begin(), vBars.end());
-    int h_max = 1;
-    int v_max = 1;
-    int h_cur = 1;
-    int v_cur = 1;
 
-    for (size_t i = 1; i < hBars.size(); i++) {
-      if (hBars[i] == hBars[i - 1] + 1) {
-        ++h_cur;
-      } else {
-        h_cur = 1;
-      }
-      h_max = max(h_max, h_cur);
-    }
-
-    for (size_t i = 1; i < vBars.size(); i++) {
-      if (vBars[i] == vBars[i - 1] + 1) {
-        ++v_cur;
-      } else {
-        v_cur = 1;
-      }
-      v_max = max(v_max, v_cur);
-    }
+    int h_max = longest_consequitive(hBars);
+    int v_max = longest_consequitive(vBars);
 
     int side = min(h_max, v_max) + 1;
     return side * side;
+  }
+
+ private:
+  int longest_consequitive(vector<int>& v) {
+    if (v.size() == 0) {
+      return 0;
+    }
+    int max_len = 1;
+    int cur_len = 1;
+    for (size_t i = 1; i < v.size(); i++) {
+      if (v[i] == v[i - 1] + 1) {
+        ++cur_len;
+      } else {
+        cur_len = 1;
+      }
+      max_len = max(cur_len, max_len);
+    }
+    return max_len;
   }
 };
