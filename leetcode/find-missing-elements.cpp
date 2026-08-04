@@ -1,7 +1,7 @@
 // 3731. Find Missing Elements
 // https://leetcode.com/problems/find-missing-elements/
 
-#include <set>
+#include <algorithm>
 #include <vector>
 
 using namespace std;
@@ -9,13 +9,13 @@ using namespace std;
 class Solution {
  public:
   vector<int> findMissingElements(vector<int>& nums) {
-    set<int> existing(nums.begin(), nums.end());
-    int mn = *existing.begin();
-    int mx = *(existing.rbegin());
+    sort(nums.begin(), nums.end());
     vector<int> ans;
-    for (int num = mn; num < mx; ++num) {
-      if (existing.find(num) == existing.end()) {
-        ans.emplace_back(num);
+    for (size_t i = 1; i < nums.size(); i++) {
+      if (nums[i] - nums[i - 1] > 1) {
+        for (int j = nums[i - 1] + 1; j < nums[i]; j++) {
+          ans.emplace_back(j);
+        }
       }
     }
     return ans;
